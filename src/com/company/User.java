@@ -21,14 +21,16 @@ public class User {
         this.titel = titel;
 
         aus = new AuthService();
-        position = aus.getPosition;
-
+       // position = aus.getPosition;
+        /*
         switch (type){
             case "PhD":
                 possibleLoans = 7;
             case "Undergraduate":
                 possibleLoans = 3;
         }
+
+         */
 
     }
 
