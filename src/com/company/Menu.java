@@ -85,8 +85,10 @@ public class Menu {
             case 6:
                 System.out.println("Låna bok metod");
                 break;
-
-
+            default:
+                System.out.println("Inget giltig val\n");
+                librarianMenu();
+                break;
         }
     }
 
