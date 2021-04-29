@@ -40,18 +40,23 @@ public class Menu {
     }
     public static int memberMenu(){
         Scanner input = new Scanner(System.in);
-        System.out.println("Välja alternativ:\n1.Låna bok\n2.Säg upp medlemskap");
+        System.out.println("\nVälja alternativ:\n1.Låna bok\n2.Säg upp medlemskap");
         System.out.print("Val: ");
 
         return input.nextInt();
     }
 
     public static void memberOption(int option) {
+        System.out.println("");
         if (option == 1){
             System.out.println("Lägg till bok i system metod");
         }
         else if (option == 2){
             System.out.println("Säg upp medlemskap metod");
+        }
+        else {
+            System.out.println("Inget gitligt val");
+            memberOption(memberMenu());
         }
 
     }
@@ -87,7 +92,7 @@ public class Menu {
                 break;
             default:
                 System.out.println("Inget giltig val\n");
-                librarianMenu();
+                librarianOption(librarianMenu());
                 break;
         }
     }
