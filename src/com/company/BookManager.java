@@ -79,8 +79,15 @@ public class BookManager implements IBookManager {
 
     public void returnBook(int isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
+        LocalDate currentDate = LocalDate.now();
 
         for (Book book: books){
+
+            if (currentDate.isAfter(book.getLoanDate().plusDays(15)))
+            {
+                member.strikes++;
+            }
+
             if (book.getBorrowedBy() == member.getIDCode()){
                 book.setAvailable(true);
                 member.current --;

@@ -5,21 +5,28 @@ import java.util.ArrayList;
 public class BookStore implements IBookStore {
     ArrayList<Book> bookList = null;
 
-    public BookStore(){
+    public BookStore()  {
         this.bookList = new ArrayList<>();
     }
 
-    public Book[] getBooks(){
-        return new Book[0];
-        //select * from Books
+    public Book[] getBooks() {
+        Book[] books = new Book[bookList.size()];
+        return this.bookList.toArray(books);
     }
 
-    public Book getBookByTitle(String title)
-    {
-        //kod mot databas som hämtar en Book
-        return new Book(123, "ost");
+    public Book getBookByTitle(String title) {
+        Book tempBook = null;
+        for (Book b: bookList
+             ) {
+            if (b.getTitle().equals(title))
+            {
+                 tempBook = b;
+            }
+        }
+        return tempBook;
     }
-    public Book[] getBookByIsbn(int isbn){
+
+    public Book[] getBookByIsbn(int isbn)   {
         ArrayList<Book> tempList = new ArrayList<>();
 
         for (Book book: bookList){
@@ -30,7 +37,8 @@ public class BookStore implements IBookStore {
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
     }
-    public Book[] getBookByMember (int member){
+
+    public Book[] getBookByMember(int member)  {
         ArrayList<Book> tempList = new ArrayList<>();
 
         for (Book book: bookList){
