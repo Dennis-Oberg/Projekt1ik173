@@ -5,6 +5,4 @@ public interface ILibrarian {
     void removeMember(int memberID);
     void suspendMember(int memberID);
     Book provideBook(int isbn);
-
-
 }

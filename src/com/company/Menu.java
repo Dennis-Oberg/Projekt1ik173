@@ -4,40 +4,46 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void start(){
-        int authorisation = loginMessage();
-        decideAuth(authorisation);
+    BookManager bm;
+    AuthService as;
 
+    public Menu(AuthService newAS, BookManager newBM)
+    {
+        this.as=newAS;
+        this.bm=newBM;
+        this.bm.member=this.as.returnMember();
     }
-    public static int loginMessage(){
+
+    public void start(){
+        Boolean authorisation = loginMessage();
+        decideAuth(authorisation);
+    }
+
+    public Boolean loginMessage(){
         Scanner input = new Scanner(System.in);
         System.out.print("Ange ID: ");
         int id = input.nextInt();
-
-        System.out.print("Ange lösen:");
-        int password = input.nextInt();
-        return verifyLogin(id, password);
-
+        return as.login(id);
     }
 
-    public static int verifyLogin(int id, int password) {
-        if (id == 1234 && password == 1234){
-            return 1;
-        }
-        else if (id == 4321 && password == 1234){
-            return 2;
-        }
-        else return 0;
-    }
 
-    public static void decideAuth(int authorisation){
-        if (authorisation == 1){
-            memberOption(memberMenu());
+
+    public void decideAuth(Boolean authorisation)    {
+        if (authorisation){
+            if (this.as.returnMember().isLibrarian)
+            {
+                librarianOption(librarianMenu());
+            }
+            else
+            {
+                memberOption(memberMenu());
+            }
+
         }
-        else if (authorisation == 2){
-            librarianOption(librarianMenu());
+        else if (!authorisation){
+            System.out.println("Error, fel lösenord och/eller användarnamn");
         }
-        else System.out.println("Ogiltig användare");
+
     }
     public static int memberMenu(){
         Scanner input = new Scanner(System.in);
@@ -59,7 +65,6 @@ public class Menu {
             System.out.println("Inget gitligt val");
             memberOption(memberMenu());
         }
-
     }
 
     public static int librarianMenu(){
@@ -98,5 +103,4 @@ public class Menu {
                 break;
         }
     }
-
 }

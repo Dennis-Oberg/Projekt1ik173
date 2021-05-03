@@ -2,14 +2,13 @@ package com.company;
 
 import java.util.ArrayList;
 
-public class MemberStore {
+public class MemberStoreStub extends MemberStore{
 
     ArrayList<Member> memberList;
 
     public ArrayList<Member> getMembers()
     {
-        this.memberList = new ArrayList<>();
-        return memberList; //databas kod
+        return memberList;
     }
 
 }

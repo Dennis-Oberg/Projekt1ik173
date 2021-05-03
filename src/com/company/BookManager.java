@@ -9,7 +9,7 @@ public class BookManager implements IBookManager {
     BookStore bStore = null;
     Member member = null;
 
-    public BookManager(BookStore bStore)    {
+    public BookManager(BookStore bStore) {
         this.bStore = bStore;
     }
 
@@ -19,32 +19,29 @@ public class BookManager implements IBookManager {
     }
 
     public void loan(int isbn, int memberId) { //ska behållas
-        if (memberLendStatus() && !member.suspended){
+        if (memberLendStatus() && !member.suspended) {
             Book[] books = bStore.getBookByIsbn(isbn);
 
-            if (books.length == 0){
+            if (books.length == 0) {
                 System.out.println("Ingen bok med ISBN finns");
-            }
-            else if (!checkAvailable(books)){
-                System.out.println("Inga lediga böcker att låna ut :(");
-            }
-            else {
+            } else if (!checkAvailable(books)) {
+                System.out.println("Inga lediga böcker att låna ut");
+            } else {
                 for (Book book : books) {
                     if (book.isAvailable()) {
                         book.setAvailable(false);
                         book.setLoanDate(LocalDate.now());
                         book.setBorrowedBy(memberId);
-                        member.current ++;
+                        member.books.add(book);
+                        member.current++;
                         System.out.println("Du har nu lånat " + book.getTitle());
                         break;
                     }
                 }
             }
-        }
-        else if (member.suspended){
+        } else if (member.suspended) {
             System.out.println("Suspended");
-        }
-        else System.out.println("Max antal böcker lånade");
+        } else System.out.println("Max antal böcker lånade");
     }
 
     public boolean checkAvailable(Book[] books) {
@@ -67,11 +64,7 @@ public class BookManager implements IBookManager {
     }
 
     public int numberOfBorrowedBooks() {
-        if (memberLoans() == null){
-            return memberLoans().length;
-        }
-        else
-            return member.getCurrent();
+        return memberLoans().length;
     }
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
@@ -83,19 +76,31 @@ public class BookManager implements IBookManager {
 
     public void returnBook(int isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
-        LocalDate currentDate = LocalDate.now();
-        for (Book book: books){
+        LocalDate currentDate = LocalDate.now().plusDays(16); //ÄNDRA TILLBAKA TILL LOCALDATE.NOW()
 
-            if (currentDate.isAfter(book.getLoanDate().plusDays(15)))
-            {
+        for (Book book : books) {
+
+            if (currentDate.isAfter(book.getLoanDate().plusDays(15))) {
+
+                if (member.strikes>2)
+                {
+                    if (member.suspendedOnce)
+                    {
+                        //ta bort userfan
+                        
+                    }
+                    else
+                    {
+                        member.setSuspendedOnce(true);
+                    }
+                }
                 member.strikes++;
             }
 
-            if (book.getBorrowedBy() == member.getIDCode()){
+            if (book.getBorrowedBy() == member.getIDCode()) {
                 book.setAvailable(true);
-                member.current --;
-                System.out.println(book.getTitle() + " har lämnats tillbak");
-            }
+                member.current--;
+            } else System.out.println("Du har inte lånat denna bok");
         }
     }
 }

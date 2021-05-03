@@ -5,10 +5,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-
-
         System.out.println("Välkommen!\n");
-        Menu.start();
+
+        Menu m = new Menu(new AuthService(), new BookManager(new BookStore()));
+        m.start();
+
         //ID 1234 för användare
         //ID 4321 för bibliotekarie
         //Lösen: 1234 för båda
