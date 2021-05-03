@@ -21,6 +21,7 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.available = true;
+        this.loanDate = LocalDate.now();
     }
 
     public int getIsbn() {
