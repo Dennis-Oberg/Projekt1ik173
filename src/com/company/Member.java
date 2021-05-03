@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class Member {
 
     int IDCode;
@@ -11,9 +13,11 @@ public class Member {
     int current;
     int strikes;
     boolean suspended;
+    boolean suspendedOnce;
+    ArrayList<Book> books;
 
 
-    Member(int idCode, int ssn, String firstname, String lastname, int titel){
+    Member(int idCode, int ssn, String firstname, String lastname, int titel) {
         this.IDCode = idCode;
         this.SSN = ssn;
         this.firstName = firstname;
@@ -21,6 +25,7 @@ public class Member {
         this.titel = titel;
         this.suspended = false;
         decideMax(titel);
+        books = new ArrayList<>();
     }
 
 
@@ -48,27 +53,15 @@ public class Member {
         this.current = current;
     }
 
-    private void decideMax(int rank){
-        switch (rank){
-            case 1:
-                this.setMaxloans(3);
-                break;
-            case 2:
-                this.setMaxloans(5);
-                break;
-            case 3:
-                this.setMaxloans(7);
-                break;
-            case 4:
-                this.setMaxloans(10);
-                break;
-            default:
-                System.out.println("Ogiltig rank");
+    private void decideMax(int rank) {
+        switch (rank) {
+            case 1 -> this.setMaxloans(3);
+            case 2 -> this.setMaxloans(5);
+            case 3 -> this.setMaxloans(7);
+            case 4 -> this.setMaxloans(10);
+            default -> System.out.println("Ogiltig rank");
         }
     }
-
-
-
 
 
 }

@@ -22,13 +22,6 @@ public class Main {
             break;
             case 2:
               //  login(memberID);
-/*
-                return();
-                ngt.getAvailableBooks();
-                user.lend();
-
- */
-
         }
 
 
