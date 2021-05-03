@@ -17,9 +17,6 @@ public class Book {
         this.borrowedBy = borrowedBy;
     }
 
-
-    //int totalAvailable;
-
     public Book(int isbn, String title){
         this.isbn = isbn;
         this.title = title;

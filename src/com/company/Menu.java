@@ -41,7 +41,7 @@ public class Menu {
     }
     public static int memberMenu(){
         Scanner input = new Scanner(System.in);
-        System.out.println("\nVälja alternativ:\n1.Låna bok\n2.Säg upp medlemskap");
+        System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap");
         System.out.print("Val: ");
 
         return input.nextInt();
@@ -64,7 +64,7 @@ public class Menu {
 
     public static int librarianMenu(){
         Scanner input = new Scanner(System.in);
-        System.out.println("\nVälja alternativ:\n1.Lägg till bok i system\n2.Registrerar medlem\n3.Söka efter medlem\n4.Ta bort medlem" +
+        System.out.println("\nVälj ett alternativ:\n1.Lägg till bok i system\n2.Registrerar medlem\n3.Söka efter medlem\n4.Ta bort medlem" +
                 "\n5.Lämna tillbak bok\n6.Låna bok");
         System.out.print("Val: ");
         return input.nextInt();
@@ -84,10 +84,10 @@ public class Menu {
 
                 break;
             case 4:
-                System.out.println("Ta bort medlemm metod");
+                System.out.println("Ta bort medlem metod");
                 break;
             case 5:
-                System.out.println("Lämna tillbak bok metod");
+                System.out.println("Lämna tillbaka bok metod");
                 break;
             case 6:
                 System.out.println("Låna bok metod");

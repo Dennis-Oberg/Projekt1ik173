@@ -9,36 +9,16 @@ public class BookManager implements IBookManager {
     BookStore bStore = null;
     Member member = null;
 
-    public BookManager(BookStore bStore){
+    public BookManager(BookStore bStore)    {
         this.bStore = bStore;
     }
-    public BookManager(BookStore bStore, Member member){
+
+    public BookManager(BookStore bStore, Member member) {
         this.bStore = bStore;
         this.member = member;
     }
 
-    public void loan(int isbn) //ska tas bort senare
-    {
-        Book[] books = bStore.getBookByIsbn(isbn);
-
-        if (books.length == 0){
-            System.out.println("Ingen bok med ISBN finns");
-        }
-        else if (!checkAvailable(books)){
-            System.out.println("Inga lediga böcker att låna ut :(");
-        }
-        else {
-            for (Book book : books) {
-                if (book.isAvailable()) {
-                    book.setAvailable(false);
-                    System.out.println("Du har nu lånat " + book.getTitle());
-                    break;
-                }
-            }
-        }
-    }
-    public void loan(int isbn, int memberId) // ska behållas
-    {
+    public void loan(int isbn, int memberId) { //ska behållas
         if (memberLendStatus() && !member.suspended){
             Book[] books = bStore.getBookByIsbn(isbn);
 
@@ -67,7 +47,7 @@ public class BookManager implements IBookManager {
         else System.out.println("Max antal böcker lånade");
     }
 
-    public boolean checkAvailable(Book[] books){
+    public boolean checkAvailable(Book[] books) {
 
         for (Book book : books) {
             if (book.isAvailable()) {
@@ -76,25 +56,28 @@ public class BookManager implements IBookManager {
         }
         return false;
     }
-    public void borrowedBy(int memberId){
+
+    public void borrowedBy(int memberId) {
 
     }
-    public Book[] memberLoans(){
-        Book[] memberBooks = bStore.getBookByMember(this.member.getIDCode());
 
+    public Book[] memberLoans() {
+        Book[] memberBooks = bStore.getBookByMember(this.member.getIDCode());
         return memberBooks;
     }
-    public int numberOfBorrowedBooks(){
+
+    public int numberOfBorrowedBooks() {
         return memberLoans().length;
     }
-    public boolean memberLendStatus(){ //Kolla upp om man kan låna mer böcker
+
+    public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
         if (member.getCurrent() >= member.getMaxloans())
             return false;
         else
             return true;
     }
 
-    public void returnBook(int isbn){
+    public void returnBook(int isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
 
         for (Book book: books){
