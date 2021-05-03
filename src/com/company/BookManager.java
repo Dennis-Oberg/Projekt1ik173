@@ -9,7 +9,6 @@ public class BookManager implements IBookManager {
     BookStore bStore = null;
     Member member = null;
 
-
     public BookManager(BookStore bStore) {
         this.bStore = bStore;
     }
@@ -77,11 +76,24 @@ public class BookManager implements IBookManager {
 
     public void returnBook(int isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
-        LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now().plusDays(16); //ÄNDRA TILLBAKA TILL LOCALDATE.NOW()
 
         for (Book book : books) {
 
             if (currentDate.isAfter(book.getLoanDate().plusDays(15))) {
+
+                if (member.strikes>2)
+                {
+                    if (member.suspendedOnce)
+                    {
+                        //ta bort userfan
+                        
+                    }
+                    else
+                    {
+                        member.setSuspendedOnce(true);
+                    }
+                }
                 member.strikes++;
             }
 
