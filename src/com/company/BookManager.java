@@ -67,7 +67,11 @@ public class BookManager implements IBookManager {
     }
 
     public int numberOfBorrowedBooks() {
-        return memberLoans().length;
+        if (memberLoans() == null){
+            return memberLoans().length;
+        }
+        else
+            return member.getCurrent();
     }
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
@@ -80,7 +84,6 @@ public class BookManager implements IBookManager {
     public void returnBook(int isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
         LocalDate currentDate = LocalDate.now();
-
         for (Book book: books){
 
             if (currentDate.isAfter(book.getLoanDate().plusDays(15)))
@@ -91,8 +94,8 @@ public class BookManager implements IBookManager {
             if (book.getBorrowedBy() == member.getIDCode()){
                 book.setAvailable(true);
                 member.current --;
+                System.out.println(book.getTitle() + " har lämnats tillbak");
             }
-            else System.out.println("Du har inte lånat denna bok");
         }
     }
 }
