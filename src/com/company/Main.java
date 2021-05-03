@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        System.out.println("Välkommen\n");
+        System.out.println("Välkommen!\n");
         Menu.start();
         //ID 1234 för användare
         //ID 4321 för bibliotekarie
