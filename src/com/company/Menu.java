@@ -17,6 +17,7 @@ public class Menu {
         System.out.print("Ange lösen:");
         int password = input.nextInt();
         return verifyLogin(id, password);
+
     }
 
     public static int verifyLogin(int id, int password) {
@@ -80,6 +81,7 @@ public class Menu {
                 break;
             case 3:
                 System.out.println("Söka efter medlem metod");
+
                 break;
             case 4:
                 System.out.println("Ta bort medlemm metod");

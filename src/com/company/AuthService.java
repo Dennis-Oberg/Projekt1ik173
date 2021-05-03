@@ -4,7 +4,7 @@ public class AuthService  {
 
 
 
-    public void login(User user ) {
+    public void login(Member member) {
         //
         //databasconn
         //query = select from users where userid= user.IDcode;

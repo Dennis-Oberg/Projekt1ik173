@@ -63,12 +63,12 @@ public class Main {
         System.out.println("Titel\n0 = undergraduate \n1 = postgraduate");
         titel = scanner.nextInt();
 
-        User user = new User(returnRandom(), SSN, firstName, lastName, titel);
+        Member member = new Member(returnRandom(), SSN, firstName, lastName, titel);
 
-        System.out.println(user.IDCode);
-        System.out.println(user.SSN);
-        System.out.println(user.firstName);
-        System.out.println(user.lastName);
+        System.out.println(member.IDCode);
+        System.out.println(member.SSN);
+        System.out.println(member.firstName);
+        System.out.println(member.lastName);
     }
 
     static int returnRandom(){

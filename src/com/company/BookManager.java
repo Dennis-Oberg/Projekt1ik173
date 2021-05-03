@@ -1,10 +1,108 @@
 package com.company;
 
+import java.util.Date;
+import java.util.Locale;
+import java.time.LocalDate;
+
 public class BookManager implements IBookManager {
 
-    void loan()
-    {
+    BookStore bStore = null;
+    Member member = null;
 
+    public BookManager(BookStore bStore){
+        this.bStore = bStore;
+    }
+    public BookManager(BookStore bStore, Member member){
+        this.bStore = bStore;
+        this.member = member;
     }
 
+    public void loan(int isbn) //ska tas bort senare
+    {
+        Book[] books = bStore.getBookByIsbn(isbn);
+
+        if (books.length == 0){
+            System.out.println("Ingen bok med ISBN finns");
+        }
+        else if (!checkAvailable(books)){
+            System.out.println("Inga lediga böcker att låna ut :(");
+        }
+        else {
+            for (Book book : books) {
+                if (book.isAvailable()) {
+                    book.setAvailable(false);
+                    System.out.println("Du har nu lånat " + book.getTitle());
+                    break;
+                }
+            }
+        }
+    }
+    public void loan(int isbn, int memberId) // ska behållas
+    {
+        if (memberLendStatus() && !member.suspended){
+            Book[] books = bStore.getBookByIsbn(isbn);
+
+            if (books.length == 0){
+                System.out.println("Ingen bok med ISBN finns");
+            }
+            else if (!checkAvailable(books)){
+                System.out.println("Inga lediga böcker att låna ut :(");
+            }
+            else {
+                for (Book book : books) {
+                    if (book.isAvailable()) {
+                        book.setAvailable(false);
+                        book.setLoanDate(LocalDate.now());
+                        book.setBorrowedBy(memberId);
+                        member.current ++;
+                        System.out.println("Du har nu lånat " + book.getTitle());
+                        break;
+                    }
+                }
+            }
+        }
+        else if (member.suspended){
+            System.out.println("Suspended");
+        }
+        else System.out.println("Max antal böcker lånade");
+    }
+
+    public boolean checkAvailable(Book[] books){
+
+        for (Book book : books) {
+            if (book.isAvailable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void borrowedBy(int memberId){
+
+    }
+    public Book[] memberLoans(){
+        Book[] memberBooks = bStore.getBookByMember(this.member.getIDCode());
+
+        return memberBooks;
+    }
+    public int numberOfBorrowedBooks(){
+        return memberLoans().length;
+    }
+    public boolean memberLendStatus(){ //Kolla upp om man kan låna mer böcker
+        if (member.getCurrent() >= member.getMaxloans())
+            return false;
+        else
+            return true;
+    }
+
+    public void returnBook(int isbn){
+        Book[] books = bStore.getBookByIsbn(isbn);
+
+        for (Book book: books){
+            if (book.getBorrowedBy() == member.getIDCode()){
+                book.setAvailable(true);
+                member.current --;
+            }
+            else System.out.println("Du har inte lånat denna bok");
+        }
+    }
 }
