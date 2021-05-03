@@ -3,11 +3,11 @@ package com.company;
 import java.time.LocalDate;
 
 public class Book {
-    int isbn;
-    String title;
-    boolean available;
-    LocalDate loanDate;
-    int borrowedBy;
+    private int isbn;
+    private String title;
+    private boolean available;
+    private LocalDate loanDate;
+    private int borrowedBy;
 
     public int getBorrowedBy() {
         return borrowedBy;

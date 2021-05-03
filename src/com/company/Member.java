@@ -32,8 +32,6 @@ public class Member {
         this.IDCode = IDCode;
     }
 
-
-
     public int getMaxloans() {
         return maxloans;
     }
