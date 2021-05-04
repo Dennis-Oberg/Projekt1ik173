@@ -1,6 +1,8 @@
 package com.company;
 
-public class Librarian extends Member{
+import java.util.ArrayList;
+
+public class Librarian extends Member {
 
     boolean isLibrarian = true;
 
@@ -12,10 +14,10 @@ public class Librarian extends Member{
 
     }
 
-
     void removeMember() {
 
     }
+    void suspendMember(){
 
-
+    }
 }

@@ -1,5 +1,6 @@
 package com.company;
 
+import java.awt.event.KeyListener;
 import java.util.Scanner;
 
 public class Menu {
@@ -25,22 +26,26 @@ public class Menu {
 
 
     public void loginMessage(){
+        /*
         bManager.displayBooks(); //placeholder som hämtar böcker från DB
         auth.displayMembers(); //placeholder som hämtar alla medlemmar
+        */
         Scanner input = new Scanner(System.in);
-        System.out.print("Ange ID: ");
+        System.out.print("Ange ID för att logga in: ");
         int id = input.nextInt();
+
         auth.setLoginId(id);
 
     }
 
     public void decideAuth() {
-        boolean authorisation = auth.login();
+        boolean authorisation = auth.login(auth.getLoginId());
         if (authorisation) {
+
             bStore = new BookStore();
             member = auth.getLoggedInMember();
             bManager = new BookManager(bStore, member);
-
+            System.out.println("Välkommen " + member.firstName);
             if (this.auth.getLoggedInMember().getTitel() == 5) {
                 librarianOption(librarianMenu());
             } else {
@@ -54,14 +59,14 @@ public class Menu {
 
     public int memberMenu(){
         Scanner input = new Scanner(System.in);
-        System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap\n0.Logga ut");
+        System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap\n4.Visa tillgängliga böcker\n0.Logga ut");
         System.out.print("Val: ");
 
         return input.nextInt();
     }
 
     public void memberOption(int option) {
-        System.out.println("");
+        System.out.println();
         if (option == 1){
             loanByMember();
         }
@@ -72,8 +77,11 @@ public class Menu {
         else if (option == 3){
             System.out.println("Säg upp medlemskap metod");
         }
-        else if (option == 0){
-            start();
+        else if (option == 4){
+            bManager.displayBooks();
+        }
+        else if (option == 0 ){
+            System.exit(0);
         }
         else {
             System.out.println("Inget giltigt val");

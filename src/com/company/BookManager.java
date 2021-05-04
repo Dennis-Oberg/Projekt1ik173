@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class BookManager implements IBookManager {
 
-    BookStore bStore = null;
+    BookStore bStore;
 
 
 
@@ -35,7 +35,7 @@ public class BookManager implements IBookManager {
             System.out.println(b.getTitle() + " " + b.getIsbn());
         }
 
-        System.out.println("");
+        System.out.println();
         bStore.getBookByTitle("Matematik 1");
     }
 
@@ -80,8 +80,7 @@ public class BookManager implements IBookManager {
     }
 
     public Book[] memberLoans() {
-        Book[] memberBooks = bStore.getBookByMember(this.member.getIDCode());
-        return memberBooks;
+        return bStore.getBookByMember(this.member.getIDCode());
     }
 
     public int numberOfBorrowedBooks() {
@@ -89,15 +88,12 @@ public class BookManager implements IBookManager {
     }
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
-        if (member.getCurrent() >= member.getMaxloans())
-            return false;
-        else
-            return true;
+        return member.getCurrent() < member.getMaxloans();
     }
 
     public void returnBook(long isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
-        LocalDate currentDate = LocalDate.now().plusDays(16); //ÄNDRA TILLBAKA TILL LOCALDATE.NOW()
+        LocalDate currentDate = LocalDate.now();
 
         for (Book book : books) {
 

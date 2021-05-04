@@ -86,7 +86,7 @@ class BookStoreTest {
 
         AuthService authService = new AuthService(memberStoreStub);
 
-        authService.login();
+        authService.login(testList.get(0).IDCode);
 
         bookManager.member = authService.returnMember();
 
@@ -110,6 +110,9 @@ class BookStoreTest {
         System.out.println(bookManager.member.strikes);
 
         System.out.println(bookManager.member.suspended);
+
+
+
 
 
     }

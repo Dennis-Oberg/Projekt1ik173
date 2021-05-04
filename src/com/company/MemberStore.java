@@ -18,12 +18,12 @@ public class MemberStore {
         memberList.add(new Member(4321,1,"Tobias", "Wendel", 5));
     }
 
-    Connection conn;
+    Connection conn = SQLConnection.DbConnector();
     PreparedStatement preparedStatement;
     Statement statement;
     ResultSet resultSet;
-
-    public void CheckConnection() {
+/*
+    public void CheckConnection() { // for testing. gets kind of cluttery
         conn = SQLConnection.DbConnector();
         if (conn == null) {
             System.out.println("Connection failed\n");
@@ -32,9 +32,11 @@ public class MemberStore {
         }
     }
 
+ */
+
     public ArrayList<Member> getMembers()
     {
-        CheckConnection();
+        //CheckConnection();
 
         ArrayList<Member> tempList = new ArrayList<>();
 
