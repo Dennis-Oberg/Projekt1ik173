@@ -9,6 +9,9 @@ public class Member {
     int SSN;
     String firstName;
     String lastName;
+
+
+
     int titel;
     int maxloans;
     int current;
@@ -64,6 +67,14 @@ public class Member {
 
     public void setSuspendedOnce(boolean suspendedOnce) {
         this.suspendedOnce = suspendedOnce;
+    }
+
+    public int getTitel() {
+        return titel;
+    }
+
+    public void setTitel(int titel) {
+        this.titel = titel;
     }
 
     private void decideMax(int rank) {
