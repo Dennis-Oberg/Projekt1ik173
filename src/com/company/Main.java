@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        
+
+
         Menu m = new Menu(new AuthService(new MemberStore()), new BookManager(new BookStore()));
         m.start();
 
