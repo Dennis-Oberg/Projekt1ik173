@@ -10,6 +10,11 @@ public class BookStoreStub extends BookStore {
         this.bookList = new ArrayList<>();
     }
 
+    public void addBook(Book bk) //Hjälpmetod för testning så att man enkelt kan lägga in böcker
+    {
+        this.bookList.add(bk);
+    }
+
     public Book[] getBooks() {
         Book[] books = new Book[bookList.size()];
         return this.bookList.toArray(books);

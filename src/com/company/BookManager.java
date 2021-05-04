@@ -8,8 +8,6 @@ public class BookManager implements IBookManager {
 
     BookStore bStore;
 
-
-
     Member member = null;
 
     public BookManager(BookStore bStore) {
