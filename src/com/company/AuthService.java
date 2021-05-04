@@ -5,12 +5,18 @@ import java.util.ArrayList;
 public class AuthService {
 
     MemberStore mStore;
+
+    int loginId;
     Member loggedInMember;
-    ArrayList<Member> members = new ArrayList<>();
 
     public AuthService(MemberStore newMStore)
     {
         this.mStore = newMStore;
+    }
+
+
+    public Member getLoggedInMember() {
+        return loggedInMember;
     }
 
     public Member returnMember()
@@ -18,13 +24,11 @@ public class AuthService {
         return loggedInMember;
     }
 
-    public Boolean login(int newID) {
-        members = mStore.getMembers();
+    public Boolean login() {
 
-        for (Member m: members
-             ) {
-            if(m.IDCode == newID)
-            {
+
+        for (Member m: mStore.memberList){  //Bytas ut mot databas??
+            if (m.getIDCode() == loginId){
                 loggedInMember = m;
                 return true;
             }
@@ -34,7 +38,7 @@ public class AuthService {
 
     public void displayMembers()
     {
-        members = mStore.getMembers();
+        ArrayList<Member> members = mStore.getMembers();
 
         for (Member m: members
              ) {
@@ -47,10 +51,27 @@ public class AuthService {
     {
         this.loggedInMember = null;
     }
+    public Member getMemberById(int id){
+
+        for (Member m: mStore.memberList){
+            //Bytas ut mot databas??
+            if (m.getIDCode() == id){
+                return m;
+            }
+        }
+        return null;
+    }
 
 
     void getCredentials() {
 
+    }
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
     }
 
 }

@@ -23,6 +23,15 @@ public class BookStore implements IBookStore {
 
     public BookStore()  {
         this.bookList = new ArrayList<>();
+
+
+        //Ska bort senare
+        bookList.add(new Book(1234,"Harry Potter"));
+        bookList.add(new Book(1235, "Nalle Puh"));
+
+        bookList.add(new Book(1236, "Pippi"));
+        bookList.add(new Book(1237, "Star wars"));
+        bookList.add(new Book(1238, "Greta gris"));
     }
 
     public Book[] getBooks() {
