@@ -3,21 +3,16 @@ package com.company;
 import java.util.Scanner;
 
 public class Menu {
-    AuthService auth = null;
     Member member;
     BookStore bStore;
     BookManager bManager;
-
-    BookManager bm;
-    AuthService as;
-
-
+    AuthService auth;
 
     public Menu(AuthService newAS, BookManager newBM)
     {
-        this.as=newAS;
-        this.bm=newBM;
-        this.bm.member=this.as.returnMember();
+        this.auth=newAS;
+        this.bManager=newBM;
+        this.bManager.member=this.auth.returnMember();
 
     }
 
@@ -30,8 +25,8 @@ public class Menu {
 
 
     public void loginMessage(){
-        bm.displayBooks(); //placeholder som hämtar böcker från DB
-        as.displayMembers();
+        bManager.displayBooks(); //placeholder som hämtar böcker från DB
+        auth.displayMembers(); //placeholder som hämtar alla medlemmar
         Scanner input = new Scanner(System.in);
         System.out.print("Ange ID: ");
         int id = input.nextInt();
