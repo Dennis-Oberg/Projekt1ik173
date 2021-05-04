@@ -1,15 +1,47 @@
 package com.company;
 
+import java.sql.*;
 import java.util.ArrayList;
 
 public class MemberStore {
 
     ArrayList<Member> memberList;
 
+    Connection conn;
+    PreparedStatement preparedStatement;
+    Statement statement;
+    ResultSet resultSet;
+
+    public void CheckConnection() {
+        conn = SQLConnection.DbConnector();
+        if (conn == null) {
+            System.out.println("Connection failed\n");
+        } else {
+            System.out.println("Connection successful\n");
+        }
+    }
+
     public ArrayList<Member> getMembers()
     {
-        this.memberList = new ArrayList<>();
-        return memberList; //databas kod
+        CheckConnection();
+
+        ArrayList<Member> tempList = new ArrayList<>();
+
+        try
+        {
+            String query = "SELECT * FROM `dennis-1ik173vt21`.member";
+            statement = conn.createStatement();
+
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) { //Print every existing row in artist table for all three columns
+                //idCode, int ssn, String firstname, String lastname, int titel
+                tempList.add(new Member(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3),resultSet.getString(4),resultSet.getInt(5)));
+            }
+        } catch (SQLException sqle) { //If connection fails
+            sqle.printStackTrace();
+        }
+        return tempList;
     }
 
 }

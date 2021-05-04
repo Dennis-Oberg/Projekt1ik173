@@ -84,8 +84,7 @@ class BookStoreTest {
         testList.add(new Member(2,1234,"lib","rarian",2));
         memberStoreStub.memberList = testList;
 
-        AuthService authService = new AuthService();
-        authService.mStore = memberStoreStub;
+        AuthService authService = new AuthService(memberStoreStub);
 
         authService.login(1);
 

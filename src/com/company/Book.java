@@ -3,7 +3,7 @@ package com.company;
 import java.time.LocalDate;
 
 public class Book {
-    private int isbn;
+    private long isbn;
     private String title;
     private boolean available;
     private LocalDate loanDate;
@@ -17,14 +17,14 @@ public class Book {
         this.borrowedBy = borrowedBy;
     }
 
-    public Book(int isbn, String title){
+    public Book(long isbn, String title){
         this.isbn = isbn;
         this.title = title;
         this.available = true;
         this.loanDate = LocalDate.now();
     }
 
-    public int getIsbn() {
+    public long getIsbn() {
         return isbn;
     }
 

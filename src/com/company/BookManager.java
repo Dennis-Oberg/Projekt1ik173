@@ -24,9 +24,19 @@ public class BookManager implements IBookManager {
              ) {
             System.out.println(b.getTitle() + " " + b.getIsbn());
         }
+
+        long newISBN = 978958111805L;
+
+        for (Book b: bStore.getBookByIsbn(newISBN)
+        ) {
+            System.out.println(b.getTitle() + " " + b.getIsbn());
+        }
+
+        System.out.println("");
+        bStore.getBookByTitle("Matematik 1");
     }
 
-    public void loan(int isbn, int memberId) { //ska behållas
+    public void loan(long isbn, int memberId) { //ska behållas
         if (memberLendStatus() && !member.suspended) {
             Book[] books = bStore.getBookByIsbn(isbn);
 
@@ -82,7 +92,7 @@ public class BookManager implements IBookManager {
             return true;
     }
 
-    public void returnBook(int isbn) {
+    public void returnBook(long isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
         LocalDate currentDate = LocalDate.now().plusDays(16); //ÄNDRA TILLBAKA TILL LOCALDATE.NOW()
 

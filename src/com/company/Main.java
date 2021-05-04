@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Välkommen!\n");
 
-        Menu m = new Menu(new AuthService(), new BookManager(new BookStore()));
+        Menu m = new Menu(new AuthService(new MemberStore()), new BookManager(new BookStore()));
         m.start();
 
         //ID 1234 för användare

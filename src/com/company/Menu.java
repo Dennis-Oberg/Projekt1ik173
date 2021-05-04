@@ -21,6 +21,7 @@ public class Menu {
 
     public Boolean loginMessage(){
         bm.displayBooks();
+        as.displayMembers();
         Scanner input = new Scanner(System.in);
         System.out.print("Ange ID: ");
         int id = input.nextInt();

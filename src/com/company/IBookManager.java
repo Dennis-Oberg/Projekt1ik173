@@ -2,9 +2,9 @@ package com.company;
 
 public interface IBookManager {
 
-    public void loan(int isbn, int memberId);
+    public void loan(long isbn, int memberId);
 
-    public void returnBook(int isbn);
+    public void returnBook(long isbn);
 
 
 }

@@ -8,6 +8,11 @@ public class AuthService {
     Member loggedInMember;
     ArrayList<Member> members = new ArrayList<>();
 
+    public AuthService(MemberStore newMStore)
+    {
+        this.mStore = newMStore;
+    }
+
     public Member returnMember()
     {
         return loggedInMember;
@@ -25,6 +30,17 @@ public class AuthService {
             }
         }
         return false;
+    }
+
+    public void displayMembers()
+    {
+        members = mStore.getMembers();
+
+        for (Member m: members
+             ) {
+            System.out.println(m.firstName);
+        }
+
     }
 
     public void logout()

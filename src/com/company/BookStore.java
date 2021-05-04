@@ -15,9 +15,9 @@ public class BookStore implements IBookStore {
     public void CheckConnection() {
         conn = SQLConnection.DbConnector();
         if (conn == null) {
-            System.out.println("Connection failed");
+            System.out.println("Connection failed\n");
         } else {
-            System.out.println("Connection successful");
+            System.out.println("Connection successful\n");
         }
     }
 
@@ -29,47 +29,78 @@ public class BookStore implements IBookStore {
 
         CheckConnection();
 
+        ArrayList<Book> tempList = new ArrayList<>();
+
         try
         {
-            String query = "SELECT * FROM `dennis-1ik173vt21`.test";
+            String query = "SELECT * FROM `dennis-1ik173vt21`.book";
             statement = conn.createStatement();
-            statement.executeQuery(query);
 
-            System.out.println("Böcker");
+            System.out.println("Alla böcker");
             System.out.println("=====");
             resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) { //Print every existing row in artist table for all three columns
-                this.bookList.add(new Book(resultSet.getInt(2),resultSet.getString(1)));
+                tempList.add(new Book(resultSet.getLong(3),resultSet.getString(1)));
+            }
+        } catch (SQLException sqle) { //If connection fails
+            sqle.printStackTrace();
+        }
+        Book[] books = new Book[tempList.size()];
+        return tempList.toArray(books);
+    }
+
+    public Book getBookByTitle(String title) {
+
+        CheckConnection();
+
+        Book placeholderBook = null;
+
+        try
+        {
+            String query = "SELECT * FROM `dennis-1ik173vt21`.book WHERE `dennis-1ik173vt21`.book.title = ?";
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setString(1,title);
+
+            System.out.println("Bok hämtad efter titel");
+            System.out.println("=====");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) { //Print every existing row in artist table for all three columns
+                placeholderBook = new Book(resultSet.getLong(3),resultSet.getString(1));
+            }
+            System.out.println(placeholderBook.getTitle() + " " + placeholderBook.getIsbn());
+        } catch (SQLException sqle) { //If connection fails
+            sqle.printStackTrace();
+        }
+        return placeholderBook;
+    }
+
+    public Book[] getBookByIsbn(long isbn)   {
+
+        CheckConnection();
+
+        ArrayList<Book> tempList = new ArrayList<>();
+
+        try
+        {
+            String query = "SELECT * FROM `dennis-1ik173vt21`.book WHERE `dennis-1ik173vt21`.book.isbn = ?";
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setLong(1,isbn);
+
+            System.out.println("Böcker hämtade på ISBN");
+            System.out.println("=====");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) { //Print every existing row in artist table for all three columns
+                tempList.add(new Book(resultSet.getLong(3),resultSet.getString(1)));
             }
         } catch (SQLException sqle) { //If connection fails
             sqle.printStackTrace();
         }
 
-        Book[] books = new Book[bookList.size()];
-        return this.bookList.toArray(books);
-    }
-
-    public Book getBookByTitle(String title) {
-        Book tempBook = null;
-        for (Book b: bookList
-             ) {
-            if (b.getTitle().equals(title))
-            {
-                 tempBook = b;
-            }
-        }
-        return tempBook;
-    }
-
-    public Book[] getBookByIsbn(int isbn)   {
-        ArrayList<Book> tempList = new ArrayList<>();
-
-        for (Book book: bookList){
-            if (book.getIsbn() == isbn){
-                tempList.add(book);
-            }
-        }
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
     }
