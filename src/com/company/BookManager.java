@@ -7,6 +7,9 @@ import java.time.LocalDate;
 public class BookManager implements IBookManager {
 
     BookStore bStore = null;
+
+
+
     Member member = null;
 
     public BookManager(BookStore bStore) {
@@ -110,5 +113,8 @@ public class BookManager implements IBookManager {
                 member.current--;
             } else System.out.println("Du har inte lånat denna bok");
         }
+    }
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
