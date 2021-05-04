@@ -20,13 +20,12 @@ public class Menu {
     }
 
     public Boolean loginMessage(){
+        bm.displayBooks();
         Scanner input = new Scanner(System.in);
         System.out.print("Ange ID: ");
         int id = input.nextInt();
         return as.login(id);
     }
-
-
 
     public void decideAuth(Boolean authorisation)    {
         if (authorisation){
@@ -53,16 +52,20 @@ public class Menu {
         return input.nextInt();
     }
 
-    public static void memberOption(int option) {
+    public void memberOption(int option) {
         System.out.println("");
         if (option == 1){
             System.out.println("Lägg till bok i system metod");
         }
         else if (option == 2){
+            System.out.println("Lämna tillbaka medlemskap metod");
+        }
+        else if (option == 3)
+        {
             System.out.println("Säg upp medlemskap metod");
         }
         else {
-            System.out.println("Inget gitligt val");
+            System.out.println("Inget giltigt val");
             memberOption(memberMenu());
         }
     }

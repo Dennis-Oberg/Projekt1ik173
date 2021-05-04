@@ -71,7 +71,6 @@ class BookStoreTest {
 
     @Test
     public void test_members() {
-        LocalDate ld = LocalDate.now().plusDays(16);
         BookStoreStub bookStoreStub = new BookStoreStub();
         bookStoreStub.bookList.add(new Book(1234, "Harry potter"));
         bookStoreStub.bookList.add(new Book(1235, "Harry stefan"));
@@ -108,8 +107,6 @@ class BookStoreTest {
         bookManager.returnBook(1235);
         bookManager.returnBook(1236);
         bookManager.returnBook(1237);
-
-
 
         System.out.println(bookManager.member.strikes);
 

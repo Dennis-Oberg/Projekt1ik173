@@ -18,6 +18,14 @@ public class BookManager implements IBookManager {
         this.member = member;
     }
 
+    public void displayBooks()
+    {
+        for (Book b: bStore.getBooks()
+             ) {
+            System.out.println(b.getTitle() + " " + b.getIsbn());
+        }
+    }
+
     public void loan(int isbn, int memberId) { //ska behållas
         if (memberLendStatus() && !member.suspended) {
             Book[] books = bStore.getBookByIsbn(isbn);
@@ -87,7 +95,7 @@ public class BookManager implements IBookManager {
                     if (member.suspendedOnce)
                     {
                         //ta bort userfan
-                        
+
                     }
                     else
                     {
