@@ -5,17 +5,20 @@ import java.util.ArrayList;
 
 public class MemberStore implements IMemberStore {
 
-     ArrayList<Member> memberList;
+     Member currentMember;
 
     public MemberStore(){
-        memberList = new ArrayList<>();
+        //memberList = new ArrayList<>();
 
 
         //ska bort senare
+        /*
         memberList.add(new Member(1234,1,"Tobias", "Wendel", 1));
         memberList.add(new Member(1235,1,"Tobias", "Wendel", 2));
         memberList.add(new Member(1236,1,"Tobias", "Wendel", 4));
         memberList.add(new Member(4321,1,"Tobias", "Wendel", 5));
+
+         */
     }
 
     Connection conn = SQLConnection.DbConnector();
@@ -33,7 +36,25 @@ public class MemberStore implements IMemberStore {
     }
 
  */
+    public Member getMemberById(int id){
+        String query = "Select * from member where idCode = ?";
+        try {
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) { //funkar
+                currentMember = new Member(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
+                        resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getInt("Title"));
 
+
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+        }
+        return currentMember;
+    }
     public ArrayList<Member> getMembers()
     {
         //CheckConnection();

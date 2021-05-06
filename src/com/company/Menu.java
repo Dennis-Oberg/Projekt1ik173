@@ -8,6 +8,7 @@ public class Menu {
     BookStore bStore;
     BookManager bManager;
     AuthService auth;
+    MemberStore mStore;
 
     public Menu(AuthService newAS, BookManager newBM)
     {
@@ -45,6 +46,7 @@ public class Menu {
             bStore = new BookStore();
             member = auth.getLoggedInMember();
             bManager = new BookManager(bStore, member);
+            mStore = new MemberStore();
             System.out.println("Välkommen " + member.firstName);
             if (this.auth.getLoggedInMember().getTitel() == 5) {
                 librarianOption(librarianMenu());
@@ -142,7 +144,7 @@ public class Menu {
         Scanner input = new Scanner(System.in);
         int id = input.nextInt();
 
-        member = auth.getMemberById(id);
+        member = mStore.getMemberById(id);
         if (member.getIDCode() == id){
             bManager.setMember(member);
             System.out.println("Ange ISBN för bok");

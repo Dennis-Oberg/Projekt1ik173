@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class AuthService {
 
     MemberStore mStore;
-    Connection conn = SQLConnection.DbConnector();
+    Connection conn;
     PreparedStatement preparedStatement;
     Statement statement;
     ResultSet resultSet;
@@ -28,6 +28,7 @@ public class AuthService {
     }
 
     public Boolean login(int loginId) {
+        conn = SQLConnection.DbConnector();
 
         String query = "Select * from member where idCode = ?";
         try {
@@ -75,7 +76,7 @@ public class AuthService {
 
     public Member getMemberById(int id) {
 
-        for (Member m : mStore.memberList) {
+        for (Member m : mStore.getMembers()) {
             //Bytas ut mot databas??
             if (m.getIDCode() == id) {
                 return m;
