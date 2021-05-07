@@ -1,17 +1,130 @@
 package com.company;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Librarian extends Member {
+public class Librarian extends User {
 
-    boolean isLibrarian = true;
+        Menu menu = new Menu();
+        AuthService auth;
+        boolean isLibrarian = true;
+        User user;
+        MemberStore mStore;
+        BookStore bStore;
+        BookManager bManager;
+        MemberManager mManager;
 
     public Librarian(int idCode, int ssn, String firstname, String lastname, int titel) {
         super(idCode, ssn, firstname, lastname, titel);
     }
 
-    void addMember() {
+    public Librarian(AuthService loggedinUser){
+        auth = loggedinUser;
+        user = auth.getLoggedInMember();
+        mStore = new MemberStore();
+        bStore = new BookStore();
+        mManager = new MemberManager();
+        bManager = new BookManager(bStore, user);
+        librarianOption(libMenu());
+    }
 
+    public void librarianOption(int option) {
+        System.out.println("");
+        switch (option){
+            case 0:
+                menu.start();
+                break;
+            case 1:
+                System.out.println("Lägg till bok i system metod");
+                break;
+            case 2:
+                addMember();
+                menu.start();
+                break;
+            case 3:
+                System.out.println("Söka efter medlem metod");
+                break;
+            case 4:
+                System.out.println("Ta bort medlem metod");
+                break;
+            case 5:
+                returnBook();
+                break;
+            case 6:
+                loanByLibrerian();
+                break;
+            default:
+                System.out.println("Inget giltig val\n");
+                librarianOption(libMenu());
+                break;
+        }
+    }
+
+
+    public int libMenu(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("\nVälj ett alternativ:\n1.Lägg till bok i system\n2.Registrerar medlem\n3.Söka efter medlem\n4.Ta bort medlem" +
+                "\n5.Lämna tillbak bok\n6.Låna bok\n0.Logga ut");
+        System.out.print("Val: ");
+
+        return input.nextInt();
+    }
+
+    public void loanByLibrerian(){
+        System.out.println("Ange medlems ID för den som ska låna bok: ");
+        System.out.print("ID: ");
+        Scanner input = new Scanner(System.in);
+        int id = input.nextInt();
+
+        user = mStore.getMemberById(id);
+        if (user.getIDCode() == id){
+            bManager.setMember(user);
+            System.out.println("Ange ISBN för bok");
+            System.out.print("ISBN: ");
+            long isbn = input.nextLong();
+
+            System.out.println("");
+            bManager.loan(isbn,user.getIDCode());
+
+            librarianOption(libMenu());
+        }
+        else {
+            librarianOption(libMenu());
+        }
+
+    }
+
+    void addMember() {
+        int id;
+        int ssn;
+        String fName;
+        String lName;
+        int title;
+        Scanner input = new Scanner(System.in);
+        System.out.println("Lägg till medlem");
+        System.out.print("Ange id: ");
+        id = input.nextInt();
+        System.out.print("Ange personnummer: ");
+        ssn = input.nextInt();
+        System.out.print("Ange förnamn: ");
+        fName = input.next();
+        System.out.print("Ange efternamn: ");
+        lName = input.next();
+        System.out.print("Ange titel: ");
+        title = input.nextInt();
+
+        mManager.addUser(id, ssn,  fName,  lName,  title);
+    }
+    void returnBook(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Lämna tillbaka bok");
+        System.out.print("Ange meldems id: ");
+        int id = input.nextInt();
+        user = mStore.getMemberById(id);
+        bManager.setMember(user);
+        System.out.print("Ange isbn: ");
+        long isbn = input.nextLong();
+
+        bManager.returnBook(isbn);
     }
 
     void removeMember() {

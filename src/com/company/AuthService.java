@@ -12,19 +12,22 @@ public class AuthService {
     ResultSet resultSet;
 
     int loginId;
-    Member loggedInMember;
+    User loggedInUser;
+    public AuthService(){
+
+    }
 
     public AuthService(MemberStore newMStore) {
         this.mStore = newMStore;
     }
 
 
-    public Member getLoggedInMember() {
-        return loggedInMember;
+    public User getLoggedInMember() {
+        return loggedInUser;
     }
 
-    public Member returnMember() {
-        return loggedInMember;
+    public User returnMember() {
+        return loggedInUser;
     }
 
     public Boolean login(int loginId) {
@@ -36,9 +39,9 @@ public class AuthService {
             preparedStatement.setInt(1, loginId);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) { //funkar
-                loggedInMember = new Member(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
+                loggedInUser = new User(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
                         resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getInt("Title"));
-                System.out.println(loggedInMember.firstName);
+                System.out.println(loggedInUser.firstName);
                 return true;
             }
 
@@ -48,9 +51,9 @@ public class AuthService {
         }
 
 /*
-        for (Member m: mStore.memberList){  //Bytas ut mot databas??
+        for (User m: mStore.userList){  //Bytas ut mot databas??
             if (m.getIDCode() == loginId){
-                loggedInMember = m;
+                loggedInUser = m;
                 return true;
             }
         }
@@ -61,9 +64,9 @@ public class AuthService {
 
     public void displayMembers() {
 
-        ArrayList<Member> members = mStore.getMembers();
+        ArrayList<User> users = mStore.getMembers();
 
-        for (Member m : members
+        for (User m : users
         ) {
             System.out.println(m.firstName);
         }
@@ -71,12 +74,12 @@ public class AuthService {
     }
 
     public void logout() {
-        this.loggedInMember = null;
+        this.loggedInUser = null;
     }
 
-    public Member getMemberById(int id) {
+    public User getMemberById(int id) {
 
-        for (Member m : mStore.getMembers()) {
+        for (User m : mStore.getMembers()) {
             //Bytas ut mot databas??
             if (m.getIDCode() == id) {
                 return m;

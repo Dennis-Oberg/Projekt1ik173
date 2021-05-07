@@ -4,26 +4,26 @@ import java.util.ArrayList;
 
 public class MemberStoreStub extends MemberStore{
 
-    ArrayList<Member> memberList;
+    ArrayList<User> userList;
 
     public MemberStoreStub(){
-        memberList = new ArrayList<>();
+        userList = new ArrayList<>();
 
 
         //ska bort senare
-        memberList.add(new Member(1234,1,"Tobias", "Wendel", 1));
-        memberList.add(new Member(1235,1,"Tobias", "Wendel", 2));
-        memberList.add(new Member(1236,1,"Tobias", "Wendel", 4));
-        memberList.add(new Member(4321,1,"Tobias", "Wendel", 5));
+        userList.add(new User(1234,1,"Tobias", "Wendel", 1));
+        userList.add(new User(1235,1,"Tobias", "Wendel", 2));
+        userList.add(new User(1236,1,"Tobias", "Wendel", 4));
+        userList.add(new User(4321,1,"Tobias", "Wendel", 5));
     }
 
-    public ArrayList<Member> getMembers()
+    public ArrayList<User> getMembers()
     {
-        return memberList; //databas kod
+        return userList; //databas kod
     }
-    public Member getMemberById(int id){
+    public User getMemberById(int id){
 
-        for (Member m: memberList){
+        for (User m: userList){
             //Bytas ut mot databas??
             if (m.getIDCode() == id){
                 return m;

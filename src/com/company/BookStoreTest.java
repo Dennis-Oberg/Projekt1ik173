@@ -3,22 +3,18 @@ package com.company;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BookStoreTest {
 
     @Test
     public void test_lendBook() {
         BookStore store = new BookStore();
-        Member member = new Member(1, 1, "Denis", "Öberg", 4);
-        Member member1 = new Member(2, 1, "Gustaf", "Öberg", 4);
+        User user = new User(1, 1, "Denis", "Öberg", 4);
+        User user1 = new User(2, 1, "Gustaf", "Öberg", 4);
 
-        BookManager cut = new BookManager(store, member);
-        BookManager cut1 = new BookManager(store, member1);
+        BookManager cut = new BookManager(store, user);
+        BookManager cut1 = new BookManager(store, user1);
 
 
         store.bookList.add(new Book(1234, "Harry potter"));
@@ -36,8 +32,8 @@ class BookStoreTest {
     @Test
     public void test_medlem() {
         BookStore store = new BookStore();
-        Member member = new Member(1, 1, "Kurt", "Olsson", 1);
-        BookManager cut = new BookManager(store, member);
+        User user = new User(1, 1, "Kurt", "Olsson", 1);
+        BookManager cut = new BookManager(store, user);
 
         store.bookList.add(new Book(1234, "Harry potter"));
         store.bookList.add(new Book(1234, "Harry potter"));
@@ -48,7 +44,7 @@ class BookStoreTest {
         store.bookList.add(new Book(1236, "Pippi"));
         store.bookList.add(new Book(1237, "Star wars"));
         store.bookList.add(new Book(1238, "Greta gris"));
-        // member.suspended = true;
+        // user.suspended = true;
 
         cut.loan(1239, 1);
         cut.loan(1234, 1);
@@ -79,16 +75,16 @@ class BookStoreTest {
         BookManager bookManager = new BookManager(bookStoreStub);
 
         MemberStoreStub memberStoreStub = new MemberStoreStub();
-        ArrayList<Member> testList = new ArrayList<>();
-        testList.add(new Member(1,123,"test","test2",1));
-        testList.add(new Member(2,1234,"lib","rarian",2));
-        memberStoreStub.memberList = testList;
+        ArrayList<User> testList = new ArrayList<>();
+        testList.add(new User(1,123,"test","test2",1));
+        testList.add(new User(2,1234,"lib","rarian",2));
+        memberStoreStub.userList = testList;
 
         AuthService authService = new AuthService(memberStoreStub);
 
         authService.login(testList.get(0).IDCode);
 
-        bookManager.member = authService.returnMember();
+        bookManager.user = authService.returnMember();
 
         bookManager.loan(1234,1);
         bookManager.loan(1235,1);
@@ -107,9 +103,9 @@ class BookStoreTest {
         bookManager.returnBook(1236);
         bookManager.returnBook(1237);
 
-        System.out.println(bookManager.member.strikes);
+        System.out.println(bookManager.user.strikes);
 
-        System.out.println(bookManager.member.suspended);
+        System.out.println(bookManager.user.suspended);
 
 
 

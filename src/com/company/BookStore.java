@@ -26,12 +26,7 @@ public class BookStore implements IBookStore {
 
 
         //Ska bort senare
-        bookList.add(new Book(1234,"Harry Potter"));
-        bookList.add(new Book(1235, "Nalle Puh"));
 
-        bookList.add(new Book(1236, "Pippi"));
-        bookList.add(new Book(1237, "Star wars"));
-        bookList.add(new Book(1238, "Greta gris"));
     }
 
     public Book[] getBooks() {
@@ -89,22 +84,26 @@ public class BookStore implements IBookStore {
     public Book[] getBookByIsbn(long isbn)   {
 
         CheckConnection();
-
         ArrayList<Book> tempList = new ArrayList<>();
 
         try
         {
-            String query = "SELECT * FROM `dennis-1ik173vt21`.book WHERE `dennis-1ik173vt21`.book.isbn = ?";
+            String query = "SELECT title, copiesofbook.isbn, copy, isAvailable, borrowedBy FROM copiesofbook,book WHERE copiesofbook.isbn = ? AND book.isbn = ?";
+
             preparedStatement = conn.prepareStatement(query);
 
             preparedStatement.setLong(1,isbn);
+            preparedStatement.setLong(2,isbn);
 
             System.out.println("Böcker hämtade på ISBN");
             System.out.println("=====");
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) { //Print every existing row in artist table for all three columns
-                tempList.add(new Book(resultSet.getLong(3),resultSet.getString(1)));
+                tempList.add(new Book(resultSet.getLong(2),resultSet.getString(1),
+                        resultSet.getInt(3),resultSet.getBoolean(4), resultSet.getInt(5)));
+
+
             }
         } catch (SQLException sqle) { //If connection fails
             sqle.printStackTrace();
@@ -114,15 +113,109 @@ public class BookStore implements IBookStore {
         return tempList.toArray(books);
     }
 
-    public Book[] getBookByMember(int member)  {
+    public Book[] getBookByMember(int memberId)  {
+
+        CheckConnection();
         ArrayList<Book> tempList = new ArrayList<>();
 
-        for (Book book: bookList){
-            if (book.getBorrowedBy() == member){
-                tempList.add(book);
+        try
+        {
+            //String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
+            String query = "SELECT * FROM copiesofbook WHERE borrowedBy = ?";
+
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setInt(1,memberId);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long isbn = resultSet.getLong(1);
+
+                String namn ="";
+                try{
+                    Statement statement = conn.createStatement();
+
+                    ResultSet set = statement.executeQuery("SELECT * FROM book WHERE isbn = '" + isbn + "'");
+                    while (set.next()){
+                        namn = set.getString(1);
+                    }
+                }
+                catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                tempList.add(new Book(resultSet.getLong(3),namn));
             }
+
+        } catch (SQLException sqle) { //If connection fails
+            sqle.printStackTrace();
         }
+
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
     }
+    public void updateBookInfo(Book book){
+
+    }
+/*
+    public Book[] getUsersCurrentBooks(int id){
+        ArrayList<Book> tempList = new ArrayList<>();
+
+        try
+        {
+            //String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
+            String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
+
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setInt(1,id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long isbn = resultSet.getLong(1);
+                Statement statement = conn.createStatement();
+
+                ResultSet set = statement.executeQuery("SELECT * FROM book WHERE isbn = '" + isbn + "'");
+
+                String namn = set.getString(1);
+
+                tempList.add(new Book(resultSet.getLong(3),namn));
+            }
+
+        } catch (SQLException sqle) { //If connection fails
+            sqle.printStackTrace();
+        }
+
+        Book[] books = new Book[tempList.size()];
+        return tempList.toArray(books);
+
+    }
+
+ */
+
+    public void setBookStatus(Book book){
+        CheckConnection();
+
+
+
+        try {
+            preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ?");
+
+            preparedStatement.setBoolean(1, book.isAvailable());
+            preparedStatement.setInt(2, book.getBorrowedBy());
+            preparedStatement.setLong(3, book.getIsbn());
+            preparedStatement.setInt(4, book.getCopy());
+
+            preparedStatement.executeUpdate();
+            System.out.println("Lyckades!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println("Lyckades inte");
+        }
+
+    }
 }
+

@@ -8,6 +8,13 @@ public class BookStoreStub extends BookStore {
 
     public BookStoreStub()  {
         this.bookList = new ArrayList<>();
+
+        bookList.add(new Book(1234,"Harry Potter"));
+        bookList.add(new Book(1235, "Nalle Puh"));
+
+        bookList.add(new Book(1236, "Pippi"));
+        bookList.add(new Book(1237, "Star wars"));
+        bookList.add(new Book(1238, "Greta gris"));
     }
 
     public void addBook(Book bk) //Hjälpmetod för testning så att man enkelt kan lägga in böcker

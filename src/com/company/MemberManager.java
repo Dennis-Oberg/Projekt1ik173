@@ -1,19 +1,36 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class MemberManager {
     BookStore bStore = null;
-    Member member = null;
+    User user = null;
+    MemberStore mStore;
 
-    public MemberManager(BookStore bStore, Member member){ //skick in ny bookstore samt medlem gjort med konstruktorn
-        this.bStore = bStore;
-        this.member = member;
+    public MemberManager(){ //skick in ny bookstore samt medlem gjort med konstruktorn
+        mStore = new MemberStore();
     }
-    public MemberManager(Member member){
-        this.member = member;
+
+    public void removeMember(){
+
+    }
+
+    public void searchForMember(){
+
+    }
+
+    public void addUser(int id, int ssn, String fName, String lName, int title){
+
+
+        mStore.creatNewMember(id, ssn, fName, lName, title);
+    }
+
+    public MemberManager(User user){
+        this.user = user;
     }
 /*
     public Book[] memberLoans(){
-        Book[] memberBooks = bStore.getBookByMember(this.member.getIDCode());
+        Book[] memberBooks = bStore.getBookByMember(this.user.getIDCode());
 
         return memberBooks;
     }

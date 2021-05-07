@@ -3,7 +3,7 @@ package com.company;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-public class Member {
+public class User {
 
     int IDCode;
     int SSN;
@@ -16,17 +16,18 @@ public class Member {
     int maxloans;
     int current;
     int strikes;
+    int suspendedCount;
     boolean suspended;
     boolean suspendedOnce;
     boolean isLibrarian = false;
     ArrayList<Book> books;
 
-    Member()
+    User()
     {
 
     }
 
-    Member(int idCode, int ssn, String firstname, String lastname, int titel) {
+    User(int idCode, int ssn, String firstname, String lastname, int titel) {
         this.IDCode = idCode;
         this.SSN = ssn;
         this.firstName = firstname;
