@@ -103,4 +103,19 @@ public class MemberStore implements IMemberStore {
 
     }
 
+    public void removeMember(int id){
+        try {
+            conn = SQLConnection.DbConnector();
+            preparedStatement = conn.prepareStatement("DELETE FROM member WHERE idCode = ?");
+
+            preparedStatement.setInt(1,id);
+
+            preparedStatement.executeUpdate();
+            System.out.println("Medlem raderad");
+        }
+        catch (SQLException e){
+            System.out.println(e.getErrorCode());
+        }
+    }
+
 }

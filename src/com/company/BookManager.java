@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class BookManager implements IBookManager {
 
     BookStore bStore;
-
+    Book[] books;
     User user = null;
 
     public BookManager(BookStore bStore) {
@@ -15,6 +15,7 @@ public class BookManager implements IBookManager {
     public BookManager(BookStore bStore, User user) {
         this.bStore = bStore;
         this.user = user;
+        books = getMemberLoans();
     }
 
     public void displayBooks()
@@ -76,8 +77,12 @@ public class BookManager implements IBookManager {
 
     }
 
-    public Book[] memberLoans() {
+    public Book[] getMemberLoans() {
         return bStore.getBookByMember(this.user.getIDCode());
+    }
+
+    public Book[] memberLoans() {
+        return books;
     }
 
     public int numberOfBorrowedBooks() {

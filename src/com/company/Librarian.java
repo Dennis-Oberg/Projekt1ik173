@@ -44,13 +44,16 @@ public class Librarian extends User {
                 System.out.println("Söka efter medlem metod");
                 break;
             case 4:
-                System.out.println("Ta bort medlem metod");
+                removeMember();
+                librarianOption(libMenu());
                 break;
             case 5:
                 returnBook();
+                librarianOption(libMenu());
                 break;
             case 6:
                 loanByLibrerian();
+                librarianOption(libMenu());
                 break;
             default:
                 System.out.println("Inget giltig val\n");
@@ -85,7 +88,7 @@ public class Librarian extends User {
             System.out.println("");
             bManager.loan(isbn,user.getIDCode());
 
-            librarianOption(libMenu());
+
         }
         else {
             librarianOption(libMenu());
@@ -119,7 +122,7 @@ public class Librarian extends User {
         System.out.println("Lämna tillbaka bok");
         System.out.print("Ange meldems id: ");
         int id = input.nextInt();
-        user = mStore.getMemberById(id);
+        user = mStore.getMemberById(id); //byta ut mot mManager.searchMeber(id);  ??
         bManager.setMember(user);
         System.out.print("Ange isbn: ");
         long isbn = input.nextLong();
@@ -128,6 +131,13 @@ public class Librarian extends User {
     }
 
     void removeMember() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Ta bort användare");
+        System.out.print("Ange id: ");
+        int id = input.nextInt();
+        user = mManager.searchMember(id);
+        mManager.removeMember(user);
+        bManager.setMember(user);
 
     }
     void suspendMember(){

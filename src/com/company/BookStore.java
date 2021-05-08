@@ -17,7 +17,7 @@ public class BookStore implements IBookStore {
         if (conn == null) {
             System.out.println("Connection failed\n");
         } else {
-            System.out.println("Connection successful\n");
+            //System.out.println("Connection successful\n");
         }
     }
 
