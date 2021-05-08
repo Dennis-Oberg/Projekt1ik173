@@ -86,7 +86,7 @@ public class BookManager implements IBookManager {
     }
 
     public int numberOfBorrowedBooks() {
-        return memberLoans().length;
+        return getMemberLoans().length;
     }
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker

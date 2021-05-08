@@ -121,7 +121,7 @@ public class BookStore implements IBookStore {
         try
         {
             //String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
-            String query = "SELECT * FROM copiesofbook WHERE borrowedBy = ?";
+            String query = "SELECT title, copiesofbook.isbn, copy, isAvailable, borrowedBy FROM copiesofbook,book WHERE copiesofbook.borrowedBy = ? AND copiesofbook.isbn = book.isbn";
 
             preparedStatement = conn.prepareStatement(query);
 
@@ -130,22 +130,9 @@ public class BookStore implements IBookStore {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                long isbn = resultSet.getLong(1);
 
-                String namn ="";
-                try{
-                    Statement statement = conn.createStatement();
 
-                    ResultSet set = statement.executeQuery("SELECT * FROM book WHERE isbn = '" + isbn + "'");
-                    while (set.next()){
-                        namn = set.getString(1);
-                    }
-                }
-                catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                tempList.add(new Book(resultSet.getLong(3),namn));
+                tempList.add(new Book(resultSet.getLong(2),resultSet.getString(1),resultSet.getInt(3), resultSet.getBoolean(4), resultSet.getInt(5)));
             }
 
         } catch (SQLException sqle) { //If connection fails
