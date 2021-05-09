@@ -5,11 +5,8 @@ import java.util.Scanner;
 public class Librarian extends User {
 
         Menu menu = new Menu();
-        AuthService auth;
-        boolean isLibrarian = true;
         User user;
-        MemberStore mStore;
-        BookStore bStore;
+
         BookManager bManager;
         MemberManager mManager;
 
@@ -17,13 +14,11 @@ public class Librarian extends User {
         super(idCode, ssn, firstname, lastname, titel);
     }
 
-    public Librarian(AuthService loggedinUser){
-        auth = loggedinUser;
+    public Librarian(AuthService auth){
+
         user = auth.getLoggedInMember();
-        mStore = new MemberStore();
-        bStore = new BookStore();
         mManager = new MemberManager();
-        bManager = new BookManager(bStore, user);
+        bManager = new BookManager( user);
         librarianOption(libMenu());
     }
 
@@ -38,7 +33,7 @@ public class Librarian extends User {
                 break;
             case 2:
                 addMember();
-                menu.start();
+                librarianOption(libMenu());
                 break;
             case 3:
                 System.out.println("Söka efter medlem metod");
@@ -78,7 +73,8 @@ public class Librarian extends User {
         Scanner input = new Scanner(System.in);
         int id = input.nextInt();
 
-        user = mStore.getMemberById(id);
+        user = mManager.searchMember(id);
+        //user = mStore.getMemberById(id);
         if (user.getIDCode() == id){
             bManager.setMember(user);
             System.out.println("Ange ISBN för bok");
@@ -122,7 +118,7 @@ public class Librarian extends User {
         System.out.println("Lämna tillbaka bok");
         System.out.print("Ange meldems id: ");
         int id = input.nextInt();
-        user = mStore.getMemberById(id); //byta ut mot mManager.searchMeber(id);  ??
+        user = mManager.searchMember(id);
         bManager.setMember(user);
         System.out.print("Ange isbn: ");
         long isbn = input.nextLong();

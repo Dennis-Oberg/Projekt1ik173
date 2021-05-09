@@ -12,6 +12,14 @@ public class BookManager implements IBookManager {
         this.bStore = bStore;
     }
 
+
+    public BookManager(User user) {
+        this.bStore = new BookStore();
+        this.user = user;
+        books = getMemberLoans();
+    }
+
+
     public BookManager(BookStore bStore, User user) {
         this.bStore = bStore;
         this.user = user;

@@ -4,16 +4,13 @@ import java.util.Scanner;
 
 public class Member extends User{
 
-    AuthService auth;
     User user;
-    BookStore bStore;
     BookManager bManager;
 
     public Member(AuthService loggedinUser){
-        auth = loggedinUser;
+
         user = loggedinUser.getLoggedInMember();
-        bStore = new BookStore();
-        bManager = new BookManager(bStore, user);
+        bManager = new BookManager(user);
 
         memberOption(memberMenu());
 

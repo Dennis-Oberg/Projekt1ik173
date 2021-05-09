@@ -3,8 +3,9 @@ package com.company;
 import java.util.Scanner;
 
 public class MemberManager {
-    BookStore bStore = null;
+
     User user = null;
+    BookManager bookManager;
     MemberStore mStore;
 
     public MemberManager(){ //skick in ny bookstore samt medlem gjort med konstruktorn
@@ -13,8 +14,7 @@ public class MemberManager {
 
     public void removeMember(User user){
         //Måste kolla om man har böcker lånade innan man kan ta bort. Om inte blir det fel i databas
-        bStore = new BookStore();
-        BookManager bookManager = new BookManager(bStore, user);
+        bookManager = new BookManager(user);
         int numberOfBooks = bookManager.numberOfBorrowedBooks();
 
         if (numberOfBooks > 0){

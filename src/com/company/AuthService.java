@@ -17,6 +17,7 @@ public class AuthService {
 
     }
 
+
     public AuthService(MemberStore newMStore) {
         this.mStore = newMStore;
     }
