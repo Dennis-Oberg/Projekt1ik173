@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -28,14 +29,23 @@ public class Menu {
         System.out.println("Välkommen!\n");
 
         loginMessage();
-        decideAuth();
     }
 
+    int id = 0;
+    boolean isValidID = false;
     public void loginMessage(){
-        Scanner input = new Scanner(System.in);
-        System.out.print("Ange ID: ");
-        int id = input.nextInt();
-        auth.setLoginId(id);
+        Scanner input;
+        do {
+            input = new Scanner(System.in);
+            System.out.print("Ange ID: ");
+            try {
+                id = input.nextInt();
+                auth.setLoginId(id);
+                decideAuth();
+            } catch (InputMismatchException e) {
+                isValidID = true;
+            }
+        }while (isValidID);
 
     }
 
@@ -129,14 +139,27 @@ public class Menu {
                 break;
         }
     }
-
+    boolean isbn = false;
     public void loanByMember(){
-        System.out.println("Ange ISBN för bok");
-        System.out.print("ISBN: ");
-        Scanner input = new Scanner(System.in);
-        int ISBN = input.nextInt();
-        bManager.loan(ISBN, member.getIDCode());
-        memberOption(memberMenu());
+        do {
+            System.out.println("Ange ISBN för bok");
+            System.out.print("ISBN: ");
+            Scanner input = new Scanner(System.in);
+            try {
+                int ISBN = input.nextInt();
+
+                bManager.loan(ISBN, member.getIDCode());
+                memberOption(memberMenu());
+
+            }
+            catch (InputMismatchException a){
+                isbn = true;
+                System.out.println("Invalid ISBN type");
+
+            }
+
+        } while(isbn);
+
     }
     public void loanByLibrerian(){
         System.out.println("Ange medlems ID för den som ska låna bok: ");
