@@ -37,6 +37,28 @@ public class MemberStore implements IMemberStore {
     }
 
  */
+    public Boolean login(int loginId) {
+        conn = SQLConnection.DbConnector();
+
+        String query = "Select * from member where idCode = ?";
+        try {
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, loginId);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) { //funkar
+                User loggedInUser = new User(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
+                        resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getInt("Title"));
+                System.out.println(loggedInUser.firstName);
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+        }
+        return false;
+    }
+
     public User getMemberById(int id){
         String query = "Select * from member where idCode = ?";
         try {

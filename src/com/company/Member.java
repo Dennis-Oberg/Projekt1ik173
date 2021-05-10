@@ -7,9 +7,9 @@ public class Member extends User{
     User user;
     BookManager bManager;
 
-    public Member(AuthService loggedinUser){
+    public Member(User loggedinUser){
 
-        user = loggedinUser.getLoggedInMember();
+        user = loggedinUser;
         bManager = new BookManager(user);
 
         memberOption(memberMenu());
@@ -28,16 +28,21 @@ public class Member extends User{
         System.out.println("");
         if (option == 1){
             loanByMember();
+            memberOption(memberMenu());
         }
         else if (option == 2){
-            System.out.println("Lämna tillbaka bok metod");
+            returnBook();
+            memberOption(memberMenu());
         }
         else if (option == 3){
-            System.out.println("Säg upp medlemskap metod");
+            deleteAccount();
+            AuthService auth = new AuthService();
+            auth.start();
+            //System.out.println("Säg upp medlemskap metod");
         }
         else if (option == 0){
-            Menu menu = new Menu();
-            menu.start();
+            AuthService auth = new AuthService();
+            auth.start();
         }
         else {
             System.out.println("Inget gitligt val");
@@ -52,6 +57,20 @@ public class Member extends User{
         int ISBN = input.nextInt();
         bManager.loan(ISBN, user.getIDCode());
         memberOption(memberMenu());
+    }
+
+    public void returnBook() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Lämna tillbaka bok");
+        System.out.print("Ange isbn: ");
+        long isbn = input.nextLong();
+
+        bManager.returnBook(isbn);
+    }
+
+    public void deleteAccount(){
+        MemberManager mManager = new MemberManager(user);
+        mManager.removeMember(user);
     }
 
 }

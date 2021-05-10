@@ -82,7 +82,7 @@ class BookStoreTest {
 
         AuthService authService = new AuthService(memberStoreStub);
 
-        authService.login(testList.get(0).IDCode);
+        //authService.login(testList.get(0).IDCode);
 
         bookManager.user = authService.returnMember();
 

@@ -14,9 +14,9 @@ public class Librarian extends User {
         super(idCode, ssn, firstname, lastname, titel);
     }
 
-    public Librarian(AuthService auth){
+    public Librarian(User user){
 
-        user = auth.getLoggedInMember();
+        this.user = user;
         mManager = new MemberManager();
         bManager = new BookManager( user);
         librarianOption(libMenu());
@@ -26,7 +26,8 @@ public class Librarian extends User {
         System.out.println("");
         switch (option){
             case 0:
-                menu.start();
+                AuthService auth = new AuthService();
+                auth.start();
                 break;
             case 1:
                 System.out.println("Lägg till bok i system metod");

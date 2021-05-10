@@ -8,8 +8,10 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Menu m = new Menu();
-        m.start();
+
+        AuthService auth = new AuthService();
+
+        auth.start();
 
 
         //ID 1234 för användare

@@ -44,6 +44,7 @@ public class MemberManager {
 
     public MemberManager(User user){
         this.user = user;
+        mStore = new MemberStore();
     }
 /*
     public Book[] memberLoans(){

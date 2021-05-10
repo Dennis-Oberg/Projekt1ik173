@@ -3,7 +3,7 @@ package com.company;
 import java.util.Scanner;
 
 public class Menu {
-
+    /*
     AuthService auth;
     int id;
 
@@ -22,10 +22,10 @@ public class Menu {
 
 
     public void loginMessage(){
-        /*
+
         bManager.displayBooks(); //placeholder som hämtar böcker från DB
         auth.displayMembers(); //placeholder som hämtar alla medlemmar
-        */
+
         Scanner input = new Scanner(System.in);
         System.out.print("Ange ID för att logga in: ");
         id = input.nextInt();
@@ -40,7 +40,7 @@ public class Menu {
 
             if (this.auth.getLoggedInMember().getTitel() == 5)
             {
-                User lib = new Librarian(auth);
+               // User lib = new Librarian(auth);
 
             }
             else
@@ -54,4 +54,6 @@ public class Menu {
         }
 
     }
+
+     */
 }

@@ -2,14 +2,11 @@ package com.company;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class AuthService {
 
     MemberStore mStore;
-    Connection conn;
-    PreparedStatement preparedStatement;
-    Statement statement;
-    ResultSet resultSet;
 
     int loginId;
     User loggedInUser;
@@ -22,6 +19,41 @@ public class AuthService {
         this.mStore = newMStore;
     }
 
+    public void start(){
+        System.out.println("Välkommen!\n");
+        Scanner input = new Scanner(System.in);
+        System.out.print("Ange ID för att logga in: ");
+        int id = input.nextInt();
+        mStore = new MemberStore();
+
+        decideAuth(id);
+    }
+
+    public void decideAuth(int id)    {
+        boolean authorisation = mStore.login(id);
+        if (authorisation){
+            loggedInUser = mStore.getMemberById(id);
+
+            if (loggedInUser.getTitel() == 5)
+            {
+                User lib = new Librarian(loggedInUser);
+
+            }
+            else
+            {
+                User user = new Member(loggedInUser);
+
+            }
+        }
+        else {
+            System.out.println("\nError, fel lösenord och/eller användarnamn");
+            System.out.println("Försök igen\n");
+            start();
+        }
+
+    }
+
+
 
     public User getLoggedInMember() {
         return loggedInUser;
@@ -30,7 +62,7 @@ public class AuthService {
     public User returnMember() {
         return loggedInUser;
     }
-
+/*
     public Boolean login(int loginId) {
         conn = SQLConnection.DbConnector();
 
@@ -51,7 +83,7 @@ public class AuthService {
             System.out.println(e.getErrorCode());
         }
 
-/*
+
         for (User m: mStore.userList){  //Bytas ut mot databas??
             if (m.getIDCode() == loginId){
                 loggedInUser = m;
@@ -59,9 +91,12 @@ public class AuthService {
             }
         }
 
- */
+
         return false;
     }
+
+ */
+
 
     public void displayMembers() {
 
