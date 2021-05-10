@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public interface IMemberStore {
 
-    ArrayList<Member> getMembers();
+    ArrayList<User> getMembers();
 
 }

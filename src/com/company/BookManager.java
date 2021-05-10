@@ -7,6 +7,8 @@ import java.time.LocalDate;
 public class BookManager implements IBookManager {
 
     BookStore bStore;
+    Book[] books;
+    User user = null;
 
     Member member = null;
 
@@ -19,22 +21,16 @@ public class BookManager implements IBookManager {
         this.member = member;
     }
 
-    public void displayBooks()
-    {
-        for (Book b: bStore.getBooks()
-             ) {
-            System.out.println(b.getTitle() + " " + b.getIsbn());
-        }
+    public BookManager(User user) {
+        this.bStore = new BookStore();
+        this.user = user;
+        books = getMemberLoans();
+    }
 
-        long newISBN = 978958111805L;
-
-        for (Book b: bStore.getBookByIsbn(newISBN)
-        ) {
-            System.out.println(b.getTitle() + " " + b.getIsbn());
-        }
-
-        System.out.println();
-        bStore.getBookByTitle("Matematik 1");
+    public BookManager(BookStore bStore, User user) {
+        this.bStore = bStore;
+        this.user = user;
+        books = getMemberLoans();
     }
 
     public void loan(long isbn, int memberId) { //ska behållas
@@ -48,11 +44,13 @@ public class BookManager implements IBookManager {
             } else {
                 for (Book book : books) {
                     if (book.isAvailable()) {
+                        LocalDate currentDate = LocalDate.now();
                         book.setAvailable(false);
                         book.setLoanDate(LocalDate.now());
                         book.setBorrowedBy(memberId);
-                        member.books.add(book);
-                        member.current++;
+                        bStore.setBookStatus(book);
+                        //user.books.add(book);
+                        //user.current++;
                         System.out.println("Du har nu lånat " + book.getTitle());
                         break;
                     }
@@ -77,48 +75,54 @@ public class BookManager implements IBookManager {
 
     }
 
+    public Book[] getMemberLoans() {
+        return bStore.getBookByMember(this.user.getIDCode());
+    }
+
     public Book[] memberLoans() {
-        return bStore.getBookByMember(this.member.getIDCode());
+        return books;
     }
 
     public int numberOfBorrowedBooks() {
-        return memberLoans().length;
+        return getMemberLoans().length;
     }
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
-        return member.getCurrent() < member.getMaxloans();
+        user.setCurrent(numberOfBorrowedBooks());
+        return user.getCurrent() < user.getMaxloans();
     }
 
     public void returnBook(long isbn) {
         Book[] books = bStore.getBookByIsbn(isbn);
-        LocalDate currentDate = LocalDate.now();
 
         for (Book book : books) {
-
+        /*
             if (currentDate.isAfter(book.getLoanDate().plusDays(15))) {
-
-                if (member.strikes>2)
+                if (user.strikes>2)
                 {
-                    if (member.suspendedOnce)
+                    if (user.suspendedOnce)
                     {
                         //ta bort userfan
-
                     }
                     else
                     {
-                        member.setSuspendedOnce(true);
+                        user.setSuspendedOnce(true);
                     }
                 }
-                member.strikes++;
+                user.strikes++;
             }
+         */
 
-            if (book.getBorrowedBy() == member.getIDCode()) {
+            if (book.getBorrowedBy() == user.getIDCode()) {
                 book.setAvailable(true);
-                member.current--;
-            } else System.out.println("Du har inte lånat denna bok");
+                book.setBorrowedBy(0);
+                //user.current--;
+                bStore.setBookStatus(book);
+                System.out.println(book.getTitle() + " har lämnats tillbaka");
+            }
         }
     }
-    public void setMember(Member member) {
+    public void setMember(User user) {
         this.member = member;
     }
 }

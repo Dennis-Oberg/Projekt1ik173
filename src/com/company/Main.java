@@ -8,8 +8,10 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Menu m = new Menu(new AuthService(new MemberStore()), new BookManager(new BookStore()));
-        m.start();
+
+        AuthService auth = new AuthService();
+
+        auth.start();
 
 
         //ID 1234 för användare
@@ -19,6 +21,4 @@ public class Main {
 
     }
 }
-
-
 
