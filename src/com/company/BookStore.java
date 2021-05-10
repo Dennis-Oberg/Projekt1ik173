@@ -185,8 +185,6 @@ public class BookStore implements IBookStore {
     public void setBookStatus(Book book){
         CheckConnection();
 
-
-
         try {
             preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ?");
 

@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Member extends User{
 
     User user;
+    Book book;
     BookManager bManager;
 
     public Member(User loggedinUser){
@@ -50,13 +51,19 @@ public class Member extends User{
         }
     }
 
-    public void loanByMember(){
+    public void loanByMember() {
         System.out.println("Ange ISBN för bok");
         System.out.print("ISBN: ");
         Scanner input = new Scanner(System.in);
-        int ISBN = input.nextInt();
-        bManager.loan(ISBN, user.getIDCode());
-        memberOption(memberMenu());
+        int isbn = input.nextInt();
+        try {
+            book = bManager.loan(isbn, user.getIDCode());
+            System.out.println("Du har nu lånat " + book.getTitle());
+
+        } catch (Exception inteBra) {
+            System.out.println(inteBra.getMessage());
+            memberOption(memberMenu());
+        }
     }
 
     public void returnBook() {
@@ -65,7 +72,12 @@ public class Member extends User{
         System.out.print("Ange isbn: ");
         long isbn = input.nextLong();
 
-        bManager.returnBook(isbn);
+        try {
+            book = bManager.returnBook(isbn);
+        }
+        catch (Exception error){
+            System.out.println(error.getMessage());
+        }
     }
 
     public void deleteAccount(){

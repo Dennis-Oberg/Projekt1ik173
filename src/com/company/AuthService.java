@@ -37,7 +37,6 @@ public class AuthService {
             if (loggedInUser.getTitel() == 5)
             {
                 User lib = new Librarian(loggedInUser);
-
             }
             else
             {
