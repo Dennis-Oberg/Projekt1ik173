@@ -147,7 +147,6 @@ public class BookStore implements IBookStore {
 
     }
 
-
     public void setBookStatus(Book book){
         CheckConnection();
 

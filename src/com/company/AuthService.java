@@ -2,6 +2,7 @@ package com.company;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AuthService {
@@ -20,23 +21,35 @@ public class AuthService {
     }
 
     public void start(){
+        boolean isValidID = true;
         System.out.println("Välkommen!\n");
-        Scanner input = new Scanner(System.in);
-        System.out.print("Ange ID för att logga in: ");
-        int id = input.nextInt();
-        mStore = new MemberStore();
 
-        decideAuth(id);
+        do {
+            try {
+                Scanner input = new Scanner(System.in);
+                System.out.print("Ange ID för att logga in: ");
+                int id = input.nextInt();
+                mStore = new MemberStore();
+
+                decideAuth(id);
+            }
+            catch (InputMismatchException inputMismatchException)
+            {
+                isValidID = false;
+                System.out.println("Du måste ange ett numeriskt värde.");
+            }
+        }
+        while (!isValidID);
     }
 
-    public void decideAuth(int id)    {
+    public void decideAuth(int id) {
         boolean authorisation = mStore.login(id);
         if (authorisation){
             loggedInUser = mStore.getMemberById(id);
 
             if (loggedInUser.getTitel() == 5)
             {
-               new Librarian(loggedInUser);
+                new Librarian(loggedInUser);
             }
             else
             {

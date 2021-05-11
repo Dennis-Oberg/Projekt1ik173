@@ -95,7 +95,6 @@ public class BookManager implements IBookManager {
 
     public Book returnBook(long isbn) throws NullPointerException  {
         Book[] books = bStore.getBookByIsbn(isbn);
-        LocalDate currentDate = LocalDate.now();
         if (books.length == 0)
             throw new NullPointerException("Fel ISBN");
         else {
