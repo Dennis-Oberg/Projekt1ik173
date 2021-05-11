@@ -9,9 +9,9 @@ public class Main {
 
 
 
-        AuthService auth = new AuthService();
+         new AuthService().start();
 
-        auth.start();
+
 
 
         //ID 1234 för användare

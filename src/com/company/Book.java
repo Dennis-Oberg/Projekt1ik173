@@ -7,7 +7,6 @@ public class Book {
     private String title;
 
 
-
     private int copy;
     private boolean available;
     private LocalDate loanDate;
@@ -21,13 +20,14 @@ public class Book {
         this.borrowedBy = borrowedBy;
     }
 
-    public Book(long isbn, String title){
+    public Book(long isbn, String title) {
         this.isbn = isbn;
         this.title = title;
         this.available = true;
         this.loanDate = LocalDate.now();
     }
-    public Book(long isbn, String title, int copy, boolean available, int borrowedBy){
+
+    public Book(long isbn, String title, int copy, boolean available, int borrowedBy) {
         this.isbn = isbn;
         this.title = title;
         this.copy = copy;
@@ -67,6 +67,7 @@ public class Book {
     public void setLoanDate(LocalDate loanDate) {
         this.loanDate = loanDate;
     }
+
     public int getCopy() {
         return copy;
     }

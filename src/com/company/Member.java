@@ -1,67 +1,85 @@
 package com.company;
 
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Member extends User{
+public class Member extends User {
 
     User user;
     Book book;
     BookManager bManager;
 
-    public Member(User loggedinUser){
+    public Member(User loggedinUser) {
 
         user = loggedinUser;
         bManager = new BookManager(user);
 
-        memberOption(memberMenu());
+        //memberOption(memberMenu());
+        memberMenu();
 
     }
 
-    public int memberMenu(){
-        Scanner input = new Scanner(System.in);
+    public void memberMenu() {
         System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap\n4.Visa lån\n0.Logga ut");
-        System.out.print("Val: ");
+        System.out.println("\nVal: ");
+        Scanner input = new Scanner(System.in);
 
-        return input.nextInt();
+
+        int in  = input.nextInt();
+        memberOption(in);
+        /*
+        try {
+
+
+
+        } catch (InputMismatchException ine){
+            ine.printStackTrace();
+
+        }
+
+
+
+         */
+        //return input.nextInt();
+
     }
 
     public void memberOption(int option) {
         System.out.println("");
-        if (option == 1){
+        if (option == 1) {
             loanByMember();
-            memberOption(memberMenu());
-        }
-        else if (option == 2){
+            // memberOption(memberMenu());
+        } else if (option == 2) {
             returnBook();
-            memberOption(memberMenu());
-        }
-        else if (option == 3){
+            memberMenu();
+        } else if (option == 3) {
             deleteAccount();
             AuthService auth = new AuthService();
             auth.start();
             //System.out.println("Säg upp medlemskap metod");
-        }
-        else if (option == 4) {
+        } else if (option == 4) {
             viewLoans();
-            memberOption(memberMenu());
-        }
-        else if (option == 0){
+            //  memberOption(memberMenu());
+
+        } else if (option == 0) {
             AuthService auth = new AuthService();
             auth.start();
-        }
-        else {
+        } else {
             System.out.println("Inget gitligt val");
-            memberOption(memberMenu());
+            //  memberOption(memberMenu());
+
         }
     }
 
-    public void loanByMember(){
+    public void loanByMember() {
         System.out.println("Ange ISBN för bok");
         System.out.print("ISBN: ");
         Scanner input = new Scanner(System.in);
-        int ISBN = input.nextInt();
+        long ISBN = input.nextLong();
         bManager.loan(ISBN, user.getIDCode());
-        memberOption(memberMenu());
+        //  memberOption(memberMenu());
+        memberMenu();
     }
 
     public void returnBook() {
@@ -71,17 +89,33 @@ public class Member extends User{
         long isbn = input.nextLong();
 
         bManager.returnBook(isbn);
+        input.close();
+        //  memberOption(memberMenu());
+
+
     }
 
-    public void deleteAccount(){
-        MemberManager mManager = new MemberManager(user);
-        mManager.removeMember(user);
+    public void deleteAccount() {
+        System.out.println("Bekräfta (y/n)");
+
+        Scanner scan = new Scanner(System.in);
+
+        if (scan.next().equalsIgnoreCase("y")) {
+            MemberManager mManager = new MemberManager(user);
+            mManager.removeMember(user);
+            scan.close();
+        } else
+            memberMenu();
+        //       memberOption(memberMenu());
+        scan.close();
+
     }
 
     public void viewLoans() {
-        for (Book b: bManager.memberLoans()
+        for (Book b : bManager.memberLoans()
         ) {
             System.out.println(b.getTitle() + "\n");
         }
+        memberMenu();
     }
 }

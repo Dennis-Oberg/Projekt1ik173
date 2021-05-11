@@ -20,8 +20,7 @@ public class User {
     boolean isLibrarian = false;
     ArrayList<Book> books;
 
-    User()
-    {
+    User() {
 
     }
 
@@ -40,9 +39,6 @@ public class User {
         return IDCode;
     }
 
-    public void setIDCode(int IDCode) {
-        this.IDCode = IDCode;
-    }
 
     public int getMaxloans() {
         return maxloans;
@@ -60,21 +56,11 @@ public class User {
         this.current = current;
     }
 
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
-    }
-
-    public void setSuspendedOnce(boolean suspendedOnce) {
-        this.suspendedOnce = suspendedOnce;
-    }
 
     public int getTitel() {
         return titel;
     }
 
-    public void setTitel(int titel) {
-        this.titel = titel;
-    }
 
     private void decideMax(int rank) {
         switch (rank) {

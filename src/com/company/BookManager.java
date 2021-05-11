@@ -28,7 +28,7 @@ public class BookManager implements IBookManager {
         books = getMemberLoans();
     }
 
-    public Book loan(long isbn, int memberId) throws NoSuchElementException, NullPointerException { //kanske försöka ta bort memberID som in parameter
+    public Book loan(long isbn, int memberId) throws NoSuchElementException, NullPointerException { //kanske försöka ta bort memberID som inparameter
         Book tempBook = null;
         if (memberLendStatus() && !user.suspended) {
             Book[] books = bStore.getBookByIsbn(isbn);
@@ -59,7 +59,7 @@ public class BookManager implements IBookManager {
         } else if (user.suspended) {
             throw new NoSuchElementException("Användaren är bannad :<");
         } else
-        throw new NoSuchElementException("Max antal böcker lånade");
+            throw new NoSuchElementException("Max antal böcker lånade");
     }
 
     public boolean checkAvailable(Book[] books) {
@@ -93,7 +93,7 @@ public class BookManager implements IBookManager {
         return user.getCurrent() < user.getMaxloans();
     }
 
-    public Book returnBook(long isbn) throws NullPointerException  {
+    public Book returnBook(long isbn) throws NullPointerException {
         Book[] books = bStore.getBookByIsbn(isbn);
         if (books.length == 0)
             throw new NullPointerException("Fel ISBN");
@@ -119,15 +119,17 @@ public class BookManager implements IBookManager {
                 if (book.getBorrowedBy() == user.getIDCode()) {
                     book.setAvailable(true);
                     book.setBorrowedBy(0);
-                    //user.current--;
+                    user.current--;
                     bStore.setBookStatus(book);
                     System.out.println(book.getTitle() + " har lämnats tillbaka");
+
                     return book;
                 }
             }
             throw new NullPointerException("Du har inga aktiva lån på denna bok");
         }
     }
+
     public void setMember(User user) {
         this.user = user;
     }

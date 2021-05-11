@@ -11,7 +11,8 @@ public class AuthService {
 
     int loginId;
     User loggedInUser;
-    public AuthService(){
+
+    public AuthService() {
 
     }
 
@@ -20,44 +21,37 @@ public class AuthService {
         this.mStore = newMStore;
     }
 
-    public void start(){
-        boolean isValidID = true;
+    public void start() {
+        Scanner scan = new Scanner(System.in);
         System.out.println("Välkommen!\n");
 
-        do {
-            try {
-                Scanner input = new Scanner(System.in);
-                System.out.print("Ange ID för att logga in: ");
-                int id = input.nextInt();
-                mStore = new MemberStore();
+        try {
+            System.out.print("Ange ID för att logga in: ");
+            int id = scan.nextInt();
+            mStore = new MemberStore();
 
-                decideAuth(id);
-            }
-            catch (InputMismatchException inputMismatchException)
-            {
-                isValidID = false;
-                System.out.println("Du måste ange ett numeriskt värde.");
-            }
+            decideAuth(id);
+
+            scan.close();
+        } catch (InputMismatchException inputMismatchException) {
+            System.out.println("Du måste ange ett numeriskt värde.");
+            start();
         }
-        while (!isValidID);
     }
+
 
     public void decideAuth(int id) {
         boolean authorisation = mStore.login(id);
-        if (authorisation){
+        if (authorisation) {
             loggedInUser = mStore.getMemberById(id);
 
-            if (loggedInUser.getTitel() == 5)
-            {
+            if (loggedInUser.getTitel() == 5) {
                 new Librarian(loggedInUser);
-            }
-            else
-            {
+            } else {
                 new Member(loggedInUser);
 
             }
-        }
-        else {
+        } else {
             System.out.println("\nError, fel lösenord och/eller användarnamn");
             System.out.println("Försök igen\n");
             start();

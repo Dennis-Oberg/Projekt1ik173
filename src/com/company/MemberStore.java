@@ -12,11 +12,11 @@ public class MemberStore implements IMemberStore {
     Statement statement;
     ResultSet resultSet;
 
-    public MemberStore(){
+    public MemberStore() {
 
 
     }
-  
+
     public Boolean login(int loginId) {
         conn = SQLConnection.DbConnector();
 
@@ -28,7 +28,7 @@ public class MemberStore implements IMemberStore {
             if (resultSet.next()) { //funkar
                 User loggedInUser = new User(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
                         resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getInt("Title"));
-                System.out.println(loggedInUser.firstName);
+                System.out.println("Välkommen " + loggedInUser.firstName);
                 return true;
             }
 
@@ -40,7 +40,7 @@ public class MemberStore implements IMemberStore {
     }
 
 
-    public User getMemberById(int id){
+    public User getMemberById(int id) {
         String query = "Select * from member where idCode = ?";
         try {
             preparedStatement = conn.prepareStatement(query);
@@ -58,14 +58,12 @@ public class MemberStore implements IMemberStore {
         return currentUser;
     }
 
-    public ArrayList<User> getMembers()
-    {
+    public ArrayList<User> getMembers() {
         //CheckConnection();
 
         ArrayList<User> tempList = new ArrayList<>();
 
-        try
-        {
+        try {
             String query = "SELECT * FROM `dennis-1ik173vt21`.member";
             statement = conn.createStatement();
 
@@ -73,7 +71,7 @@ public class MemberStore implements IMemberStore {
 
             while (resultSet.next()) { //Print every existing row in artist table for all three columns
                 //idCode, int ssn, String firstname, String lastname, int titel
-                tempList.add(new User(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3),resultSet.getString(4),resultSet.getInt(5)));
+                tempList.add(new User(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3), resultSet.getString(4), resultSet.getInt(5)));
             }
         } catch (SQLException sqle) { //If connection fails
             sqle.printStackTrace();
@@ -81,7 +79,7 @@ public class MemberStore implements IMemberStore {
         return tempList;
     }
 
-    public void creatNewMember(int ssn, String fName, String lName,int title){
+    public void creatNewMember(int ssn, String fName, String lName, int title) {
         //String query = "INSTER INTO member VALUES (?, ? ,? ,? ,? ,?)";
         try {
             ArrayList<Integer> tempArr = new ArrayList<>();
@@ -92,8 +90,7 @@ public class MemberStore implements IMemberStore {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 tempArr.add(resultSet.getInt(1));
             }
 
@@ -114,33 +111,30 @@ public class MemberStore implements IMemberStore {
 
     }
 
-    public void removeMember(int id){
+    public void removeMember(int id) {
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("DELETE FROM member WHERE idCode = ?");
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
             System.out.println("Medlem raderad");
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode());
         }
     }
 
-    public void moveToBannedMember(User user)
-    {
+    public void moveToBannedMember(User user) {
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("INSERT INTO bannedmember VALUES (?)");
 
-            preparedStatement.setInt(1,user.getIDCode());
+            preparedStatement.setInt(1, user.getIDCode());
 
             preparedStatement.executeUpdate();
             System.out.println("Medlem suspenderad");
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode());
         }
     }
