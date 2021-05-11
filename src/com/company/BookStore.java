@@ -1,6 +1,7 @@
 package com.company;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -142,65 +143,29 @@ public class BookStore implements IBookStore {
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
     }
-    public void updateBookInfo(Book book){
-
-    }
-/*
-    public Book[] getUsersCurrentBooks(int id){
-        ArrayList<Book> tempList = new ArrayList<>();
-
-        try
-        {
-            //String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
-            String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
-
-            preparedStatement = conn.prepareStatement(query);
-
-            preparedStatement.setInt(1,id);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                long isbn = resultSet.getLong(1);
-                Statement statement = conn.createStatement();
-
-                ResultSet set = statement.executeQuery("SELECT * FROM book WHERE isbn = '" + isbn + "'");
-
-                String namn = set.getString(1);
-
-                tempList.add(new Book(resultSet.getLong(3),namn));
-            }
-
-        } catch (SQLException sqle) { //If connection fails
-            sqle.printStackTrace();
-        }
-
-        Book[] books = new Book[tempList.size()];
-        return tempList.toArray(books);
+    public void updateBookInfo(Book book) {
 
     }
 
- */
 
     public void setBookStatus(Book book){
         CheckConnection();
 
         try {
-            preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ?");
+              preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ? AND date = CURRENT_DATE");
 
-            preparedStatement.setBoolean(1, book.isAvailable());
-            preparedStatement.setInt(2, book.getBorrowedBy());
-            preparedStatement.setLong(3, book.getIsbn());
-            preparedStatement.setInt(4, book.getCopy());
+              preparedStatement.setBoolean(1, book.isAvailable());
+              preparedStatement.setInt(2, book.getBorrowedBy());
+              preparedStatement.setLong(3, book.getIsbn());
+              preparedStatement.setInt(4, book.getCopy());
 
-            preparedStatement.executeUpdate();
-            System.out.println("Lyckades!");
-
+              preparedStatement.executeUpdate();
+              System.out.println("Lyckades!");
+          
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             System.out.println("Lyckades inte");
         }
-
     }
+  
 }
-

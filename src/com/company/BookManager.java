@@ -9,6 +9,7 @@ public class BookManager implements IBookManager {
     Book[] books;
     User user = null;
 
+
     public BookManager(BookStore bStore) {
         this.bStore = bStore;
     }
@@ -27,24 +28,6 @@ public class BookManager implements IBookManager {
         books = getMemberLoans();
     }
 
-    public void displayBooks()
-    {
-        for (Book b: bStore.getBooks()
-             ) {
-            System.out.println(b.getTitle() + " " + b.getIsbn());
-        }
-
-        long newISBN = 978958111805L;
-
-        for (Book b: bStore.getBookByIsbn(newISBN)
-        ) {
-            System.out.println(b.getTitle() + " " + b.getIsbn());
-        }
-
-        System.out.println();
-        bStore.getBookByTitle("Matematik 1");
-    }
-
     public Book loan(long isbn, int memberId) throws NoSuchElementException, NullPointerException { //kanske försöka ta bort memberID som in parameter
         Book tempBook = null;
         if (memberLendStatus() && !user.suspended) {
@@ -59,10 +42,14 @@ public class BookManager implements IBookManager {
             } else {
                 for (Book book : books) {
                     if (book.isAvailable()) {
+                        LocalDate currentDate = LocalDate.now();
                         book.setAvailable(false);
                         book.setLoanDate(LocalDate.now());
                         book.setBorrowedBy(memberId);
                         bStore.setBookStatus(book);
+                        //user.books.add(book);
+                        //user.current++;
+                        System.out.println("Du har nu lånat " + book.getTitle());
                         tempBook = book;
                         break;
                     }
@@ -115,13 +102,11 @@ public class BookManager implements IBookManager {
             for (Book book : books) {
         /*
             if (currentDate.isAfter(book.getLoanDate().plusDays(15))) {
-
                 if (user.strikes>2)
                 {
                     if (user.suspendedOnce)
                     {
                         //ta bort userfan
-
                     }
                     else
                     {
@@ -130,7 +115,6 @@ public class BookManager implements IBookManager {
                 }
                 user.strikes++;
             }
-
          */
 
                 if (book.getBorrowedBy() == user.getIDCode()) {

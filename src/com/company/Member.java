@@ -19,7 +19,7 @@ public class Member extends User{
 
     public int memberMenu(){
         Scanner input = new Scanner(System.in);
-        System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap\n0.Logga ut");
+        System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap\n4.Visa lån\n0.Logga ut");
         System.out.print("Val: ");
 
         return input.nextInt();
@@ -41,6 +41,10 @@ public class Member extends User{
             auth.start();
             //System.out.println("Säg upp medlemskap metod");
         }
+        else if (option == 4) {
+            viewLoans();
+            memberOption(memberMenu());
+        }
         else if (option == 0){
             AuthService auth = new AuthService();
             auth.start();
@@ -51,19 +55,13 @@ public class Member extends User{
         }
     }
 
-    public void loanByMember() {
+    public void loanByMember(){
         System.out.println("Ange ISBN för bok");
         System.out.print("ISBN: ");
         Scanner input = new Scanner(System.in);
-        int isbn = input.nextInt();
-        try {
-            book = bManager.loan(isbn, user.getIDCode());
-            System.out.println("Du har nu lånat " + book.getTitle());
-
-        } catch (Exception inteBra) {
-            System.out.println(inteBra.getMessage());
-            memberOption(memberMenu());
-        }
+        int ISBN = input.nextInt();
+        bManager.loan(ISBN, user.getIDCode());
+        memberOption(memberMenu());
     }
 
     public void returnBook() {
@@ -72,12 +70,7 @@ public class Member extends User{
         System.out.print("Ange isbn: ");
         long isbn = input.nextLong();
 
-        try {
-            book = bManager.returnBook(isbn);
-        }
-        catch (Exception error){
-            System.out.println(error.getMessage());
-        }
+        bManager.returnBook(isbn);
     }
 
     public void deleteAccount(){
@@ -85,4 +78,10 @@ public class Member extends User{
         mManager.removeMember(user);
     }
 
+    public void viewLoans() {
+        for (Book b: bManager.memberLoans()
+        ) {
+            System.out.println(b.getTitle() + "\n");
+        }
+    }
 }

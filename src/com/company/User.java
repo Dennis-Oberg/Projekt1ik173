@@ -10,8 +10,6 @@ public class User {
     String firstName;
     String lastName;
 
-
-
     int titel;
     int maxloans;
     int current;
@@ -88,6 +86,5 @@ public class User {
             default -> System.out.println("Ogiltig rank");
         }
     }
-
-
 }
+

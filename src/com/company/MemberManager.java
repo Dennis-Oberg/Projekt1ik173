@@ -10,6 +10,12 @@ public class MemberManager {
 
     public MemberManager(){ //skick in ny bookstore samt medlem gjort med konstruktorn
         mStore = new MemberStore();
+
+    }
+  
+  public MemberManager(User user){
+        this.user = user;
+        mStore = new MemberStore();
     }
 
     public void removeMember(User user){
@@ -26,9 +32,6 @@ public class MemberManager {
             }
         }
         else {mStore.removeMember(user.getIDCode());}
-
-
-
     }
 
     public User searchMember(int id){
@@ -36,25 +39,14 @@ public class MemberManager {
         return user;
     }
 
-    public void addUser(int id, int ssn, String fName, String lName, int title){
+    public void addUser(int ssn, String fName, String lName, int title){
 
         //Ska senare kolla om man varit medlem tidigare eller är bannad
-        mStore.creatNewMember(id, ssn, fName, lName, title);
+        mStore.creatNewMember(ssn, fName, lName, title);
     }
 
-    public MemberManager(User user){
-        this.user = user;
-        mStore = new MemberStore();
-    }
-/*
-    public Book[] memberLoans(){
-        Book[] memberBooks = bStore.getBookByMember(this.user.getIDCode());
-
-        return memberBooks;
-    }
-    public int numberOfBorrowedBooks(){
-        return memberLoans().length;
+    public void banMember(User user) {
+        mStore.moveToBannedMember(user);
     }
 
- */
 }

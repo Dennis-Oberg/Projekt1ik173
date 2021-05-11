@@ -36,11 +36,11 @@ public class AuthService {
 
             if (loggedInUser.getTitel() == 5)
             {
-                User lib = new Librarian(loggedInUser);
+               new Librarian(loggedInUser);
             }
             else
             {
-                User user = new Member(loggedInUser);
+                new Member(loggedInUser);
 
             }
         }
@@ -53,7 +53,6 @@ public class AuthService {
     }
 
 
-
     public User getLoggedInMember() {
         return loggedInUser;
     }
@@ -61,41 +60,6 @@ public class AuthService {
     public User returnMember() {
         return loggedInUser;
     }
-/*
-    public Boolean login(int loginId) {
-        conn = SQLConnection.DbConnector();
-
-        String query = "Select * from member where idCode = ?";
-        try {
-            preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, loginId);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) { //funkar
-                loggedInUser = new User(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
-                        resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getInt("Title"));
-                System.out.println(loggedInUser.firstName);
-                return true;
-            }
-
-
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-        }
-
-
-        for (User m: mStore.userList){  //Bytas ut mot databas??
-            if (m.getIDCode() == loginId){
-                loggedInUser = m;
-                return true;
-            }
-        }
-
-
-        return false;
-    }
-
- */
-
 
     public void displayMembers() {
 

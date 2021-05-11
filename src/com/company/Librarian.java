@@ -1,16 +1,15 @@
 package com.company;
 
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Librarian extends User {
+      User user;
+      Book book;
 
-
-        User user;
-        Book book;
-
-        BookManager bManager;
-        MemberManager mManager;
+      BookManager bManager;
+      MemberManager mManager;
 
     public Librarian(int idCode, int ssn, String firstname, String lastname, int titel) {
         super(idCode, ssn, firstname, lastname, titel);
@@ -99,6 +98,7 @@ public class Librarian extends User {
             //System.out.println("Inga lediga böcker att låna ut");
 
 
+
         }
         else {
             librarianOption(libMenu());
@@ -107,15 +107,12 @@ public class Librarian extends User {
     }
 
     void addMember() {
-        int id;
         int ssn;
         String fName;
         String lName;
         int title;
         Scanner input = new Scanner(System.in);
         System.out.println("Lägg till medlem");
-        System.out.print("Ange id: ");
-        id = input.nextInt();
         System.out.print("Ange personnummer: ");
         ssn = input.nextInt();
         System.out.print("Ange förnamn: ");
@@ -125,7 +122,7 @@ public class Librarian extends User {
         System.out.print("Ange titel: ");
         title = input.nextInt();
 
-        mManager.addUser(id, ssn,  fName,  lName,  title);
+        mManager.addUser(ssn,  fName,  lName,  title);
     }
     void returnBook(){
         Scanner input = new Scanner(System.in);
@@ -143,7 +140,6 @@ public class Librarian extends User {
         catch (Exception error){
             System.out.println(error.getMessage());
         }
-
     }
 
     void removeMember() {
@@ -156,7 +152,10 @@ public class Librarian extends User {
         bManager.setMember(user);
 
     }
-    void suspendMember(){
-
+    void suspendMember(User user) {
+        if (user.strikes == 3)
+        {
+            mManager.banMember(user);
+        }
     }
 }
