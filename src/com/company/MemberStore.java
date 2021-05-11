@@ -14,8 +14,9 @@ public class MemberStore implements IMemberStore {
 
     public MemberStore(){
 
-    }
 
+    }
+  
     public Boolean login(int loginId) {
         conn = SQLConnection.DbConnector();
 
@@ -38,6 +39,7 @@ public class MemberStore implements IMemberStore {
         return false;
     }
 
+
     public User getMemberById(int id){
         String query = "Select * from member where idCode = ?";
         try {
@@ -48,10 +50,7 @@ public class MemberStore implements IMemberStore {
             if (resultSet.next()) { //funkar
                 currentUser = new User(resultSet.getInt("idCode"), resultSet.getInt("socialSecurityNumber"),
                         resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getInt("Title"));
-
-
             }
-
 
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());

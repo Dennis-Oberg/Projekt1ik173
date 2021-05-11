@@ -86,6 +86,5 @@ public class User {
             default -> System.out.println("Ogiltig rank");
         }
     }
-
-
 }
+

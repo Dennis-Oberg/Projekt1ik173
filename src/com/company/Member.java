@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Member extends User{
 
     User user;
+    Book book;
     BookManager bManager;
 
     public Member(User loggedinUser){
@@ -83,5 +84,4 @@ public class Member extends User{
             System.out.println(b.getTitle() + "\n");
         }
     }
-
 }

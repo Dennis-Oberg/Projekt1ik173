@@ -1,14 +1,15 @@
 package com.company;
 
+
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Librarian extends User {
+      User user;
+      Book book;
 
-    Menu menu = new Menu();
-    User user;
-
-    BookManager bManager;
-    MemberManager mManager;
+      BookManager bManager;
+      MemberManager mManager;
 
     public Librarian(int idCode, int ssn, String firstname, String lastname, int titel) {
         super(idCode, ssn, firstname, lastname, titel);
@@ -83,7 +84,19 @@ public class Librarian extends User {
             long isbn = input.nextLong();
 
             System.out.println("");
-            bManager.loan(isbn,user.getIDCode());
+
+            try {
+                book = bManager.loan(isbn,user.getIDCode());
+                System.out.println("Du har nu lånat " + book.getTitle());
+
+            }
+            catch (Exception inteBra){
+                System.out.println(inteBra.getMessage());
+
+                //System.out.println("Ingen bok med ISBN finns");
+            }
+            //System.out.println("Inga lediga böcker att låna ut");
+
 
 
         }
@@ -121,7 +134,12 @@ public class Librarian extends User {
         System.out.print("Ange isbn: ");
         long isbn = input.nextLong();
 
-        bManager.returnBook(isbn);
+        try {
+            book = bManager.returnBook(isbn);
+        }
+        catch (Exception error){
+            System.out.println(error.getMessage());
+        }
     }
 
     void removeMember() {

@@ -143,32 +143,29 @@ public class BookStore implements IBookStore {
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
     }
-    public void updateBookInfo(Book book){
+    public void updateBookInfo(Book book) {
 
     }
+
 
     public void setBookStatus(Book book){
         CheckConnection();
 
         try {
-            if(book.isAvailable())
-            {
-                preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ? AND date = CURRENT_DATE");
+              preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ? AND date = CURRENT_DATE");
 
-                preparedStatement.setBoolean(1, book.isAvailable());
-                preparedStatement.setInt(2, book.getBorrowedBy());
-                preparedStatement.setLong(3, book.getIsbn());
-                preparedStatement.setInt(4, book.getCopy());
+              preparedStatement.setBoolean(1, book.isAvailable());
+              preparedStatement.setInt(2, book.getBorrowedBy());
+              preparedStatement.setLong(3, book.getIsbn());
+              preparedStatement.setInt(4, book.getCopy());
 
-                preparedStatement.executeUpdate();
-                System.out.println("Lyckades!");
-            }
-
-
+              preparedStatement.executeUpdate();
+              System.out.println("Lyckades!");
+          
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             System.out.println("Lyckades inte");
         }
-
     }
+  
 }
