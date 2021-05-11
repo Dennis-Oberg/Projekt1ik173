@@ -21,6 +21,7 @@ public class AuthService {
         this.mStore = newMStore;
     }
 
+
     public void start() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Välkommen!\n");
@@ -31,15 +32,12 @@ public class AuthService {
             mStore = new MemberStore();
 
             decideAuth(id);
-
             scan.close();
         } catch (InputMismatchException inputMismatchException) {
             System.out.println("Du måste ange ett numeriskt värde.");
             start();
         }
     }
-
-
     public void decideAuth(int id) {
         boolean authorisation = mStore.login(id);
         if (authorisation) {
@@ -56,7 +54,6 @@ public class AuthService {
             System.out.println("Försök igen\n");
             start();
         }
-
     }
 
 

@@ -134,10 +134,6 @@ public class BookStore implements IBookStore {
         }
 
         Book[] books = new Book[tempList.size()];
-        System.out.print("Lånade böcker:\n");
-        for (int i = 0; i < tempList.size(); i++) {
-            System.out.println(tempList.get(i).getTitle());
-        }
         return tempList.toArray(books);
     }
 

@@ -95,8 +95,10 @@ public class BookManager implements IBookManager {
 
     public Book returnBook(long isbn) throws NullPointerException {
         Book[] books = bStore.getBookByIsbn(isbn);
-        if (books.length == 0)
+        Book tempBook = null;
+        if (books.length == 0) {
             throw new NullPointerException("Fel ISBN");
+        }
         else {
             for (Book book : books) {
         /*
@@ -122,11 +124,11 @@ public class BookManager implements IBookManager {
                     user.current--;
                     bStore.setBookStatus(book);
                     System.out.println(book.getTitle() + " har lämnats tillbaka");
-
-                    return book;
+                    tempBook = book;
+                    break;
                 }
             }
-            throw new NullPointerException("Du har inga aktiva lån på denna bok");
+            return tempBook;
         }
     }
 

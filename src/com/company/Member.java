@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class Member extends User {
 
     User user;
-    Book book;
     BookManager bManager;
 
     public Member(User loggedinUser) {
@@ -15,7 +14,6 @@ public class Member extends User {
         user = loggedinUser;
         bManager = new BookManager(user);
 
-        //memberOption(memberMenu());
         memberMenu();
 
     }
@@ -25,23 +23,8 @@ public class Member extends User {
         System.out.println("\nVal: ");
         Scanner input = new Scanner(System.in);
 
-
         int in  = input.nextInt();
         memberOption(in);
-        /*
-        try {
-
-
-
-        } catch (InputMismatchException ine){
-            ine.printStackTrace();
-
-        }
-
-
-
-         */
-        //return input.nextInt();
 
     }
 
@@ -49,26 +32,23 @@ public class Member extends User {
         System.out.println("");
         if (option == 1) {
             loanByMember();
-            // memberOption(memberMenu());
+
         } else if (option == 2) {
             returnBook();
-            memberMenu();
         } else if (option == 3) {
             deleteAccount();
             AuthService auth = new AuthService();
             auth.start();
-            //System.out.println("Säg upp medlemskap metod");
+
         } else if (option == 4) {
             viewLoans();
-            //  memberOption(memberMenu());
 
         } else if (option == 0) {
             AuthService auth = new AuthService();
             auth.start();
         } else {
-            System.out.println("Inget gitligt val");
-            //  memberOption(memberMenu());
-
+            System.out.println("Inget giltigt val");
+            memberMenu();
         }
     }
 
@@ -78,7 +58,7 @@ public class Member extends User {
         Scanner input = new Scanner(System.in);
         long ISBN = input.nextLong();
         bManager.loan(ISBN, user.getIDCode());
-        //  memberOption(memberMenu());
+
         memberMenu();
     }
 
@@ -89,8 +69,7 @@ public class Member extends User {
         long isbn = input.nextLong();
 
         bManager.returnBook(isbn);
-        input.close();
-        //  memberOption(memberMenu());
+        memberMenu();
 
 
     }
@@ -112,7 +91,7 @@ public class Member extends User {
     }
 
     public void viewLoans() {
-        for (Book b : bManager.memberLoans()
+        for (Book b : bManager.getMemberLoans()
         ) {
             System.out.println(b.getTitle() + "\n");
         }
