@@ -1,92 +1,87 @@
 package com.company;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Member {
+public class Member extends User{
 
-    int IDCode;
-    int SSN;
-    String firstName;
-    String lastName;
+    User user;
+    Book book;
+    BookManager bManager;
 
+    public Member(User loggedinUser){
 
+        user = loggedinUser;
+        bManager = new BookManager(user);
 
-    int titel;
-    int maxloans;
-    int current;
-    int strikes;
-    boolean suspended;
-    boolean suspendedOnce;
-    boolean isLibrarian = false;
-    ArrayList<Book> books;
-
-    Member()
-    {
+        memberOption(memberMenu());
 
     }
 
-    Member(int idCode, int ssn, String firstname, String lastname, int titel) {
-        this.IDCode = idCode;
-        this.SSN = ssn;
-        this.firstName = firstname;
-        this.lastName = lastname;
-        this.titel = titel;
-        this.suspended = false;
-        decideMax(titel);
-        books = new ArrayList<>();
+    public int memberMenu(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("\nVälj ett alternativ:\n1.Låna bok\n2.Lämna tillbaka bok\n3.Säg upp medlemskap\n4.Visa lån\n0.Logga ut");
+        System.out.print("Val: ");
+
+        return input.nextInt();
     }
 
-    public int getIDCode() {
-        return IDCode;
-    }
-
-    public void setIDCode(int IDCode) {
-        this.IDCode = IDCode;
-    }
-
-    public int getMaxloans() {
-        return maxloans;
-    }
-
-    public void setMaxloans(int maxloans) {
-        this.maxloans = maxloans;
-    }
-
-    public int getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(int current) {
-        this.current = current;
-    }
-
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
-    }
-
-    public void setSuspendedOnce(boolean suspendedOnce) {
-        this.suspendedOnce = suspendedOnce;
-    }
-
-    public int getTitel() {
-        return titel;
-    }
-
-    public void setTitel(int titel) {
-        this.titel = titel;
-    }
-
-    private void decideMax(int rank) {
-        switch (rank) {
-            case 1 -> this.setMaxloans(3);
-            case 2 -> this.setMaxloans(5);
-            case 3 -> this.setMaxloans(7);
-            case 4 -> this.setMaxloans(10);
-            case 5 -> this.isLibrarian = true;
-            default -> System.out.println("Ogiltig rank");
+    public void memberOption(int option) {
+        System.out.println("");
+        if (option == 1){
+            loanByMember();
+            memberOption(memberMenu());
+        }
+        else if (option == 2){
+            returnBook();
+            memberOption(memberMenu());
+        }
+        else if (option == 3){
+            deleteAccount();
+            AuthService auth = new AuthService();
+            auth.start();
+            //System.out.println("Säg upp medlemskap metod");
+        }
+        else if (option == 4) {
+            viewLoans();
+            memberOption(memberMenu());
+        }
+        else if (option == 0){
+            AuthService auth = new AuthService();
+            auth.start();
+        }
+        else {
+            System.out.println("Inget gitligt val");
+            memberOption(memberMenu());
         }
     }
 
+    public void loanByMember(){
+        System.out.println("Ange ISBN för bok");
+        System.out.print("ISBN: ");
+        Scanner input = new Scanner(System.in);
+        int ISBN = input.nextInt();
+        bManager.loan(ISBN, user.getIDCode());
+        memberOption(memberMenu());
+    }
 
+    public void returnBook() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Lämna tillbaka bok");
+        System.out.print("Ange isbn: ");
+        long isbn = input.nextLong();
+
+        bManager.returnBook(isbn);
+    }
+
+    public void deleteAccount(){
+        MemberManager mManager = new MemberManager(user);
+        mManager.removeMember(user);
+    }
+
+    public void viewLoans() {
+        for (Book b: bManager.memberLoans()
+        ) {
+            System.out.println(b.getTitle() + "\n");
+        }
+    }
 }

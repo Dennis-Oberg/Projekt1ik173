@@ -1,50 +1,65 @@
 package com.company;
 
-import java.util.Date;
-import java.util.Locale;
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 public class BookManager implements IBookManager {
 
-    BookStore bStore = null;
+    BookStore bStore;
+    Book[] books;
+    User user = null;
 
-
-
-    Member member = null;
 
     public BookManager(BookStore bStore) {
         this.bStore = bStore;
     }
 
-    public BookManager(BookStore bStore, Member member) {
-        this.bStore = bStore;
-        this.member = member;
+
+    public BookManager(User user) {
+        this.bStore = new BookStore();
+        this.user = user;
+        books = getMemberLoans();
     }
 
-    public void loan(int isbn, int memberId) { //ska behållas
-        if (memberLendStatus() && !member.suspended) {
+
+    public BookManager(BookStore bStore, User user) {
+        this.bStore = bStore;
+        this.user = user;
+        books = getMemberLoans();
+    }
+
+    public Book loan(long isbn, int memberId) throws NoSuchElementException, NullPointerException { //kanske försöka ta bort memberID som in parameter
+        Book tempBook = null;
+        if (memberLendStatus() && !user.suspended) {
             Book[] books = bStore.getBookByIsbn(isbn);
 
             if (books.length == 0) {
-                System.out.println("Ingen bok med ISBN finns");
+                throw new NoSuchElementException("Ingen bok med ISBN finns");
+                //System.out.println("Ingen bok med ISBN finns");
             } else if (!checkAvailable(books)) {
-                System.out.println("Inga lediga böcker att låna ut");
+                throw new NullPointerException("Inga lediga böcker att låna ut");
+                //System.out.println("Inga lediga böcker att låna ut"); //MÅSTE FIXAS
             } else {
                 for (Book book : books) {
                     if (book.isAvailable()) {
+                        LocalDate currentDate = LocalDate.now();
                         book.setAvailable(false);
                         book.setLoanDate(LocalDate.now());
                         book.setBorrowedBy(memberId);
-                        member.books.add(book);
-                        member.current++;
+                        bStore.setBookStatus(book);
+                        //user.books.add(book);
+                        //user.current++;
                         System.out.println("Du har nu lånat " + book.getTitle());
+                        tempBook = book;
                         break;
                     }
                 }
             }
-        } else if (member.suspended) {
-            System.out.println("Suspended");
-        } else System.out.println("Max antal böcker lånade");
+            return tempBook;
+        } else if (user.suspended) {
+            throw new NoSuchElementException("Användaren är bannad :<");
+        } else
+        throw new NoSuchElementException("Max antal böcker lånade");
     }
 
     public boolean checkAvailable(Book[] books) {
@@ -61,52 +76,60 @@ public class BookManager implements IBookManager {
 
     }
 
+    public Book[] getMemberLoans() {
+        return bStore.getBookByMember(this.user.getIDCode());
+    }
+
     public Book[] memberLoans() {
-        Book[] memberBooks = bStore.getBookByMember(this.member.getIDCode());
-        return memberBooks;
+        return books;
     }
 
     public int numberOfBorrowedBooks() {
-        return memberLoans().length;
+        return getMemberLoans().length;
     }
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
-        if (member.getCurrent() >= member.getMaxloans())
-            return false;
-        else
-            return true;
+        user.setCurrent(numberOfBorrowedBooks());
+        return user.getCurrent() < user.getMaxloans();
     }
 
-    public void returnBook(int isbn) {
+    public Book returnBook(long isbn) throws NullPointerException  {
         Book[] books = bStore.getBookByIsbn(isbn);
-        LocalDate currentDate = LocalDate.now().plusDays(16); //ÄNDRA TILLBAKA TILL LOCALDATE.NOW()
-
-        for (Book book : books) {
-
+        LocalDate currentDate = LocalDate.now();
+        if (books.length == 0)
+            throw new NullPointerException("Fel ISBN");
+        else {
+            for (Book book : books) {
+        /*
             if (currentDate.isAfter(book.getLoanDate().plusDays(15))) {
-
-                if (member.strikes>2)
+                if (user.strikes>2)
                 {
-                    if (member.suspendedOnce)
+                    if (user.suspendedOnce)
                     {
                         //ta bort userfan
-                        
                     }
                     else
                     {
-                        member.setSuspendedOnce(true);
+                        user.setSuspendedOnce(true);
                     }
                 }
-                member.strikes++;
+                user.strikes++;
             }
+         */
 
-            if (book.getBorrowedBy() == member.getIDCode()) {
-                book.setAvailable(true);
-                member.current--;
-            } else System.out.println("Du har inte lånat denna bok");
+                if (book.getBorrowedBy() == user.getIDCode()) {
+                    book.setAvailable(true);
+                    book.setBorrowedBy(0);
+                    //user.current--;
+                    bStore.setBookStatus(book);
+                    System.out.println(book.getTitle() + " har lämnats tillbaka");
+                    return book;
+                }
+            }
+            throw new NullPointerException("Du har inga aktiva lån på denna bok");
         }
     }
-    public void setMember(Member member) {
-        this.member = member;
+    public void setMember(User user) {
+        this.user = user;
     }
 }

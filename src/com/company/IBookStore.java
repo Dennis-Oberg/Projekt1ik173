@@ -6,7 +6,7 @@ public interface IBookStore {
 
     Book getBookByTitle(String title);
 
-    Book[] getBookByIsbn(int isbn);
+    Book[] getBookByIsbn(long isbn);
 
     Book[] getBookByMember (int member);
 

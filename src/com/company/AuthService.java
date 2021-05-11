@@ -1,45 +1,86 @@
 package com.company;
 
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class AuthService {
 
+    MemberStore mStore;
 
     int loginId;
-    Member loggedInMember;
+    User loggedInUser;
+    public AuthService(){
 
-    MemberStore mStore = new MemberStore();
-
-
-    public Member getLoggedInMember() {
-        return loggedInMember;
-    }
-    public Member returnMember()
-    {
-        return loggedInMember;
     }
 
-    public Boolean login() {
 
+    public AuthService(MemberStore newMStore) {
+        this.mStore = newMStore;
+    }
 
-        for (Member m: mStore.memberList){  //Bytas ut mot databas??
-            if (m.getIDCode() == loginId){
-                loggedInMember = m;
-                return true;
+    public void start(){
+        System.out.println("Välkommen!\n");
+        Scanner input = new Scanner(System.in);
+        System.out.print("Ange ID för att logga in: ");
+        int id = input.nextInt();
+        mStore = new MemberStore();
+
+        decideAuth(id);
+    }
+
+    public void decideAuth(int id)    {
+        boolean authorisation = mStore.login(id);
+        if (authorisation){
+            loggedInUser = mStore.getMemberById(id);
+
+            if (loggedInUser.getTitel() == 5)
+            {
+               new Librarian(loggedInUser);
+            }
+            else
+            {
+                new Member(loggedInUser);
+
             }
         }
-        return false;
+        else {
+            System.out.println("\nError, fel lösenord och/eller användarnamn");
+            System.out.println("Försök igen\n");
+            start();
+        }
+
     }
 
-    public void logout()
-    {
-        this.loggedInMember = null;
-    }
-    public Member getMemberById(int id){
 
-        for (Member m: mStore.memberList){
+    public User getLoggedInMember() {
+        return loggedInUser;
+    }
+
+    public User returnMember() {
+        return loggedInUser;
+    }
+
+    public void displayMembers() {
+
+        ArrayList<User> users = mStore.getMembers();
+
+        for (User m : users
+        ) {
+            System.out.println(m.firstName);
+        }
+
+    }
+
+    public void logout() {
+        this.loggedInUser = null;
+    }
+
+    public User getMemberById(int id) {
+
+        for (User m : mStore.getMembers()) {
             //Bytas ut mot databas??
-            if (m.getIDCode() == id){
+            if (m.getIDCode() == id) {
                 return m;
             }
         }
@@ -50,6 +91,7 @@ public class AuthService {
     void getCredentials() {
 
     }
+
     public int getLoginId() {
         return loginId;
     }
