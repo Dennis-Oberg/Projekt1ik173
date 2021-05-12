@@ -5,11 +5,8 @@ import java.time.LocalDate;
 public class Book {
     private long isbn;
     private String title;
-
-
     private int copy;
-    private boolean available;
-    private LocalDate loanDate;
+    private String author;
     private int borrowedBy;
 
     public int getBorrowedBy() {
@@ -23,17 +20,19 @@ public class Book {
     public Book(long isbn, String title) {
         this.isbn = isbn;
         this.title = title;
-        this.available = true;
-        this.loanDate = LocalDate.now();
     }
 
-    public Book(long isbn, String title, int copy, boolean available, int borrowedBy) {
+    public Book(long isbn, int borrowedBy) {
+        this.isbn = isbn;
+        this.borrowedBy = borrowedBy;
+    }
+
+    public Book(long isbn, String title, int copy, String author, int borrowedBy) {
         this.isbn = isbn;
         this.title = title;
         this.copy = copy;
-        this.available = available;
         this.borrowedBy = borrowedBy;
-        this.loanDate = LocalDate.now();
+        this.author = author;
     }
 
     public long getIsbn() {
@@ -52,28 +51,16 @@ public class Book {
         this.title = title;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
-
-    public LocalDate getLoanDate() {
-        return loanDate;
-    }
-
-    public void setLoanDate(LocalDate loanDate) {
-        this.loanDate = loanDate;
-    }
-
     public int getCopy() {
         return copy;
     }
 
     public void setCopy(int copy) {
         this.copy = copy;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 }
 

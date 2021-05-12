@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 class BookStoreTest {
 
-    @Test
+   /* @Test
     public void test_lendBook() {
         BookStore store = new BookStore();
         User user = new User(1, 1, "Denis", "Öberg", 4);
@@ -96,7 +96,7 @@ class BookStoreTest {
             System.out.println(bookManager.memberLoans()[i].getBorrowedBy());
             System.out.println(bookManager.memberLoans()[i].getLoanDate());
             System.out.println(bookManager.memberLoans()[i].isAvailable());
-        }*/
+        }*//*
 
         bookManager.returnBook(1234);
         bookManager.returnBook(1235);
@@ -111,5 +111,5 @@ class BookStoreTest {
 
 
 
-    }
+    }*/
 }

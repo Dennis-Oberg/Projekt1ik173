@@ -53,59 +53,52 @@ public class BookStore implements IBookStore {
 
     public Book getBookByTitle(String title) {
 
+        Book tempBook = null;
         CheckConnection();
 
-        Book placeholderBook = null;
-
         try {
-            String query = "SELECT * FROM `dennis-1ik173vt21`.book WHERE `dennis-1ik173vt21`.book.title = ?";
+            String query = "SELECT title, author, isbn, copies FROM book WHERE title = ?";
+
             preparedStatement = conn.prepareStatement(query);
 
             preparedStatement.setString(1, title);
 
-            System.out.println("Bok hämtad efter titel");
-            System.out.println("=====");
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) { //Print every existing row in artist table for all three columns
-                placeholderBook = new Book(resultSet.getLong(3), resultSet.getString(1));
+            while (resultSet.next()) {
+                tempBook = new Book(resultSet.getLong(3), resultSet.getString(1),
+                        resultSet.getInt(4), resultSet.getString(2), 0);
             }
-            System.out.println(placeholderBook.getTitle() + " " + placeholderBook.getIsbn());
         } catch (SQLException sqle) { //If connection fails
             sqle.printStackTrace();
         }
-        return placeholderBook;
+
+        return tempBook;
     }
 
-    public Book[] getBookByIsbn(long isbn) {
+    public Book getBookByIsbn(long isbn) {
 
+        Book tempBook = null;
         CheckConnection();
-        ArrayList<Book> tempList = new ArrayList<>();
 
         try {
-            String query = "SELECT title, copiesofbook.isbn, copy, isAvailable, borrowedBy FROM copiesofbook,book WHERE copiesofbook.isbn = ? AND book.isbn = ?";
+            String query = "SELECT title, author, isbn, copies FROM book WHERE isbn = ?";
 
             preparedStatement = conn.prepareStatement(query);
 
             preparedStatement.setLong(1, isbn);
-            preparedStatement.setLong(2, isbn);
 
-            System.out.println("Böcker hämtade på ISBN");
-            System.out.println("=====");
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) { //Print every existing row in artist table for all three columns
-                tempList.add(new Book(resultSet.getLong(2), resultSet.getString(1),
-                        resultSet.getInt(3), resultSet.getBoolean(4), resultSet.getInt(5)));
-
-
+            while (resultSet.next()) {
+                tempBook = new Book(resultSet.getLong(3), resultSet.getString(1),
+                        resultSet.getInt(4), resultSet.getString(2), 0);
             }
         } catch (SQLException sqle) { //If connection fails
             sqle.printStackTrace();
         }
 
-        Book[] books = new Book[tempList.size()];
-        return tempList.toArray(books);
+        return tempBook;
     }
 
     public Book[] getBookByMember(int memberId) {
@@ -114,8 +107,7 @@ public class BookStore implements IBookStore {
         ArrayList<Book> tempList = new ArrayList<>();
 
         try {
-            //String query = "SELECT * FROM copiesofbooks WHERE borrowedBy = ?";
-            String query = "SELECT title, copiesofbook.isbn, copy, isAvailable, borrowedBy FROM copiesofbook,book WHERE copiesofbook.borrowedBy = ? AND copiesofbook.isbn = book.isbn";
+            String query = "SELECT book.title, book.author, book.isbn, book.copies, borrowedBy.borrowedBy FROM book, borrowedby WHERE book.isbn = borrowedBy.isbn AND borrowedBy.borrowedBy = ?";
 
             preparedStatement = conn.prepareStatement(query);
 
@@ -124,9 +116,8 @@ public class BookStore implements IBookStore {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-
-
-                tempList.add(new Book(resultSet.getLong(2), resultSet.getString(1), resultSet.getInt(3), resultSet.getBoolean(4), resultSet.getInt(5)));
+                tempList.add(new Book(resultSet.getLong(3), resultSet.getString(1),
+                        resultSet.getInt(4), resultSet.getString(2), resultSet.getInt(5)));
             }
 
         } catch (SQLException sqle) { //If connection fails
@@ -141,20 +132,43 @@ public class BookStore implements IBookStore {
 
     }
 
-    public void setBookStatus(Book book) {
+    public Book[] checkAvailability(Long isbn)
+    {
         CheckConnection();
-//AND date = CURRENT_DATE
-        try {
-            preparedStatement = conn.prepareStatement("UPDATE copiesofbook SET isAvailable = ?, borrowedBy = ? WHERE isbn = ? AND copy = ?");
+        ArrayList<Book> tempList = new ArrayList<>();
 
-            preparedStatement.setBoolean(1, book.isAvailable());
+        try {
+            String query = "SELECT isbn, borrowedBy FROM borrowedby WHERE isbn = ?";
+
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setLong(1, isbn);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                tempList.add(new Book(resultSet.getLong(1), resultSet.getInt(2)));
+            }
+
+        } catch (SQLException sqle) { //If connection fails
+            sqle.printStackTrace();
+        }
+
+        Book[] books = new Book[tempList.size()];
+        return tempList.toArray(books);
+    }
+
+    public void loanBook(Book book) {
+        CheckConnection();
+
+        try {
+            preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date) VALUES (?, ?, ?)");
+
+            preparedStatement.setLong(1, book.getIsbn());
             preparedStatement.setInt(2, book.getBorrowedBy());
-            preparedStatement.setLong(3, book.getIsbn());
-            preparedStatement.setInt(4, book.getCopy());
-            // preparedStatement.setDate(5, book.getLoanDate());
+            preparedStatement.setDate(3, null);
 
             preparedStatement.executeUpdate();
-            System.out.println("Lyckades!");
 
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -162,4 +176,45 @@ public class BookStore implements IBookStore {
         }
     }
 
+    public void returnBook(Book book) {
+        CheckConnection();
+
+        try {
+            preparedStatement = conn.prepareStatement("DELETE FROM borrowedby WHERE isbn = ? AND borrowedBy.borrowedBy = ?");
+
+            preparedStatement.setLong(1, book.getIsbn());
+            preparedStatement.setInt(2, book.getBorrowedBy());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println("Lyckades inte");
+        }
+    }
+
+    public boolean insertBook(long isbn, String title,String author,int copies)
+    {
+        CheckConnection();
+
+        boolean inserted;
+
+        try {
+            preparedStatement = conn.prepareStatement("INSERT INTO book (title, author, isbn, copies) VALUES (?,?,?,?)");
+
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, author);
+            preparedStatement.setLong(3, isbn);
+            preparedStatement.setInt(4, copies);
+
+            preparedStatement.executeUpdate();
+            inserted = true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println("Lyckades inte");
+            inserted = false;
+        }
+        return inserted;
+    }
 }

@@ -10,7 +10,7 @@ public class User {
     String firstName;
     String lastName;
 
-    int titel;
+    int title;
     int maxloans;
     int current;
     int strikes;
@@ -24,14 +24,14 @@ public class User {
 
     }
 
-    User(int idCode, int ssn, String firstname, String lastname, int titel) {
+    User(int idCode, int ssn, String firstname, String lastname, int title) {
         this.IDCode = idCode;
         this.SSN = ssn;
         this.firstName = firstname;
         this.lastName = lastname;
-        this.titel = titel;
+        this.title = title;
         this.suspended = false;
-        decideMax(titel);
+        decideMax(title);
         books = new ArrayList<>();
     }
 
@@ -57,10 +57,25 @@ public class User {
     }
 
 
-    public int getTitel() {
-        return titel;
+    public int getTitle() {
+        return title;
     }
 
+    public int getSSN() {
+        return SSN;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public int getStrikes() {
+        return strikes;
+    }
 
     private void decideMax(int rank) {
         switch (rank) {

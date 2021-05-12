@@ -43,7 +43,7 @@ public class AuthService {
         if (authorisation) {
             loggedInUser = mStore.getMemberById(id);
 
-            if (loggedInUser.getTitel() == 5) {
+            if (loggedInUser.getTitle() == 5) {
                 new Librarian(loggedInUser);
             } else {
                 new Member(loggedInUser);

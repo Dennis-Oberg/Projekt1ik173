@@ -31,14 +31,16 @@ public class Librarian extends User {
                 auth.start();
                 break;
             case 1:
-                System.out.println("Lägg till bok i system metod");
+                addBook();
+                librarianOption(libMenu());
                 break;
             case 2:
                 addMember();
                 librarianOption(libMenu());
                 break;
             case 3:
-                System.out.println("Söka efter medlem metod");
+                searchForMember();
+                librarianOption(libMenu());
                 break;
             case 4:
                 removeMember();
@@ -86,7 +88,7 @@ public class Librarian extends User {
             System.out.println("");
 
             try {
-                book = bManager.loan(isbn,user.getIDCode());
+                book = bManager.loan(isbn);
                 System.out.println("Du har nu lånat " + book.getTitle());
 
             }
@@ -156,6 +158,63 @@ public class Librarian extends User {
         if (user.strikes == 3)
         {
             mManager.banMember(user);
+        }
+    }
+
+    void addBook()
+    {
+        Scanner stringScanner = new Scanner(System.in);
+        Scanner intScanner = new Scanner(System.in);
+        System.out.println("Ange ISBN för bok");
+        System.out.print("ISBN: ");
+        long isbn = intScanner.nextLong();
+
+
+        System.out.println("Ange titel för bok");
+        System.out.print("Titel: ");
+        String title = stringScanner.nextLine();
+
+
+        System.out.println("Ange författare för bok");
+        System.out.print("Författare: ");
+        String author = stringScanner.nextLine();
+
+
+        System.out.println("Ange totala kopior för bok");
+        System.out.print("Kopior: ");
+        int copies = intScanner.nextInt();
+
+        try {
+            bManager.addBook(isbn,title,author,copies);
+
+        } catch (Exception inteBra) {
+            System.out.println(inteBra.getMessage());
+        }
+    }
+
+    void searchForMember()
+    {
+        Scanner intScanner = new Scanner(System.in);
+        System.out.println("Ange ID kod");
+        int id = intScanner.nextInt();
+        User tempUser = mManager.searchMember(id);
+
+        System.out.println("Användare: " + tempUser.getFirstName() + " " + tempUser.getLastName());
+        System.out.println("ID: " + tempUser.getIDCode());
+        System.out.println("Personnummer: " + tempUser.getSSN());
+        System.out.println("Titel: " + tempUser.getTitle());
+        System.out.println("Antal strikes: " + tempUser.getStrikes()+ "\n");
+        System.out.println("Lånade böcker: \n");
+
+        viewMemberLoans(tempUser);
+
+    }
+
+    void viewMemberLoans(User user)
+    {
+        for (Book b : bManager.getMemberLoansForLibrarian(user)
+        ) {
+            System.out.println(b.getTitle() + "\n");
         }
     }
 }
