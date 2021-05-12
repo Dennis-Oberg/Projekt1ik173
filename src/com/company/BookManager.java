@@ -84,7 +84,7 @@ public class BookManager implements IBookManager {
     public boolean checkAvailable(Book book) {
         Book[] bookList = bStore.checkAvailability(book.getIsbn());
 
-        return bookList.length <= book.getCopy();
+        return bookList.length < book.getCopy();
     }
 
     public void borrowedBy(int memberId) {
