@@ -28,7 +28,7 @@ public class BookManager implements IBookManager {
         books = getMemberLoans();
     }
 
-    public Book loan(long isbn) throws NoSuchElementException, NullPointerException { //kanske försöka ta bort memberID som in parameter
+    public Book loan(long isbn) throws NoSuchElementException, NullPointerException {
         Book tempBook = bStore.getBookByIsbn(isbn);
         if (memberLendStatus() && !user.suspended) {
 
@@ -40,7 +40,6 @@ public class BookManager implements IBookManager {
             } else {
                 tempBook.setBorrowedBy(user.getIDCode());
                 bStore.loanBook(tempBook);
-
             }
             return tempBook;
         } else if (user.suspended) {
@@ -63,11 +62,11 @@ public class BookManager implements IBookManager {
             {
                 tempBook.setBorrowedBy(user.getIDCode());
                 bStore.returnBook(tempBook);
-                System.out.println(tempBook.getTitle() + " har lämnats tillbaka"); //funkar ej, programmet går aldrig in hit?
+                System.out.println(tempBook.getTitle() + " har lämnats tillbaka");
             }
             else
             {
-                System.out.println("Du har inte lånat denna boken");
+                System.out.println("Du har inte lånat denna boken"); //funkar ej, programmet går aldrig in hit?
             }
         }
         return tempBook;
@@ -85,7 +84,7 @@ public class BookManager implements IBookManager {
     public boolean checkAvailable(Book book) {
         Book[] bookList = bStore.checkAvailability(book.getIsbn());
 
-        return bookList.length < book.getCopy();
+        return bookList.length <= book.getCopy();
     }
 
     public void borrowedBy(int memberId) {

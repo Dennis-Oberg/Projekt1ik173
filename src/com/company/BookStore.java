@@ -160,15 +160,42 @@ public class BookStore implements IBookStore {
 
     public void loanBook(Book book) {
         CheckConnection();
+        int copies = 0;
 
         try {
-            preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date) VALUES (?, ?, ?)");
+            String query = "SELECT copies FROM book WHERE isbn=?";
+            PreparedStatement newPS = conn.prepareStatement(query);
+            newPS.setLong(1, book.getIsbn());
+            resultSet = newPS.executeQuery();
 
-            preparedStatement.setLong(1, book.getIsbn());
-            preparedStatement.setInt(2, book.getBorrowedBy());
-            preparedStatement.setDate(3, null);
+            while (resultSet.next()) {
+                copies = resultSet.getInt(1);
+            }
 
-            preparedStatement.executeUpdate();
+            if (copies>0) {
+                try {
+                PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
+                preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date) VALUES (?, ?, ?)");
+                long millis = System.currentTimeMillis();
+                Date date = new Date(millis);
+                preparedStatement.setLong(1, book.getIsbn());
+                preparedStatement.setInt(2, book.getBorrowedBy());
+                preparedStatement.setDate(3, date);
+                newPreparedStatement.setLong(1, book.getIsbn());
+
+                preparedStatement.executeUpdate();
+                newPreparedStatement.executeUpdate();
+                System.out.println("Du har nu lånat " + book.getTitle());
+                System.out.println("kopior kvar: " + "" + (copies-1));
+                }
+                catch (SQLException e) {
+                    System.out.println(e.getErrorCode());
+                    System.out.println("Lyckades inte");
+                }
+            }
+            else {
+                System.out.println("Det finns inga kopior kvar");
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -178,16 +205,20 @@ public class BookStore implements IBookStore {
 
     public void returnBook(Book book) {
         CheckConnection();
-
         try {
-            preparedStatement = conn.prepareStatement("DELETE FROM borrowedby WHERE isbn = ? AND borrowedBy.borrowedBy = ?");
+            if (checkAvailability(book.getIsbn()).length > 0) {
+                PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies+1 WHERE isbn=?");
+                preparedStatement = conn.prepareStatement("DELETE FROM borrowedby WHERE isbn = ? AND borrowedBy.borrowedBy = ?");
 
-            preparedStatement.setLong(1, book.getIsbn());
-            preparedStatement.setInt(2, book.getBorrowedBy());
+                preparedStatement.setLong(1, book.getIsbn());
+                preparedStatement.setInt(2, book.getBorrowedBy());
+                newPreparedStatement.setLong(1, book.getIsbn());
 
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
+                preparedStatement.executeUpdate();
+                newPreparedStatement.executeUpdate();
+            }
+        }
+        catch (SQLException e) {
             System.out.println(e.getErrorCode());
             System.out.println("Lyckades inte");
         }

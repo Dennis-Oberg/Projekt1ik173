@@ -61,8 +61,7 @@ public class Member extends User {
         Scanner input = new Scanner(System.in);
         long isbn = input.nextLong();
         try {
-            Book book = bManager.loan(isbn);
-            System.out.println("Du har nu lånat " + book.getTitle());
+            bManager.loan(isbn);
 
         } catch (Exception inteBra) {
             System.out.println(inteBra.getMessage());
