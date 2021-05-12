@@ -56,21 +56,21 @@ public class BookManager implements IBookManager {
         {
             throw new NullPointerException("Fanns ingen bok med valt ISBN");
         }
-        for (Book b: booklist
-             ) {
-            if (b.getBorrowedBy() == user.getIDCode())
-            {
-                tempBook.setBorrowedBy(user.getIDCode());
-                bStore.returnBook(tempBook);
-                System.out.println(tempBook.getTitle() + " har lämnats tillbaka");
-            }
-            else
-            {
-                System.out.println("Du har inte lånat denna boken"); //funkar ej, programmet går aldrig in hit?
-            }
+        else {
+            for (Book b: booklist) {
+                if (b.getIsbn() == isbn){
+                    b.setBorrowedBy(user.getIDCode());
+                    bStore.returnBook(b);
+                    System.out.println(b.getTitle() + " har lämnats tillbaka");
+                    return b;
+                }
+             }
+            throw new NullPointerException("Du har inte lånat denna boken");
         }
-        return tempBook;
+
     }
+
+
 
     public boolean addBook(long isbn, String title,String author,int copies)
     {
