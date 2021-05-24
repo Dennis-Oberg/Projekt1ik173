@@ -39,7 +39,6 @@ public class User {
         return IDCode;
     }
 
-
     public int getMaxloans() {
         return maxloans;
     }
@@ -55,7 +54,6 @@ public class User {
     public void setCurrent(int current) {
         this.current = current;
     }
-
 
     public int getTitle() {
         return title;

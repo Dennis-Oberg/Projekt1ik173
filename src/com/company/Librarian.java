@@ -5,21 +5,16 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Librarian extends User {
-      User user;
-      Book book;
 
-      BookManager bManager;
-      MemberManager mManager;
+    User user;
+    BookManager bManager;
+    MemberManager mManager;
+    Book book;
 
-    public Librarian(int idCode, int ssn, String firstname, String lastname, int titel) {
-        super(idCode, ssn, firstname, lastname, titel);
-    }
-
-    public Librarian(User user){
-
+    public Librarian(User user, BookManager bookManager, MemberManager memberManager){
         this.user = user;
-        mManager = new MemberManager();
-        bManager = new BookManager( user);
+        this.mManager = memberManager;
+        this.bManager = bookManager;
         librarianOption(libMenu());
     }
 
@@ -137,7 +132,7 @@ public class Librarian extends User {
         long isbn = input.nextLong();
 
         try {
-            book = bManager.returnBook(isbn);
+            bManager.returnBook(isbn);
         }
         catch (Exception error){
             System.out.println(error.getMessage());
@@ -152,13 +147,6 @@ public class Librarian extends User {
         user = mManager.searchMember(id);
         mManager.removeMember(user);
         bManager.setMember(user);
-
-    }
-    void suspendMember(User user) {
-        if (user.strikes == 3)
-        {
-            mManager.banMember(user);
-        }
     }
 
     void addBook()
@@ -169,16 +157,13 @@ public class Librarian extends User {
         System.out.print("ISBN: ");
         long isbn = intScanner.nextLong();
 
-
         System.out.println("Ange titel för bok");
         System.out.print("Titel: ");
         String title = stringScanner.nextLine();
 
-
         System.out.println("Ange författare för bok");
         System.out.print("Författare: ");
         String author = stringScanner.nextLine();
-
 
         System.out.println("Ange totala kopior för bok");
         System.out.print("Kopior: ");

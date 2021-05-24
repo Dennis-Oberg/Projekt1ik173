@@ -10,13 +10,11 @@ public class Member extends User {
     Book book;
     BookManager bManager;
 
-    public Member(User loggedinUser) {
 
+    public Member(User loggedinUser, BookStore bookStore) {
         user = loggedinUser;
-        bManager = new BookManager(user);
-
+        bManager = new BookManager(user, bookStore);
         memberMenu();
-
     }
 
     public void memberMenu() {
@@ -89,7 +87,8 @@ public class Member extends User {
         Scanner scan = new Scanner(System.in);
 
         if (scan.next().equalsIgnoreCase("y")) {
-            MemberManager mManager = new MemberManager(user);
+            MemberStore memberStore = new MemberStore();
+            MemberManager mManager = new MemberManager(user, memberStore);
             mManager.removeMember(user);
             //scan.close();
         } else{

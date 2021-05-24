@@ -7,22 +7,9 @@ public class BookManager implements IBookManager {
 
     BookStore bStore;
     Book[] books;
-    User user = null;
+    User user;
 
-
-    public BookManager(BookStore bStore) {
-        this.bStore = bStore;
-    }
-
-
-    public BookManager(User user) {
-        this.bStore = new BookStore();
-        this.user = user;
-        books = getMemberLoans();
-    }
-
-
-    public BookManager(BookStore bStore, User user) {
+    public BookManager(User user, BookStore bStore) {
         this.bStore = bStore;
         this.user = user;
         books = getMemberLoans();
@@ -67,7 +54,6 @@ public class BookManager implements IBookManager {
              }
             throw new NullPointerException("Du har inte lånat denna boken");
         }
-
     }
 
 

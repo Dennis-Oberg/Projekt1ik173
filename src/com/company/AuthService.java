@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class AuthService {
 
     MemberStore mStore;
+    BookStore bStore;
 
-    int loginId;
     User loggedInUser;
 
     public AuthService() {
@@ -44,64 +44,25 @@ public class AuthService {
             loggedInUser = mStore.getMemberById(id);
 
             if (loggedInUser.getTitle() == 5) {
-                new Librarian(loggedInUser);
-            } else {
-                new Member(loggedInUser);
-
+                new Librarian(loggedInUser, new BookManager(loggedInUser, bStore), new MemberManager(loggedInUser, mStore));
+            } else if (checkSuspension(loggedInUser)) {
+                new Member(loggedInUser, bStore);
             }
         } else {
-            System.out.println("\nError, fel lösenord och/eller användarnamn");
+            System.out.println("\nError, Du är bannlyst eller har skrivit in fel lösenord och/eller användarnamn");
             System.out.println("Försök igen\n");
             start();
         }
     }
 
-
-    public User getLoggedInMember() {
-        return loggedInUser;
-    }
-
-    public User returnMember() {
-        return loggedInUser;
-    }
-
-    public void displayMembers() {
-
-        ArrayList<User> users = mStore.getMembers();
-
-        for (User m : users
-        ) {
-            System.out.println(m.firstName);
+    public boolean checkSuspension(User loggedInUser)
+    {
+        if (loggedInUser.getStrikes() == 3)
+        {
+            mStore.moveToBannedMember(loggedInUser);
+            mStore.removeMember(loggedInUser);
+            return false;
         }
-
+        return true;
     }
-
-    public void logout() {
-        this.loggedInUser = null;
-    }
-
-    public User getMemberById(int id) {
-
-        for (User m : mStore.getMembers()) {
-            //Bytas ut mot databas??
-            if (m.getIDCode() == id) {
-                return m;
-            }
-        }
-        return null;
-    }
-
-
-    void getCredentials() {
-
-    }
-
-    public int getLoginId() {
-        return loginId;
-    }
-
-    public void setLoginId(int loginId) {
-        this.loginId = loginId;
-    }
-
 }

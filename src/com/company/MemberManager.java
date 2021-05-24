@@ -8,19 +8,15 @@ public class MemberManager {
     BookManager bookManager;
     MemberStore mStore;
 
-    public MemberManager() { //skick in ny bookstore samt medlem gjort med konstruktorn
-        mStore = new MemberStore();
-
-    }
-
-    public MemberManager(User user) {
+    public MemberManager(User user, MemberStore memberStore) {
         this.user = user;
-        mStore = new MemberStore();
+        this.mStore = memberStore;
     }
 
     public void removeMember(User user) {
         //Måste kolla om man har böcker lånade innan man kan ta bort. Om inte blir det fel i databas
-        bookManager = new BookManager(user);
+        BookStore bookStore = new BookStore();
+        bookManager = new BookManager(user, bookStore);
         int numberOfBooks = bookManager.numberOfBorrowedBooks();
 
         if (numberOfBooks > 0) {
@@ -31,7 +27,7 @@ public class MemberManager {
 
             }
         } else {
-            mStore.removeMember(user.getIDCode());
+            mStore.removeMember(user);
         }
     }
 
@@ -44,10 +40,6 @@ public class MemberManager {
 
         //Ska senare kolla om man varit medlem tidigare eller är bannad
         mStore.creatNewMember(ssn, fName, lName, title);
-    }
-
-    public void banMember(User user) {
-        mStore.moveToBannedMember(user);
     }
 
 }
