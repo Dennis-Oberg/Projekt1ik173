@@ -76,6 +76,8 @@ public class BookStore implements IBookStore {
         return tempBook;
     }
 
+
+
     public Book getBookByIsbn(long isbn) {
 
         Book tempBook = null;
@@ -107,7 +109,7 @@ public class BookStore implements IBookStore {
         ArrayList<Book> tempList = new ArrayList<>();
 
         try {
-            String query = "SELECT book.title, book.author, book.isbn, book.copies, borrowedBy.borrowedBy FROM book, borrowedby WHERE book.isbn = borrowedBy.isbn AND borrowedBy.borrowedBy = ?";
+            String query = "SELECT book.title, book.author, book.isbn, book.copies, borrowedBy.borrowedBy, borrowedBy.date, borrowedBy.returndate FROM book, borrowedby WHERE book.isbn = borrowedBy.isbn AND borrowedBy.borrowedBy = ?";
 
             preparedStatement = conn.prepareStatement(query);
 
@@ -117,7 +119,7 @@ public class BookStore implements IBookStore {
 
             while (resultSet.next()) {
                 tempList.add(new Book(resultSet.getLong(3), resultSet.getString(1),
-                        resultSet.getInt(4), resultSet.getString(2), resultSet.getInt(5)));
+                        resultSet.getInt(4), resultSet.getString(2), resultSet.getInt(5), resultSet.getDate(6), resultSet.getDate(7)));
             }
 
         } catch (SQLException sqle) { //If connection fails
@@ -128,7 +130,7 @@ public class BookStore implements IBookStore {
         return tempList.toArray(books);
     }
 
-    public void updateBookInfo(Book book) {
+    public void getLoanDate(Book book) {
 
     }
 
@@ -175,7 +177,7 @@ public class BookStore implements IBookStore {
             if (copies>0) {
                 try {
                 PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
-                preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date) VALUES (?, ?, ?)");
+                preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
                 long millis = System.currentTimeMillis();
                 Date date = new Date(millis);
                 preparedStatement.setLong(1, book.getIsbn());

@@ -42,4 +42,8 @@ public class MemberManager {
         mStore.creatNewMember(ssn, fName, lName, title);
     }
 
+    public void addStrike() {
+        mStore.addStrike(this.user);
+    }
+
 }

@@ -11,10 +11,10 @@ public class MemberStoreStub extends MemberStore{
 
 
         //ska bort senare
-        userList.add(new User(1234,1,"Tobias", "Wendel", 1));
-        userList.add(new User(1235,1,"Tobias", "Wendel", 2));
-        userList.add(new User(1236,1,"Tobias", "Wendel", 4));
-        userList.add(new User(4321,1,"Tobias", "Wendel", 5));
+        //userList.add(new User(1234,1,"Tobias", "Wendel", 1));
+        //userList.add(new User(1235,1,"Tobias", "Wendel", 2));
+        //userList.add(new User(1236,1,"Tobias", "Wendel", 4));
+        //userList.add(new User(4321,1,"Tobias", "Wendel", 5));
     }
 
     public ArrayList<User> getMembers()

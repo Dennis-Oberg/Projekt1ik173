@@ -30,6 +30,7 @@ public class AuthService {
             System.out.print("Ange ID för att logga in: ");
             int id = scan.nextInt();
             mStore = new MemberStore();
+            bStore = new BookStore();
 
             decideAuth(id);
             scan.close();
@@ -45,7 +46,7 @@ public class AuthService {
 
             if (loggedInUser.getTitle() == 5) {
                 new Librarian(loggedInUser, new BookManager(loggedInUser, bStore), new MemberManager(loggedInUser, mStore));
-            } else if (checkSuspension(loggedInUser)) {
+            } else if (checkActiveSuspension(loggedInUser) && checkSuspension(loggedInUser) && checkBan(loggedInUser)) {
                 new Member(loggedInUser, bStore);
             }
         } else {
@@ -55,14 +56,47 @@ public class AuthService {
         }
     }
 
-    public boolean checkSuspension(User loggedInUser)
-    {
-        if (loggedInUser.getStrikes() == 3)
-        {
-            mStore.moveToBannedMember(loggedInUser);
-            mStore.removeMember(loggedInUser);
+    public boolean checkActiveSuspension(User user) {
+
+        long millis = System.currentTimeMillis();
+        Date currentDate = new Date(millis);
+
+        if (user.suspensionDate != null) {
+            if (currentDate.after(user.suspensionDate))
+            {
+                mStore.removeSuspension(user);
+                user.suspended = false;
+            }
+        }
+
+        if (user.suspended) {
             return false;
         }
         return true;
     }
+
+    public boolean checkSuspension(User user) {
+        if (user.getStrikes() == 3) {
+            mStore.addSuspension(user);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkBan(User user) {
+
+        if (user.getSuspendedCount() == 3) {
+
+            for (Book b: bStore.getBookByMember(user.getIDCode())
+                 ) {
+                bStore.returnBook(b);
+            }
+
+            mStore.moveToBannedMember(user);
+            mStore.removeMember(user);
+            return false;
+        }
+        return true;
+    }
+
 }

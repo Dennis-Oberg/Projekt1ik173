@@ -74,7 +74,12 @@ public class Member extends User {
         long isbn = input.nextLong();
 
         try {
-             book = bManager.returnBook(isbn);
+            if (bManager.overDueLoan(isbn)) {
+                MemberStore memberStore = new MemberStore();
+                MemberManager mManager = new MemberManager(user, memberStore);
+                mManager.addStrike();
+            }
+            book = bManager.returnBook(isbn);
         }
         catch (Exception error){
             System.out.println(error.getMessage());

@@ -1,6 +1,7 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 public class BookManager implements IBookManager {
@@ -17,7 +18,7 @@ public class BookManager implements IBookManager {
 
     public Book loan(long isbn) throws NoSuchElementException, NullPointerException {
         Book tempBook = bStore.getBookByIsbn(isbn);
-        if (memberLendStatus() && !user.suspended) {
+        if (memberLendStatus()) {
 
             if (tempBook == null) {
                 throw new NoSuchElementException("Ingen bok med ISBN finns");
@@ -29,8 +30,6 @@ public class BookManager implements IBookManager {
                 bStore.loanBook(tempBook);
             }
             return tempBook;
-        } else if (user.suspended) {
-            throw new NoSuchElementException("Användaren är bannad :<");
         } else
             throw new NoSuchElementException("Max antal böcker lånade");
     }
@@ -56,7 +55,22 @@ public class BookManager implements IBookManager {
         }
     }
 
-
+    public boolean overDueLoan(long isbn) {
+        Book[] booklist = bStore.getBookByMember(user.getIDCode());
+        for (Book b: booklist) {
+            if (b.getIsbn() == isbn){
+                long millis = System.currentTimeMillis();
+                Date date = new Date(millis);
+                if (date.after(b.getReturnDate())) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
 
     public boolean addBook(long isbn, String title,String author,int copies)
     {

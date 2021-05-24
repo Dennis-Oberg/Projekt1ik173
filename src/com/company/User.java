@@ -2,6 +2,7 @@ package com.company;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class User {
 
@@ -16,23 +17,30 @@ public class User {
     int strikes;
     int suspendedCount;
     boolean suspended;
-    boolean suspendedOnce;
     boolean isLibrarian = false;
+    Date suspensionDate;
     ArrayList<Book> books;
 
     User() {
 
     }
 
-    User(int idCode, int ssn, String firstname, String lastname, int title) {
+    User(int idCode, int ssn, String firstname, String lastname, int title, int suspendedCount, int strikes, Date suspensionDate, boolean suspended) {
         this.IDCode = idCode;
         this.SSN = ssn;
         this.firstName = firstname;
         this.lastName = lastname;
         this.title = title;
-        this.suspended = false;
+        this.suspended = suspended;
+        this.suspendedCount = suspendedCount;
+        this.strikes = strikes;
+        this.suspensionDate = suspensionDate;
         decideMax(title);
         books = new ArrayList<>();
+
+       long millis = System.currentTimeMillis();
+       Date currentDate = new Date(millis);
+
     }
 
     public int getIDCode() {
@@ -85,5 +93,10 @@ public class User {
             default -> System.out.println("Ogiltig rank");
         }
     }
+
+    public int getSuspendedCount() {
+        return suspendedCount;
+    }
+
 }
 

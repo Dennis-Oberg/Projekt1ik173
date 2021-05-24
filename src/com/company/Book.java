@@ -1,6 +1,7 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Book {
     private long isbn;
@@ -8,6 +9,8 @@ public class Book {
     private int copy;
     private String author;
     private int borrowedBy;
+    private Date loanDate;
+    private Date returnDate;
 
     public int getBorrowedBy() {
         return borrowedBy;
@@ -33,6 +36,24 @@ public class Book {
         this.copy = copy;
         this.borrowedBy = borrowedBy;
         this.author = author;
+    }
+
+    public Book(long isbn, String title, int copy, String author, int borrowedBy, Date loanDate, Date returnDate) {
+        this.isbn = isbn;
+        this.title = title;
+        this.copy = copy;
+        this.borrowedBy = borrowedBy;
+        this.author = author;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+    }
+
+    public Date getLoanDate() {
+        return loanDate;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
     }
 
     public long getIsbn() {
