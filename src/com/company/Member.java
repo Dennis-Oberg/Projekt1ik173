@@ -8,13 +8,22 @@ public class Member extends User {
 
     User user;
     Book book;
+    MemberStore mStore;
     BookManager bManager;
+    MemberManager mManager;
 
 
     public Member(User loggedinUser, BookStore bookStore) {
         user = loggedinUser;
+        mStore = new MemberStore();
+        mManager = new MemberManager(user, mStore);
         bManager = new BookManager(user, bookStore);
+        checkStatus(user, mManager);
         memberMenu();
+    }
+
+    public boolean checkStatus(User user, MemberManager mManager){
+        return mManager.getMemberStatus(user);
     }
 
     public void memberMenu() {
@@ -98,8 +107,8 @@ public class Member extends User {
             //scan.close();
         } else{
             memberMenu();
-        //       memberOption(memberMenu());
-        scan.close();
+            //       memberOption(memberMenu());
+            scan.close();
         }
 
     }

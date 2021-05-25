@@ -35,7 +35,7 @@ public class MemberStore implements IMemberStore {
                         resultSet.getInt("strikes"),
                         resultSet.getDate("suspensiondate"),
                         resultSet.getBoolean("suspended")
-                        );
+                );
                 System.out.println("Välkommen " + loggedInUser.firstName);
                 return true;
             }
