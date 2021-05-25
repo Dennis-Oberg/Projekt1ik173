@@ -20,39 +20,39 @@ public class Librarian extends User {
 
     public void librarianOption(int option) {
         System.out.println("");
-        switch (option) {
-            case 0 -> {
+        switch (option){
+            case 0:
                 AuthService auth = new AuthService();
                 auth.start();
-            }
-            case 1 -> {
+                break;
+            case 1:
                 addBook();
                 librarianOption(libMenu());
-            }
-            case 2 -> {
+                break;
+            case 2:
                 addMember();
                 librarianOption(libMenu());
-            }
-            case 3 -> {
+                break;
+            case 3:
                 searchForMember();
                 librarianOption(libMenu());
-            }
-            case 4 -> {
+                break;
+            case 4:
                 removeMember();
                 librarianOption(libMenu());
-            }
-            case 5 -> {
+                break;
+            case 5:
                 returnBook();
                 librarianOption(libMenu());
-            }
-            case 6 -> {
+                break;
+            case 6:
                 loanByLibrerian();
                 librarianOption(libMenu());
-            }
-            default -> {
+                break;
+            default:
                 System.out.println("Inget giltig val\n");
                 librarianOption(libMenu());
-            }
+                break;
         }
     }
 

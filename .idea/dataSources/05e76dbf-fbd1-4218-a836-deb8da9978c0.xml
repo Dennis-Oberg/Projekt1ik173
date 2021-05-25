@@ -1,70 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="vhost6.lnu.se">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.21">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.20">
     <root id="1">
       <ServerVersion>8.0.23</ServerVersion>
-      <Grants>1ik013v20-30|schema||dennis||ALTER|G
-1ik013v20-30|schema||dennis||ALTER ROUTINE|G
-1ik013v20-30|schema||dennis||CREATE|G
-1ik013v20-30|schema||dennis||CREATE ROUTINE|G
-1ik013v20-30|schema||dennis||CREATE TEMPORARY TABLES|G
-1ik013v20-30|schema||dennis||CREATE VIEW|G
-1ik013v20-30|schema||dennis||DELETE|G
-1ik013v20-30|schema||dennis||DROP|G
-1ik013v20-30|schema||dennis||EVENT|G
-1ik013v20-30|schema||dennis||EXECUTE|G
-1ik013v20-30|schema||dennis||INDEX|G
-1ik013v20-30|schema||dennis||INSERT|G
-1ik013v20-30|schema||dennis||LOCK TABLES|G
-1ik013v20-30|schema||dennis||REFERENCES|G
-1ik013v20-30|schema||dennis||SELECT|G
-1ik013v20-30|schema||dennis||SHOW VIEW|G
-1ik013v20-30|schema||dennis||TRIGGER|G
-1ik013v20-30|schema||dennis||UPDATE|G
-1ik013v21-93|schema||dennis||ALTER|G
-1ik013v21-93|schema||dennis||ALTER ROUTINE|G
-1ik013v21-93|schema||dennis||CREATE|G
-1ik013v21-93|schema||dennis||CREATE ROUTINE|G
-1ik013v21-93|schema||dennis||CREATE TEMPORARY TABLES|G
-1ik013v21-93|schema||dennis||CREATE VIEW|G
-1ik013v21-93|schema||dennis||DELETE|G
-1ik013v21-93|schema||dennis||DROP|G
-1ik013v21-93|schema||dennis||EVENT|G
-1ik013v21-93|schema||dennis||EXECUTE|G
-1ik013v21-93|schema||dennis||INDEX|G
-1ik013v21-93|schema||dennis||INSERT|G
-1ik013v21-93|schema||dennis||LOCK TABLES|G
-1ik013v21-93|schema||dennis||REFERENCES|G
-1ik013v21-93|schema||dennis||SELECT|G
-1ik013v21-93|schema||dennis||SHOW VIEW|G
-1ik013v21-93|schema||dennis||TRIGGER|G
-1ik013v21-93|schema||dennis||UPDATE|G
-dennis-1ik173vt21|schema||dennis||ALTER|G
-dennis-1ik173vt21|schema||dennis||ALTER ROUTINE|G
-dennis-1ik173vt21|schema||dennis||CREATE|G
-dennis-1ik173vt21|schema||dennis||CREATE ROUTINE|G
-dennis-1ik173vt21|schema||dennis||CREATE TEMPORARY TABLES|G
-dennis-1ik173vt21|schema||dennis||CREATE VIEW|G
-dennis-1ik173vt21|schema||dennis||DELETE|G
-dennis-1ik173vt21|schema||dennis||DROP|G
-dennis-1ik173vt21|schema||dennis||EVENT|G
-dennis-1ik173vt21|schema||dennis||EXECUTE|G
-dennis-1ik173vt21|schema||dennis||INDEX|G
-dennis-1ik173vt21|schema||dennis||INSERT|G
-dennis-1ik173vt21|schema||dennis||LOCK TABLES|G
-dennis-1ik173vt21|schema||dennis||REFERENCES|G
-dennis-1ik173vt21|schema||dennis||SELECT|G
-dennis-1ik173vt21|schema||dennis||SHOW VIEW|G
-dennis-1ik173vt21|schema||dennis||TRIGGER|G
-dennis-1ik173vt21|schema||dennis||UPDATE|G</Grants>
       <DefaultEngine>InnoDB</DefaultEngine>
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <DefaultCasing>lower/lower</DefaultCasing>
     </root>
-    <schema id="2" parent="1" name="1ik013v20-30">
+    <schema id="2" parent="1" name="1ik013v20-25">
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
-    <schema id="3" parent="1" name="1ik013v21-93">
+    <schema id="3" parent="1" name="1ik013v21-92">
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
     <schema id="4" parent="1" name="dennis-1ik173vt21">
@@ -931,114 +877,12 @@ dennis-1ik173vt21|schema||dennis||UPDATE|G</Grants>
     <collation id="277" parent="1" name="utf8mb4_zh_0900_as_cs">
       <Charset>utf8mb4</Charset>
     </collation>
-    <user id="278" parent="1" name="dennis"/>
-    <table id="279" parent="4" name="bannedmember"/>
-    <table id="280" parent="4" name="book"/>
-    <table id="281" parent="4" name="borrowedby"/>
-    <table id="282" parent="4" name="member"/>
-    <column id="283" parent="279" name="idCode">
-      <Position>1</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <key id="284" parent="279" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>idCode</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="285" parent="279" name="bannedmember_member_idCode_fk">
-      <ColNames>idCode</ColNames>
-      <RefTableName>member</RefTableName>
-      <RefColNames>idCode</RefColNames>
-    </foreign-key>
-    <column id="286" parent="280" name="title">
-      <Position>1</Position>
-      <DataType>varchar(100)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="287" parent="280" name="author">
-      <Position>2</Position>
-      <DataType>varchar(100)|0s</DataType>
-    </column>
-    <column id="288" parent="280" name="isbn">
-      <Position>3</Position>
-      <DataType>bigint|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="289" parent="280" name="copies">
-      <Position>4</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="290" parent="280" name="amountBorrowed">
-      <Position>5</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <key id="291" parent="280" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>isbn</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="292" parent="281" name="isbn">
-      <Position>1</Position>
-      <DataType>bigint|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="293" parent="281" name="copy">
-      <Position>2</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="294" parent="281" name="borrowedBy">
-      <Position>3</Position>
-      <DataType>int|0s</DataType>
-      <DefaultExpression>0</DefaultExpression>
-    </column>
-    <column id="295" parent="281" name="date">
-      <Position>4</Position>
-      <DataType>date|0s</DataType>
-    </column>
-    <key id="296" parent="281" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>isbn
-copy</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="297" parent="281" name="copiesofbook_book_isbn_fk">
-      <ColNames>isbn</ColNames>
-      <RefTableName>book</RefTableName>
-      <RefColNames>isbn</RefColNames>
-    </foreign-key>
-    <column id="298" parent="282" name="idCode">
-      <Position>1</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="299" parent="282" name="socialSecurityNumber">
-      <Position>2</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="300" parent="282" name="firstName">
-      <Position>3</Position>
-      <DataType>varchar(100)|0s</DataType>
-    </column>
-    <column id="301" parent="282" name="lastName">
-      <Position>4</Position>
-      <DataType>varchar(100)|0s</DataType>
-    </column>
-    <column id="302" parent="282" name="title">
-      <Position>5</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="303" parent="282" name="strikes">
-      <Position>6</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>0</DefaultExpression>
-    </column>
-    <key id="304" parent="282" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>idCode</ColNames>
-      <Primary>1</Primary>
-    </key>
+    <user id="278" parent="1" name="gustaf">
+      <Host>%</Host>
+      <ObjectGrants>ALL PRIVILEGES|1ik013v20-25
+ALL PRIVILEGES|1ik013v21-92
+ALL PRIVILEGES|dennis-1ik173vt21
+</ObjectGrants>
+    </user>
   </database-model>
 </dataSource>
