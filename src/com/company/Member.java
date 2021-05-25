@@ -1,11 +1,14 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Member extends User {
-
+    private static final Logger logger = LogManager.getLogger(Member.class.getName());
     User user;
     Book book;
     MemberStore mStore;
@@ -19,6 +22,7 @@ public class Member extends User {
         mManager = new MemberManager(user, mStore);
         bManager = new BookManager(user, bookStore);
         checkStatus(user, mManager);
+        logger.info(user.firstName + " Logged in, Suspended: "+ suspended);
         memberMenu();
     }
 
@@ -104,6 +108,7 @@ public class Member extends User {
             MemberStore memberStore = new MemberStore();
             MemberManager mManager = new MemberManager(user, memberStore);
             mManager.removeMember(user);
+            logger.info("konto " + user.firstName + " " + user.lastName + " borttaget");
             //scan.close();
         } else{
             memberMenu();
