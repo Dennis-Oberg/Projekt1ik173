@@ -21,12 +21,6 @@ public class AuthService {
 
     }
 
-
-    public AuthService(MemberStore newMStore) {
-        this.mStore = newMStore;
-    }
-
-
     public void start() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Välkommen!\n");
@@ -62,47 +56,4 @@ public class AuthService {
             start();
         }
     }
-
-    public boolean checkActiveSuspension(User user) {
-
-        long millis = System.currentTimeMillis();
-        Date currentDate = new Date(millis);
-
-        if (user.suspensionDate != null) {
-            if (currentDate.after(user.suspensionDate)) {
-                mStore.removeSuspension(user);
-                user.suspended = false;
-            }
-        }
-
-        if (user.suspended) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean checkSuspension(User user) {
-        if (user.getStrikes() == 3) {
-            mStore.addSuspension(user);
-            logger.info(user.firstName + " Suspended");
-            return false;
-        }
-        return true;
-    }
-
-    public boolean checkBan(User user) {
-
-        if (user.getSuspendedCount() == 3) {
-
-            for (Book b : bStore.getBookByMember(user.getIDCode())) {
-                bStore.returnBook(b);
-            }
-
-            mStore.moveToBannedMember(user);
-            mStore.removeMember(user);
-            return false;
-        }
-        return true;
-    }
-
 }

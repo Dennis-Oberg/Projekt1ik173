@@ -72,7 +72,7 @@ public class BookManager {
         return false;
     }
 
-    public boolean addBook(long isbn, String title,String author,int copies)
+    public boolean addBook(long isbn, String title, String author, int copies)
     {
         if (bStore.insertBook(isbn,title,author,copies))
         {
@@ -97,10 +97,6 @@ public class BookManager {
 
     public Book[] getMemberLoansForLibrarian(User newUser) {
         return bStore.getBookByMember(newUser.getIDCode());
-    }
-
-    public Book[] memberLoans() {
-        return books;
     }
 
     public int numberOfBorrowedBooks() {
