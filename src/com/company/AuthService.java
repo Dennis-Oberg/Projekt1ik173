@@ -1,11 +1,16 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AuthService {
+    private static Logger logger = LogManager.getLogger(AuthService.class.getName());
 
     MemberStore mStore;
     BookStore bStore;
@@ -40,6 +45,7 @@ public class AuthService {
             start();
         }
     }
+
     public void decideAuth(int id) {
         boolean authorisation = mStore.login(id);
         if (authorisation) {
@@ -63,8 +69,7 @@ public class AuthService {
         Date currentDate = new Date(millis);
 
         if (user.suspensionDate != null) {
-            if (currentDate.after(user.suspensionDate))
-            {
+            if (currentDate.after(user.suspensionDate)) {
                 mStore.removeSuspension(user);
                 user.suspended = false;
             }
@@ -79,6 +84,7 @@ public class AuthService {
     public boolean checkSuspension(User user) {
         if (user.getStrikes() == 3) {
             mStore.addSuspension(user);
+            logger.info(user.firstName + " Suspended");
             return false;
         }
         return true;
@@ -88,8 +94,7 @@ public class AuthService {
 
         if (user.getSuspendedCount() == 3) {
 
-            for (Book b: bStore.getBookByMember(user.getIDCode())
-            ) {
+            for (Book b : bStore.getBookByMember(user.getIDCode())) {
                 bStore.returnBook(b);
             }
 
