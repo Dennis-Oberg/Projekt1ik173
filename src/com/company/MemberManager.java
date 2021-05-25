@@ -1,6 +1,6 @@
 package com.company;
 
-import java.util.Scanner;
+import java.sql.Date;
 
 public class MemberManager {
 
@@ -11,6 +11,59 @@ public class MemberManager {
     public MemberManager(User user, MemberStore memberStore) {
         this.user = user;
         this.mStore = memberStore;
+    }
+
+    public boolean getMemberStatus(User user){
+        boolean b1 = checkActiveSuspension(user);
+        boolean b2 = checkSuspension(user);
+        boolean b3 = checkBan(user);
+        return b1 && b2 && b3;
+    }
+
+    public boolean checkActiveSuspension(User user) {
+
+        long millis = System.currentTimeMillis();
+        Date currentDate = new Date(millis);
+
+        if (user.suspensionDate != null) {
+            if (currentDate.after(user.suspensionDate))
+            {
+                mStore.removeSuspension(user);
+                user.suspended = false;
+            }
+        }
+
+        if (user.suspended) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkSuspension(User user) {
+        if (user.getStrikes() == 3) {
+            mStore.addSuspension(user);
+            user.suspended = true;
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkBan(User user) {
+
+        BookStore bStore = new BookStore();
+
+        if (user.getSuspendedCount() == 3) {
+
+            for (Book b: bStore.getBookByMember(user.getIDCode())
+            ) {
+                bStore.returnBook(b);
+            }
+
+            mStore.moveToBannedMember(user);
+            mStore.removeMember(user);
+            return false;
+        }
+        return true;
     }
 
     public void removeMember(User user) {

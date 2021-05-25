@@ -27,6 +27,7 @@ public class AuthService {
         System.out.println("Välkommen!\n");
 
         try {
+
             System.out.print("Ange ID för att logga in: ");
             int id = scan.nextInt();
             mStore = new MemberStore();
@@ -46,8 +47,8 @@ public class AuthService {
 
             if (loggedInUser.getTitle() == 5) {
                 new Librarian(loggedInUser, new BookManager(loggedInUser, bStore), new MemberManager(loggedInUser, mStore));
-            } else if (checkActiveSuspension(loggedInUser) && checkSuspension(loggedInUser) && checkBan(loggedInUser)) {
-                new Member(loggedInUser, bStore);
+            } else {
+                Member member = new Member(loggedInUser, bStore);
             }
         } else {
             System.out.println("\nError, Du är bannlyst eller har skrivit in fel lösenord och/eller användarnamn");
@@ -88,7 +89,7 @@ public class AuthService {
         if (user.getSuspendedCount() == 3) {
 
             for (Book b: bStore.getBookByMember(user.getIDCode())
-                 ) {
+            ) {
                 bStore.returnBook(b);
             }
 
