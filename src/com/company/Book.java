@@ -38,6 +38,13 @@ public class Book {
         this.author = author;
     }
 
+    public Book(long isbn, String title, int copy, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.copy = copy;
+        this.author = author;
+    }
+
     public Book(long isbn, String title, int copy, String author, int borrowedBy, Date loanDate, Date returnDate) {
         this.isbn = isbn;
         this.title = title;
@@ -82,6 +89,14 @@ public class Book {
 
     public String getAuthor() {
         return author;
+    }
+
+    public void setLoanDate(Date loanDate) {
+        this.loanDate = loanDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 }
 
