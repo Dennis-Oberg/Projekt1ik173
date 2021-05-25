@@ -1,3 +1,5 @@
 # Project exclude paths
 /out/
 *.xml
+Projekt1ik173.iml
+.idea/misc.xml
