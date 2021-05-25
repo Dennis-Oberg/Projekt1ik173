@@ -108,7 +108,6 @@ public class Member extends User {
             MemberStore memberStore = new MemberStore();
             MemberManager mManager = new MemberManager(user, memberStore);
             mManager.removeMember(user);
-            logger.info("konto " + user.firstName + " " + user.lastName + " borttaget");
             //scan.close();
         } else{
             memberMenu();

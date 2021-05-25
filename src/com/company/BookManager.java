@@ -1,10 +1,16 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
 public class BookManager implements IBookManager {
+
+    private static final Logger logger = LogManager.getLogger(BookManager.class.getName());
+
 
     BookStore bStore;
     Book[] books;
@@ -61,12 +67,7 @@ public class BookManager implements IBookManager {
             if (b.getIsbn() == isbn){
                 long millis = System.currentTimeMillis();
                 Date date = new Date(millis);
-                if (date.after(b.getReturnDate())) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                return date.after(b.getReturnDate());
             }
         }
         return false;

@@ -1,8 +1,12 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Date;
 
 public class MemberManager {
+    private static final Logger logger = LogManager.getLogger(MemberManager.class.getName());
 
     User user = null;
     BookManager bookManager;
@@ -13,7 +17,7 @@ public class MemberManager {
         this.mStore = memberStore;
     }
 
-    public boolean getMemberStatus(User user){
+    public boolean getMemberStatus(User user) {
         boolean b1 = checkActiveSuspension(user);
         boolean b2 = checkSuspension(user);
         boolean b3 = checkBan(user);
@@ -26,17 +30,14 @@ public class MemberManager {
         Date currentDate = new Date(millis);
 
         if (user.suspensionDate != null) {
-            if (currentDate.after(user.suspensionDate))
-            {
+            if (currentDate.after(user.suspensionDate)) {
                 mStore.removeSuspension(user);
                 user.suspended = false;
             }
         }
 
-        if (user.suspended) {
-            return false;
-        }
-        return true;
+        return !user.suspended;
+
     }
 
     public boolean checkSuspension(User user) {
@@ -54,8 +55,7 @@ public class MemberManager {
 
         if (user.getSuspendedCount() == 3) {
 
-            for (Book b: bStore.getBookByMember(user.getIDCode())
-            ) {
+            for (Book b : bStore.getBookByMember(user.getIDCode())) {
                 bStore.returnBook(b);
             }
 
@@ -81,6 +81,7 @@ public class MemberManager {
             }
         } else {
             mStore.removeMember(user);
+            logger.info("Användare " + user.firstName + " borttagen");
         }
     }
 
@@ -93,6 +94,7 @@ public class MemberManager {
 
         //Ska senare kolla om man varit medlem tidigare eller är bannad
         mStore.creatNewMember(ssn, fName, lName, title);
+        logger.info("Användare " + fName + " " + lName + " " + title + " tillagd");
     }
 
     public void addStrike() {
