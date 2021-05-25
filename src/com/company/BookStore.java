@@ -27,57 +27,6 @@ public class BookStore {
         //Ska bort senare
     }
 
-    public Book[] getBooks() {
-
-        CheckConnection();
-
-        ArrayList<Book> tempList = new ArrayList<>();
-
-        try {
-            String query = "SELECT * FROM `dennis-1ik173vt21`.book";
-            statement = conn.createStatement();
-
-            System.out.println("Alla böcker");
-            System.out.println("=====");
-            resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) { //Print every existing row in artist table for all three columns
-                tempList.add(new Book(resultSet.getLong(3), resultSet.getString(1)));
-            }
-        } catch (SQLException sqle) { //If connection fails
-            sqle.printStackTrace();
-        }
-        Book[] books = new Book[tempList.size()];
-        return tempList.toArray(books);
-    }
-
-    public Book getBookByTitle(String title) {
-
-        Book tempBook = null;
-        CheckConnection();
-
-        try {
-            String query = "SELECT title, author, isbn, copies FROM book WHERE title = ?";
-
-            preparedStatement = conn.prepareStatement(query);
-
-            preparedStatement.setString(1, title);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                tempBook = new Book(resultSet.getLong(3), resultSet.getString(1),
-                        resultSet.getInt(4), resultSet.getString(2), 0);
-            }
-        } catch (SQLException sqle) { //If connection fails
-            sqle.printStackTrace();
-        }
-
-        return tempBook;
-    }
-
-
-
     public Book getBookByIsbn(long isbn) {
 
         Book tempBook = null;
@@ -128,10 +77,6 @@ public class BookStore {
 
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
-    }
-
-    public void getLoanDate(Book book) {
-
     }
 
     public Book[] checkAvailability(Long isbn)

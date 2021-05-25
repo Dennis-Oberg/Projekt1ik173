@@ -74,7 +74,7 @@ public class MemberManager {
 
         if (numberOfBooks > 0) {
             System.out.println("Behöver lämna tillbaks följande böcker innan medlem kan tas bort:");
-            Book[] books = bookManager.memberLoans();
+            Book[] books = bookManager.getMemberLoans();
             for (Book book : books) {
                 System.out.println(book.getTitle() + " (ISBN: " + book.getIsbn() + ")");
 
