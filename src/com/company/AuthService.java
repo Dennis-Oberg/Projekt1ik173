@@ -27,6 +27,7 @@ public class AuthService {
         System.out.println("Välkommen!\n");
 
         try {
+
             System.out.print("Ange ID för att logga in: ");
             int id = scan.nextInt();
             mStore = new MemberStore();

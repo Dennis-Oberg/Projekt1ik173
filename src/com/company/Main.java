@@ -1,15 +1,20 @@
 package com.company;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
+public class Main {
+    private static Logger logger = LogManager.getLogger(Member.class.getName());
     public static void main(String[] args) {
 
-
-
-         new AuthService().start();
+        logger.info("hello");
+        new AuthService().start();
 
 
 

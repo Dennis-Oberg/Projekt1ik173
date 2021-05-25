@@ -26,8 +26,8 @@ public class BookStoreStub extends BookStore {
         Book[] books = new Book[bookList.size()];
         return this.bookList.toArray(books);
     }
-
-    public Book getBookByTitle(String title) {
+/*
+    public Book[] getBookByTitle(String title) {
         Book tempBook = null;
         for (Book b: bookList
         ) {
@@ -38,6 +38,8 @@ public class BookStoreStub extends BookStore {
         }
         return tempBook;
     }
+
+ */
 
     public Book[] getBookByIsbn(int isbn)   {
         ArrayList<Book> tempList = new ArrayList<>();

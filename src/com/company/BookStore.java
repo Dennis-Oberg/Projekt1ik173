@@ -18,7 +18,7 @@ public class BookStore implements IBookStore {
         if (conn == null) {
             System.out.println("Connection failed\n");
         } else {
-            //System.out.println("Connection successful\n");
+            System.out.println("Connection successful\n");
         }
     }
 
@@ -50,6 +50,7 @@ public class BookStore implements IBookStore {
         Book[] books = new Book[tempList.size()];
         return tempList.toArray(books);
     }
+
 
     public Book getBookByTitle(String title) {
 
@@ -127,6 +128,9 @@ public class BookStore implements IBookStore {
         }
 
         Book[] books = new Book[tempList.size()];
+        if (tempList.size() == 0){
+            System.out.println("Du har inga aktiva lån");
+        }
         return tempList.toArray(books);
     }
 

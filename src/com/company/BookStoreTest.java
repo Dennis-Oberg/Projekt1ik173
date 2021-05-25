@@ -22,10 +22,10 @@ class BookStoreTest {
         store.bookList.add(new Book(1234, "Harry potter"));
         store.bookList.add(new Book(1235, "Pippi"));
 
-        cut.loan(1234, 1);
-        cut.loan(1234, 1);
-        cut.loan(1235, 1);
-        cut1.loan(1234, 2);
+        cut.loanByIsbn(1234, 1);
+        cut.loanByIsbn(1234, 1);
+        cut.loanByIsbn(1235, 1);
+        cut1.loanByIsbn(1234, 2);
 
     }
 
@@ -46,21 +46,20 @@ class BookStoreTest {
         store.bookList.add(new Book(1238, "Greta gris"));
         // user.suspended = true;
 
-        cut.loan(1239, 1);
-        cut.loan(1234, 1);
-        cut.loan(1235, 1);
-        cut.loan(1236, 1);
-        cut.loan(1238, 1);
-        cut.loan(1237, 1);
+        cut.loanByIsbn(1239, 1);
+        cut.loanByIsbn(1234, 1);
+        cut.loanByIsbn(1235, 1);
+        cut.loanByIsbn(1236, 1);
+        cut.loanByIsbn(1238, 1);
+        cut.loanByIsbn(1237, 1);
 
         System.out.println(store.bookList.get(3).getLoanDate());
         //store.bookList.get(2).setBorrowedBy(0001);
-        System.out.println(store.bookList.get(6).isAvailable());
+
 
         System.out.println(cut.numberOfBorrowedBooks());
 
         cut.returnBook(1238);
-        System.out.println(store.bookList.get(6).isAvailable());
 
         System.out.println(cut.numberOfBorrowedBooks());
     }
@@ -86,10 +85,10 @@ class BookStoreTest {
 
         bookManager.user = authService.returnMember();
 
-        bookManager.loan(1234,1);
-        bookManager.loan(1235,1);
-        bookManager.loan(1236,1);
-        bookManager.loan(1237,1);
+        bookManager.loanByIsbn(1234,1);
+        bookManager.loanByIsbn(1235,1);
+        bookManager.loanByIsbn(1236,1);
+        bookManager.loanByIsbn(1237,1);
 
 
        /* for (int i = 0; i < 3; i++) {
