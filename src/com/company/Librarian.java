@@ -1,70 +1,63 @@
 package com.company;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Librarian extends User {
-
-    private static final Logger logger = LogManager.getLogger(Librarian.class.getName());
 
     User user;
     BookManager bManager;
     MemberManager mManager;
     Book book;
 
-    public Librarian(User user, BookManager bookManager, MemberManager memberManager) {
+    public Librarian(User user, BookManager bookManager, MemberManager memberManager){
         this.user = user;
         this.mManager = memberManager;
         this.bManager = bookManager;
         librarianOption(libMenu());
-        logger.info(user.firstName + " lib?: " + user.isLibrarian + " logged in ");
-
     }
 
     public void librarianOption(int option) {
         System.out.println("");
-        switch (option) {
-            case 0 -> {
+        switch (option){
+            case 0:
                 AuthService auth = new AuthService();
                 auth.start();
-            }
-            case 1 -> {
+                break;
+            case 1:
                 addBook();
                 librarianOption(libMenu());
-            }
-            case 2 -> {
+                break;
+            case 2:
                 addMember();
                 librarianOption(libMenu());
-            }
-            case 3 -> {
+                break;
+            case 3:
                 searchForMember();
                 librarianOption(libMenu());
-            }
-            case 4 -> {
+                break;
+            case 4:
                 removeMember();
                 librarianOption(libMenu());
-            }
-            case 5 -> {
+                break;
+            case 5:
                 returnBook();
                 librarianOption(libMenu());
-            }
-            case 6 -> {
+                break;
+            case 6:
                 loanByLibrerian();
                 librarianOption(libMenu());
-            }
-            default -> {
+                break;
+            default:
                 System.out.println("Inget giltig val\n");
                 librarianOption(libMenu());
-            }
+                break;
         }
     }
 
 
-    public int libMenu() {
+    public int libMenu(){
         Scanner input = new Scanner(System.in);
         System.out.println("\nVälj ett alternativ:\n1.Lägg till bok i system\n2.Registrerar medlem\n3.Söka efter medlem\n4.Ta bort medlem" +
                 "\n5.Lämna tillbak bok\n6.Låna bok\n0.Logga ut");
@@ -73,7 +66,7 @@ public class Librarian extends User {
         return input.nextInt();
     }
 
-    public void loanByLibrerian() {
+    public void loanByLibrerian(){
         System.out.println("Ange medlems ID för den som ska låna bok: ");
         System.out.print("ID: ");
         Scanner input = new Scanner(System.in);
@@ -81,7 +74,7 @@ public class Librarian extends User {
 
         user = mManager.searchMember(id);
         //user = mStore.getMemberById(id);
-        if (user.getIDCode() == id) {
+        if (user.getIDCode() == id){
             bManager.setMember(user);
             System.out.println("Ange ISBN för bok");
             System.out.print("ISBN: ");
@@ -93,7 +86,8 @@ public class Librarian extends User {
                 book = bManager.loan(isbn);
                 System.out.println("Du har nu lånat " + book.getTitle());
 
-            } catch (Exception inteBra) {
+            }
+            catch (Exception inteBra){
                 System.out.println(inteBra.getMessage());
 
                 //System.out.println("Ingen bok med ISBN finns");
@@ -101,7 +95,9 @@ public class Librarian extends User {
             //System.out.println("Inga lediga böcker att låna ut");
 
 
-        } else {
+
+        }
+        else {
             librarianOption(libMenu());
         }
 
@@ -116,18 +112,20 @@ public class Librarian extends User {
         System.out.println("Lägg till medlem");
         System.out.print("Ange personnummer: ");
         ssn = input.nextInt();
-        System.out.print("Ange förnamn: ");
-        fName = input.next();
-        System.out.print("Ange efternamn: ");
-        lName = input.next();
-        System.out.print("Ange titel: ");
-        title = input.nextInt();
+        if (mManager.checkSsn(ssn)) {
+            System.out.print("Ange förnamn: ");
+            fName = input.next();
+            System.out.print("Ange efternamn: ");
+            lName = input.next();
+            System.out.print("Ange titel: ");
+            title = input.nextInt();
 
-        mManager.addUser(ssn, fName, lName, title);
+            mManager.addUser(ssn,  fName,  lName,  title);}
 
+        else System.out.println("Bannad användare");
+        librarianOption(libMenu());
     }
-
-    void returnBook() {
+    void returnBook(){
         Scanner input = new Scanner(System.in);
         System.out.println("Lämna tillbaka bok");
         System.out.print("Ange meldems id: ");
@@ -139,7 +137,8 @@ public class Librarian extends User {
 
         try {
             bManager.returnBook(isbn);
-        } catch (Exception error) {
+        }
+        catch (Exception error){
             System.out.println(error.getMessage());
         }
     }
@@ -154,7 +153,8 @@ public class Librarian extends User {
         bManager.setMember(user);
     }
 
-    void addBook() {
+    void addBook()
+    {
         Scanner stringScanner = new Scanner(System.in);
         Scanner intScanner = new Scanner(System.in);
         System.out.println("Ange ISBN för bok");
@@ -174,14 +174,15 @@ public class Librarian extends User {
         int copies = intScanner.nextInt();
 
         try {
-            bManager.addBook(isbn, title, author, copies);
+            bManager.addBook(isbn,title,author,copies);
 
         } catch (Exception inteBra) {
             System.out.println(inteBra.getMessage());
         }
     }
 
-    void searchForMember() {
+    void searchForMember()
+    {
         Scanner intScanner = new Scanner(System.in);
         System.out.println("Ange ID kod");
         int id = intScanner.nextInt();
@@ -191,14 +192,15 @@ public class Librarian extends User {
         System.out.println("ID: " + tempUser.getIDCode());
         System.out.println("Personnummer: " + tempUser.getSSN());
         System.out.println("Titel: " + tempUser.getTitle());
-        System.out.println("Antal strikes: " + tempUser.getStrikes() + "\n");
+        System.out.println("Antal strikes: " + tempUser.getStrikes()+ "\n");
         System.out.println("Lånade böcker: \n");
 
         viewMemberLoans(tempUser);
 
     }
 
-    void viewMemberLoans(User user) {
+    void viewMemberLoans(User user)
+    {
         for (Book b : bManager.getMemberLoansForLibrarian(user)
         ) {
             System.out.println(b.getTitle() + "\n");
