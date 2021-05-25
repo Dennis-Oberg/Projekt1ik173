@@ -56,7 +56,7 @@ public class MemberManager {
 
             for (Book b: bStore.getBookByMember(user.getIDCode())
             ) {
-                bStore.returnBook(b);
+                bStore.returnBook(b, user);
             }
 
             mStore.moveToBannedMember(user);

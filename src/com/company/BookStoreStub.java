@@ -11,13 +11,16 @@ public class BookStoreStub extends BookStore {
 
     public BookStoreStub()  {
         this.bookList = new ArrayList<>();
+        this.borrowedby = new Borrowedby();
     }
 
-    public void addBook(Book bk) {
-        this.bookList.add(bk);
+    public boolean insertBook(long isbn,String title,String author,int copies) {
+        Book book = new Book(isbn,title,copies,author);
+        this.bookList.add(book);
+        return true;
     }
 
-    public Book getBookByIsbn(int isbn)   {
+    public Book getBookByIsbn(long isbn)  {
         Book book = null;
 
         for (Book b: bookList){
@@ -31,10 +34,8 @@ public class BookStoreStub extends BookStore {
     public Book[] getBookByMember(int member)  {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
-        for (Book book: bookList){
-            if (book.getBorrowedBy() == member){
+        for (Book book: borrowedby.loanList) {
                 bookArrayList.add(book);
-            }
         }
         Book[] books = new Book[bookArrayList.size()];
         return bookArrayList.toArray(books);
@@ -53,39 +54,47 @@ public class BookStoreStub extends BookStore {
         return bookArrayList.toArray(books);
     }
 
-    public void loanBook(Book book, User user) {
-        CheckConnection();
+    public void loanBook(Book book, User user, Date date) {
 
         int copies = book.getCopy();
 
         if (copies>0) {
-            Date today = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(today);
-            cal.add(Calendar.DAY_OF_MONTH,15);
-            Date returnDate = cal.getTime();
 
-            book.setBorrowedBy(user.getIDCode());
-            book.setCopy(book.getCopy()-1);
-            book.setLoanDate(today);
-            book.setReturnDate(returnDate);
+            for (Book b: bookList
+                 ) {
+                if (b.getIsbn() == book.getIsbn())
+                {
+                    Date today = date;
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(today);
+                    cal.add(Calendar.DAY_OF_MONTH,15);
+                    Date returnDate = cal.getTime();
 
-            borrowedby = new Borrowedby();
-            borrowedby.loanList.add(book);
+                    b.setBorrowedBy(user.getIDCode());
+                    b.setCopy(book.getCopy()-1);
+                    b.setLoanDate(today);
+                    b.setReturnDate(returnDate);
 
+
+                    borrowedby.loanList.add(b);
+                }
+            }
         }
-
     }
 
     public void returnBook(Book book, User user) {
         if (book.getBorrowedBy() == user.getIDCode()) {
+            for (Book b: bookList
+            ) {
+                if (b.getIsbn() == book.getIsbn())
+                {
+                    borrowedby.loanList.remove(book);
 
-            borrowedby.loanList.remove(book);
-
-            book.setCopy(book.getCopy()+1);
-            book.setLoanDate(null);
-            book.setReturnDate(null);
+                    b.setCopy(book.getCopy()+1);
+                    b.setLoanDate(null);
+                    b.setReturnDate(null);
+                }
+            }
         }
     }
-
 }

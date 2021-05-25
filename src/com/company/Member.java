@@ -3,6 +3,7 @@ package com.company;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
+import java.util.Date;
 
 public class Member extends User {
     private static final Logger logger = LogManager.getLogger(Member.class.getName());
@@ -84,7 +85,8 @@ public class Member extends User {
         long isbn = input.nextLong();
 
         try {
-            if (bManager.overDueLoan(isbn)) {
+            Date today = new Date();
+            if (bManager.overDueLoan(isbn, today)) {
                 MemberStore memberStore = new MemberStore();
                 MemberManager mManager = new MemberManager(user, memberStore);
                 mManager.addStrike();

@@ -38,9 +38,6 @@ public class User {
         decideMax(title);
         books = new ArrayList<>();
 
-       long millis = System.currentTimeMillis();
-       Date currentDate = new Date(millis);
-
     }
 
     public int getIDCode() {

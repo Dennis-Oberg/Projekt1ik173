@@ -1,6 +1,7 @@
 package com.company;
 
 import java.sql.*;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,7 +106,7 @@ public class BookStore {
         return tempList.toArray(books);
     }
 
-    public void loanBook(Book book) {
+    public void loanBook(Book book, User user, Date today) {
         CheckConnection();
         int copies = 0;
 
@@ -123,11 +124,9 @@ public class BookStore {
                 try {
                 PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
                 preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
-                long millis = System.currentTimeMillis();
-                Date date = new Date(millis);
                 preparedStatement.setLong(1, book.getIsbn());
-                preparedStatement.setInt(2, book.getBorrowedBy());
-                preparedStatement.setDate(3, date);
+                preparedStatement.setInt(2, user.getIDCode());
+                preparedStatement.setDate(3, (java.sql.Date) today);
                 newPreparedStatement.setLong(1, book.getIsbn());
 
                 preparedStatement.executeUpdate();
@@ -150,7 +149,7 @@ public class BookStore {
         }
     }
 
-    public void returnBook(Book book) {
+    public void returnBook(Book book, User user) {
         CheckConnection();
         try {
             if (checkAvailability(book.getIsbn()).length > 0) {
@@ -158,7 +157,7 @@ public class BookStore {
                 preparedStatement = conn.prepareStatement("DELETE FROM borrowedby WHERE isbn = ? AND borrowedBy.borrowedBy = ?");
 
                 preparedStatement.setLong(1, book.getIsbn());
-                preparedStatement.setInt(2, book.getBorrowedBy());
+                preparedStatement.setInt(2, user.getIDCode());
                 newPreparedStatement.setLong(1, book.getIsbn());
 
                 preparedStatement.executeUpdate();
