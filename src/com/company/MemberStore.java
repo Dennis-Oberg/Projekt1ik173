@@ -179,4 +179,28 @@ public class MemberStore implements IMemberStore {
             System.out.println(e.getErrorCode());
         }
     }
+
+    public Integer[] checkSsn(int ssn) {
+        String query = "Select * from bannedmember where socialsecuritynumber = ?";
+
+        ArrayList<Integer> tempList = new ArrayList<>();
+
+        try {
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setInt(1, ssn);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                tempList.add(resultSet.getInt(1));
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+        }
+
+        Integer[] lista = new Integer[tempList.size()];
+
+        return tempList.toArray(lista);
+    }
 }

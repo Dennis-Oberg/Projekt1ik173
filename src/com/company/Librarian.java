@@ -112,14 +112,18 @@ public class Librarian extends User {
         System.out.println("Lägg till medlem");
         System.out.print("Ange personnummer: ");
         ssn = input.nextInt();
-        System.out.print("Ange förnamn: ");
-        fName = input.next();
-        System.out.print("Ange efternamn: ");
-        lName = input.next();
-        System.out.print("Ange titel: ");
-        title = input.nextInt();
+        if (mManager.checkSsn(ssn)) {
+            System.out.print("Ange förnamn: ");
+            fName = input.next();
+            System.out.print("Ange efternamn: ");
+            lName = input.next();
+            System.out.print("Ange titel: ");
+            title = input.nextInt();
 
-        mManager.addUser(ssn,  fName,  lName,  title);
+            mManager.addUser(ssn,  fName,  lName,  title);}
+
+        else System.out.println("Bannad användare");
+        librarianOption(libMenu());
     }
     void returnBook(){
         Scanner input = new Scanner(System.in);

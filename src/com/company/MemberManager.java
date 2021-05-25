@@ -99,4 +99,22 @@ public class MemberManager {
         mStore.addStrike(this.user);
     }
 
+    public boolean checkSsn(int ssn) {
+
+        Integer tempSsn = ssn;
+
+        Integer[] bannandeMedlemar = mStore.checkSsn(ssn);
+
+        if (bannandeMedlemar.length == 0){
+            return true;
+        }
+        else {
+            for (Integer integer: bannandeMedlemar){
+                if (tempSsn.equals(integer)){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }
