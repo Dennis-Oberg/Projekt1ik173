@@ -58,6 +58,23 @@ public class User {
        Date currentDate = new Date(millis);
 
     }
+    User(int idCode, int ssn, String firstname, String lastname, int title) {
+        this.IDCode = idCode;
+        this.SSN = ssn;
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.title = title;
+        this.suspended = false;
+        this.suspendedCount = 0;
+        this.strikes = 0;
+        this.suspensionDate = null;
+        decideMax(title);
+        books = new ArrayList<>();
+
+        long millis = System.currentTimeMillis();
+        Date currentDate = new Date(millis);
+
+    }
 
     public void setStrikes(int strikes) {
         this.strikes = strikes;

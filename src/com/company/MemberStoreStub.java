@@ -5,11 +5,42 @@ import java.util.ArrayList;
 public class MemberStoreStub extends MemberStore {
 
     ArrayList<User> userList;
+
+    ArrayList<Integer> bannedMember;
+
     User currentUser;
+
 
 
     public MemberStoreStub() {
         userList = new ArrayList<>();
+        bannedMember = new ArrayList<Integer>();
+
+
+        bannedMember.add(123);
+        bannedMember.add(1234);
+        //ska bort senare
+        userList.add(new User(1234,11,"Tobias", "Wendel", 1));
+        userList.add(new User(1235,14,"Tobias", "Wendel", 2));
+        userList.add(new User(1236,17,"Tobias", "Wendel", 4));
+        userList.add(new User(4321,13,"Tobias", "Wendel", 5));
+        userList.add(new User(5678,12,"Tobias", "Wendel", 1));
+        userList.add(new User(4123,1787,"Tobias", "Wendel", 2));
+        userList.add(new User(7823,1324534,"Tobias", "Wendel", 4));
+        userList.add(new User(1111,134534,"Tobias", "Wendel", 5));
+    }
+
+    public Boolean login(int loginId) {
+
+        for (User user: userList){
+            if (user.getIDCode() == loginId){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public User getMemberById(int id){
 
 
     }
@@ -18,51 +49,52 @@ public class MemberStoreStub extends MemberStore {
         return userList; //databas kod
     }
 
-    public void createNewMember(int idcode, int ssn, String fName, String lName, int title, int suspendedCount) {
-        userList.add(new User(idcode, ssn, fName, lName, title, suspendedCount));
+
+   
+
+  
+
+    public void creatNewMember(int ssn, String fName, String lName, int title) {
+
+        ArrayList<Integer> tempArr = new ArrayList<>();
+        for (User user: userList){
+            tempArr.add(user.getIDCode());
+        }
+
+        userList.add(new User(GenerateID.returnID(tempArr),ssn,fName,lName,title,
+                0,0,null,false));
     }
 
     public void removeMember(User user) {
-        for (int i = 0; i < userList.size(); i++) {
-            if (user.IDCode == userList.get(i).getIDCode()) {
-                userList.remove(user);
+
+        for (User m: userList){
+            if (m.getIDCode() == user.getIDCode()){
+                userList.remove(m);
             }
         }
     }
 
-    public void addSuspensions(User user) {
-        for (User value : userList) {
-            if (user.IDCode == value.getIDCode()) {
-                user.suspendedCount = 3;
-                removeMember(user);
-            }
-        }
+    public void moveToBannedMember(User user) {
+        bannedMember.add(user.getSSN());
     }
 
-    public void addStrike(User user) {
-        for (User u : userList) {
-            if (user.getIDCode() == u.getIDCode()) {
-                user.setStrikes(user.getStrikes() + 1);
-            }
-        }
+    public void addSuspension(User user) {
+        user.suspended = true;
     }
 
     public void removeSuspension(User user) {
-        for (User u :userList) {
-            if (user.getIDCode() == u.getIDCode()) {
-                user.suspended = false;
-                break;
-            }
-        }
+        user.suspended = false;
     }
 
-    public User getMemberById(int id) {
-
-        for (User m : userList) {
-            if (m.getIDCode() == id) {
-                return m;
-            }
-        }
-        return null;
+    public void addStrike(User user) {
+        user.strikes += 1;
     }
+
+    public Integer[] checkSsn(int ssn) {
+
+        Integer[] lista = new Integer[bannedMember.size()];
+        return bannedMember.toArray(lista);
+    }
+
+
 }

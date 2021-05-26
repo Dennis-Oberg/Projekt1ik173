@@ -4,26 +4,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemberManagerTest {
+
+public class MemberManagerTest {
+
+    User testUser = new User(123,20211224, "Tobias", "Wendel",1);
 
     @Test
-    void test_addmember(){
-
-        User d = new User(1, 123, "Dennis", "Öberg", 2, 0);
+    public void test_checkActiveSuspension(){
         MemberStoreStub memberStoreStub = new MemberStoreStub();
-        MemberManager memberManager = new MemberManager(d, memberStoreStub);
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
 
-    }
+        Boolean expected = false;
 
-    @Test
-    void test_anal(){
-        User d = new User(1, 123, "Dennis", "Öberg", 2, 0);
 
-        MemberStoreStub memberStoreStub = new MemberStoreStub();
-        MemberManager memberManager = new MemberManager(d,memberStoreStub);
-
-        memberStoreStub.createNewMember(2, 1996, "Ost", "Ostsson", 1, 0);
-
+        assertTrue(cut.checkActiveSuspension(testUser));
 
     }
 }
+

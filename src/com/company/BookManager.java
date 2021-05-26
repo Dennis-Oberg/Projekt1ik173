@@ -76,9 +76,14 @@ public class BookManager {
     }
 
     public boolean checkAvailable(Book book) {
-        Book[] bookList = bStore.checkAvailability(book.getIsbn());
+        //Book[] bookList = bStore.checkAvailability(book.getIsbn());
 
-        return bookList.length < book.getCopy();
+        if (book.getCopy() == 0) {
+            return false;
+        }
+
+        else
+        return book.getCopy() > 0;
     }
 
     public void borrowedBy(int memberId) {
