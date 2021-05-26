@@ -55,8 +55,11 @@ public class MemberManager {
 
         if (user.getSuspendedCount() == 3) {
 
-            for (Book b : bStore.getBookByMember(user.getIDCode())) {
-                bStore.returnBook(b);
+
+            for (Book b: bStore.getBookByMember(user.getIDCode())
+            ) {
+                bStore.returnBook(b, user);
+
             }
 
             mStore.moveToBannedMember(user);

@@ -1,6 +1,7 @@
 package com.company;
 
 
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -83,6 +84,7 @@ public class Librarian extends User {
             System.out.println("");
 
             try {
+                Date today = new Date();
                 book = bManager.loan(isbn);
                 System.out.println("Du har nu lånat " + book.getTitle());
 

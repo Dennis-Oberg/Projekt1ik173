@@ -52,6 +52,7 @@ public class MemberManagerTest {
 
     }
 
+
     @Test
     public void test_checkBanSuspendCountTwo(){ //ska inte bli bannad med suspendCount = 2
         MemberStoreStub memberStoreStub = new MemberStoreStub();
@@ -73,12 +74,6 @@ public class MemberManagerTest {
     public void test_removeMember(){
         
     }
-
-
-
-
-
-
 
 
 

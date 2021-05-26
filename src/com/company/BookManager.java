@@ -33,7 +33,7 @@ public class BookManager {
                 throw new NullPointerException("Inga lediga böcker att låna ut");
             } else {
                 tempBook.setBorrowedBy(user.getIDCode());
-                bStore.loanBook(tempBook);
+                bStore.loanBook(tempBook, user);
             }
             return tempBook;
         } else
@@ -50,7 +50,7 @@ public class BookManager {
             for (Book b : booklist) {
                 if (b.getIsbn() == isbn) {
                     b.setBorrowedBy(user.getIDCode());
-                    bStore.returnBook(b);
+                    bStore.returnBook(b, user);
                     System.out.println(b.getTitle() + " har lämnats tillbaka");
                     return b;
                 }
@@ -59,13 +59,17 @@ public class BookManager {
         }
     }
 
-    public boolean overDueLoan(long isbn) {
+    public boolean overDueLoan(long isbn, Date date) {
         Book[] booklist = bStore.getBookByMember(user.getIDCode());
-        for (Book b : booklist) {
-            if (b.getIsbn() == isbn) {
-                long millis = System.currentTimeMillis();
-                Date date = new Date(millis);
-                return date.after(b.getReturnDate());
+
+        for (Book b: booklist) {
+            if (b.getIsbn() == isbn){
+                if (date.after(b.getReturnDate())) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         }
         return false;
@@ -86,8 +90,8 @@ public class BookManager {
         return book.getCopy() > 0;
     }
 
-    public void borrowedBy(int memberId) {
-
+    public Book getBook(long isbn) {
+        return bStore.getBookByIsbn(isbn);
     }
 
     public Book[] getMemberLoans() {
@@ -104,6 +108,7 @@ public class BookManager {
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
         user.setCurrent(numberOfBorrowedBooks());
+
         return user.getCurrent() < user.getMaxloans();
     }
 
