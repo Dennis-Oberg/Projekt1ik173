@@ -131,12 +131,12 @@ class BookManagerTest {
     @Test
     public void test_memberLendStatus () {
         BookStoreStub bookStoreStub = new BookStoreStub();
-        User user = new User(123,19991122,"Gustaf","Thim",1,0,0,null,false);
-        BookManager bookManager = new BookManager(user,bookStoreStub);
+        User user = new User(123, 19991122, "Gustaf", "Thim", 1, 0, 0, null, false);
+        BookManager bookManager = new BookManager(user, bookStoreStub);
 
-        bookManager.addBook(1,"Harry Potter","JK rowling", 3);
-        bookManager.addBook(2,"Harry Potter 2","JK rowling", 3);
-        bookManager.addBook(3,"Harry Potter 3","JK rowling", 3);
+        bookManager.addBook(1, "Harry Potter", "JK rowling", 3);
+        bookManager.addBook(2, "Harry Potter 2", "JK rowling", 3);
+        bookManager.addBook(3, "Harry Potter 3", "JK rowling", 3);
 
         bookManager.loan(1);
         bookManager.loan(2);
@@ -145,8 +145,10 @@ class BookManagerTest {
         assertFalse(bookManager.memberLendStatus());
 
 
+
+    }
     @Test
-    public void test_AddBook() {
+    public void test_AddBook_ANAL(){
         BookStoreStub bookStoreStub = new BookStoreStub();
         User user = new User(123, 19991122, "Gustaf", "Thim", 3, 0, 0, null, false);
         BookManager bookManager = new BookManager(user, bookStoreStub);

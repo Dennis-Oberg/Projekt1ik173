@@ -108,6 +108,7 @@ public class BookManager {
 
     public boolean memberLendStatus() { //Kolla upp om man kan låna mer böcker
         user.setCurrent(numberOfBorrowedBooks());
+
         return user.getCurrent() < user.getMaxloans();
     }
 

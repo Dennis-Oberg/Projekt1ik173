@@ -10,8 +10,8 @@ public class GenerateID {
 
     }
 
-    private static int generateID()
-    {   Random rand = new Random();
+    private static int generateID() {
+        Random rand = new Random();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 4; i++) {
             int random = rand.nextInt(10);
@@ -20,14 +20,12 @@ public class GenerateID {
         return Integer.parseInt(sb.toString());
     }
 
-    public static int returnID(ArrayList<Integer> intArray)
-    {
+    public static int returnID(ArrayList<Integer> intArray) {
         int newID = generateID();
-        for (int i: intArray
-             ) {
-            if (newID == i)
-            {
-                 returnID(intArray);
+        for (int i : intArray
+        ) {
+            if (newID == i) {
+                returnID(intArray);
             }
         }
         System.out.println("Generated ID: " + newID);

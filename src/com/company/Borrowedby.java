@@ -6,8 +6,9 @@ import java.util.Map;
 
 public class Borrowedby {
 
-    public ArrayList<Book> loanList;
+    public ArrayList<Book> loanList = new ArrayList<>();
     Borrowedby(){
+
     }
 
 }

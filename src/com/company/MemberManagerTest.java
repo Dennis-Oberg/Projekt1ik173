@@ -20,5 +20,13 @@ public class MemberManagerTest {
         assertTrue(cut.checkActiveSuspension(testUser));
 
     }
+    @Test
+    void test_anal(){
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+
+        cut.addStrike();
+
+    }
 }
 
