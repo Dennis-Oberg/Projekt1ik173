@@ -32,7 +32,7 @@ public class BookManager {
             } else if (!checkAvailable(tempBook)) {
                 throw new NullPointerException("Inga lediga böcker att låna ut");
             } else {
-                tempBook.setBorrowedBy(user.getIDCode());
+
                 bStore.loanBook(tempBook, user);
             }
             return tempBook;

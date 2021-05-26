@@ -138,6 +138,7 @@ public class BookStore {
 
                 preparedStatement.executeUpdate();
                 newPreparedStatement.executeUpdate();
+                book.setBorrowedBy(user.getIDCode());
                 System.out.println("Du har nu lånat " + book.getTitle());
                 System.out.println("kopior kvar: " + "" + (copies-1));
                 }
