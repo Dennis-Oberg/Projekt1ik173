@@ -56,6 +56,7 @@ public class MemberStoreStub extends MemberStore{
         for (User m : userList) {
             if (m.getIDCode() == user.getIDCode()) {
                 userList.remove(m);
+                break;
             }
         }
     }

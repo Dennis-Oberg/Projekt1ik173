@@ -35,21 +35,20 @@ public class MemberManagerTest {
         MemberStoreStub memberStoreStub = new MemberStoreStub();
         testUser.suspended = true;
 
-        String inputString = "2021-05-30";
+
+        String inputString = "2021-06-15"; // Datum tills man är suspendad
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         testUser.suspensionDate = formatter.parse(inputString);
 
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
 
-        boolean test =cut.checkActiveSuspension(testUser);
-
-        assertFalse(test);
+        assertFalse(cut.checkActiveSuspension(testUser));
     }
     @Test
     public void test_checkActiveSuspension_shouldNotBeBanned() throws ParseException {
         MemberStoreStub memberStoreStub = new MemberStoreStub();
 
-        String inputString = "2021-04-30";
+        String inputString = "2021-04-30"; //Suspension har gått ut
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         testUser.suspensionDate = formatter.parse(inputString);
 
@@ -124,6 +123,58 @@ public class MemberManagerTest {
 
         assertEquals(2,memberStoreStub.userList.size());
     }
+
+    @Test
+    public void test_removeMember2() {
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+
+        User user1 = new User(1,123,"Tobias", "Wendel",1);
+        User user2 = new User(2,456,"Tobias", "Wendel",1);
+        User user3 = new User(3,789,"Tobias", "Wendel",1);
+        User user4 = new User(5,123,"Tobias", "Wendel",1);
+        User user5 = new User(123,456,"Tobias", "Wendel",1);
+        User user6 = new User(6,789,"Tobias", "Wendel",1);
+
+        memberStoreStub.userList.add(user1);
+        memberStoreStub.userList.add(user2);
+        memberStoreStub.userList.add(user3);
+        memberStoreStub.userList.add(user4);
+        memberStoreStub.userList.add(user5);
+        memberStoreStub.userList.add(user6);
+
+        cut.removeMember(testUser, new BookStoreStub());
+
+        assertEquals(5,memberStoreStub.userList.size());
+
+    }
+    @Test
+    public void test_removeMemberWithBorrowedBooks() {
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        BookManager mockManager = mock(BookManager.class);
+
+        User user1 = new User(1,123,"Tobias", "Wendel",1);
+        User user2 = new User(123,456,"Tobias", "Wendel",1);
+        User user3 = new User(3,789,"Tobias", "Wendel",1);
+        User user4 = new User(321,789,"Tobias", "Wendel",1);
+
+        when(mockManager.numberOfBorrowedBooks()).thenReturn(1);
+        when(mockManager.getMemberLoans()).thenReturn(new  Book[] {
+                new Book(123,"1231")
+        });
+
+        memberStoreStub.userList.add(user1);
+        memberStoreStub.userList.add(user2);
+        memberStoreStub.userList.add(user3);
+        memberStoreStub.userList.add(user4);
+
+        cut.removeMember(testUser,mockManager);
+        //ingen tas bort pga. bok kvar
+
+       assertEquals(4,memberStoreStub.userList.size());
+    }
+
 
     @Test
     public void mock_checkActiveSuspensionTrue(){
