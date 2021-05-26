@@ -37,7 +37,6 @@ public class MemberStoreStub extends MemberStore{
     public User getMemberById(int id){
 
         for (User m: userList){
-            //Bytas ut mot databas??
             if (m.getIDCode() == id){
                 return m;
             }
