@@ -16,6 +16,11 @@ public class User {
     int current;
     int strikes;
     int suspendedCount;
+
+    public boolean isSuspended() {
+        return suspended;
+    }
+
     boolean suspended;
     boolean isLibrarian = false;
     Date suspensionDate;
