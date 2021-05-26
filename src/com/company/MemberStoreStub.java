@@ -9,21 +9,9 @@ public class MemberStoreStub extends MemberStore{
 
 
     public MemberStoreStub() {
-
         userList = new ArrayList<>();
         bannedMember = new ArrayList<Integer>();
 
-        bannedMember.add(123);
-        bannedMember.add(1234);
-        //ska bort senare
-        userList.add(new User(1234, 11, "Tobias", "Wendel", 1));
-        userList.add(new User(1235, 14, "Tobias", "Wendel", 2));
-        userList.add(new User(1236, 17, "Tobias", "Wendel", 4));
-        userList.add(new User(4321, 13, "Tobias", "Wendel", 5));
-        userList.add(new User(5678, 12, "Tobias", "Wendel", 1));
-        userList.add(new User(4123, 1787, "Tobias", "Wendel", 2));
-        userList.add(new User(7823, 1324534, "Tobias", "Wendel", 4));
-        userList.add(new User(1111, 134534, "Tobias", "Wendel", 5));
     }
 
     public Boolean login(int loginId) {
