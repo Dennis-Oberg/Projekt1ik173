@@ -2,14 +2,20 @@ package com.company;
 
 import java.util.ArrayList;
 
-public class MemberStoreStub extends MemberStore{
+public class MemberStoreStub extends MemberStore {
 
     ArrayList<User> userList;
+
     ArrayList<Integer> bannedMember;
 
-    public MemberStoreStub(){
+    User currentUser;
+
+
+
+    public MemberStoreStub() {
         userList = new ArrayList<>();
         bannedMember = new ArrayList<Integer>();
+
 
         bannedMember.add(123);
         bannedMember.add(1234);
@@ -36,14 +42,17 @@ public class MemberStoreStub extends MemberStore{
 
     public User getMemberById(int id){
 
-        for (User m: userList){
-            //Bytas ut mot databas??
-            if (m.getIDCode() == id){
-                return m;
-            }
-        }
-        return null;
+
     }
+
+    public ArrayList<User> getMembers() {
+        return userList; //databas kod
+    }
+
+
+   
+
+  
 
     public void creatNewMember(int ssn, String fName, String lName, int title) {
 
@@ -86,5 +95,6 @@ public class MemberStoreStub extends MemberStore{
         Integer[] lista = new Integer[bannedMember.size()];
         return bannedMember.toArray(lista);
     }
+
 
 }

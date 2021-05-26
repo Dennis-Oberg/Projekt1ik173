@@ -1,11 +1,16 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BookStore {
+    private static final Logger logger = LogManager.getLogger(BookStore.class.getName());
+
     ArrayList<Book> bookList = null;
 
     Connection conn;
@@ -26,57 +31,6 @@ public class BookStore {
         this.bookList = new ArrayList<>();
         //Ska bort senare
     }
-
-    public Book[] getBooks() {
-
-        CheckConnection();
-
-        ArrayList<Book> tempList = new ArrayList<>();
-
-        try {
-            String query = "SELECT * FROM `dennis-1ik173vt21`.book";
-            statement = conn.createStatement();
-
-            System.out.println("Alla böcker");
-            System.out.println("=====");
-            resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) { //Print every existing row in artist table for all three columns
-                tempList.add(new Book(resultSet.getLong(3), resultSet.getString(1)));
-            }
-        } catch (SQLException sqle) { //If connection fails
-            sqle.printStackTrace();
-        }
-        Book[] books = new Book[tempList.size()];
-        return tempList.toArray(books);
-    }
-
-    public Book getBookByTitle(String title) {
-
-        Book tempBook = null;
-        CheckConnection();
-
-        try {
-            String query = "SELECT title, author, isbn, copies FROM book WHERE title = ?";
-
-            preparedStatement = conn.prepareStatement(query);
-
-            preparedStatement.setString(1, title);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                tempBook = new Book(resultSet.getLong(3), resultSet.getString(1),
-                        resultSet.getInt(4), resultSet.getString(2), 0);
-            }
-        } catch (SQLException sqle) { //If connection fails
-            sqle.printStackTrace();
-        }
-
-        return tempBook;
-    }
-
-
 
     public Book getBookByIsbn(long isbn) {
 
@@ -130,12 +84,7 @@ public class BookStore {
         return tempList.toArray(books);
     }
 
-    public void getLoanDate(Book book) {
-
-    }
-
-    public Book[] checkAvailability(Long isbn)
-    {
+    public Book[] checkAvailability(Long isbn) {
         CheckConnection();
         ArrayList<Book> tempList = new ArrayList<>();
 
@@ -174,28 +123,26 @@ public class BookStore {
                 copies = resultSet.getInt(1);
             }
 
-            if (copies>0) {
+            if (copies > 0) {
                 try {
-                PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
-                preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
-                long millis = System.currentTimeMillis();
-                Date date = new Date(millis);
-                preparedStatement.setLong(1, book.getIsbn());
-                preparedStatement.setInt(2, book.getBorrowedBy());
-                preparedStatement.setDate(3, date);
-                newPreparedStatement.setLong(1, book.getIsbn());
+                    PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
+                    preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
+                    long millis = System.currentTimeMillis();
+                    Date date = new Date(millis);
+                    preparedStatement.setLong(1, book.getIsbn());
+                    preparedStatement.setInt(2, book.getBorrowedBy());
+                    preparedStatement.setDate(3, date);
+                    newPreparedStatement.setLong(1, book.getIsbn());
 
-                preparedStatement.executeUpdate();
-                newPreparedStatement.executeUpdate();
-                System.out.println("Du har nu lånat " + book.getTitle());
-                System.out.println("kopior kvar: " + "" + (copies-1));
-                }
-                catch (SQLException e) {
+                    preparedStatement.executeUpdate();
+                    newPreparedStatement.executeUpdate();
+                    System.out.println("Du har nu lånat " + book.getTitle());
+                    System.out.println("kopior kvar: " + "" + (copies - 1));
+                } catch (SQLException e) {
                     System.out.println(e.getErrorCode());
                     System.out.println("Lyckades inte");
                 }
-            }
-            else {
+            } else {
                 System.out.println("Det finns inga kopior kvar");
             }
 
@@ -219,15 +166,13 @@ public class BookStore {
                 preparedStatement.executeUpdate();
                 newPreparedStatement.executeUpdate();
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             System.out.println("Lyckades inte");
         }
     }
 
-    public boolean insertBook(long isbn, String title,String author,int copies)
-    {
+    public boolean insertBook(long isbn, String title, String author, int copies) {
         CheckConnection();
 
         boolean inserted;

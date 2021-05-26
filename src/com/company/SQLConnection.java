@@ -1,7 +1,11 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class SQLConnection {
 
@@ -9,6 +13,7 @@ public class SQLConnection {
         try {
             DatabaseInit dbInit = new DatabaseInit();
             dbInit.init("C:\\Users\\46760\\Desktop\\1ik173\\Projekt1ik173\\src\\com\\company\\dbcredentials.properties");
+
             return dbInit.getConnection();
         } catch (SQLException e) {
             System.out.println(e);

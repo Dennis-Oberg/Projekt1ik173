@@ -25,6 +25,22 @@ public class User {
 
     }
 
+    User(int idCode, int ssn, String firstname, String lastname, int title, int suspendedCount ) {
+        this.IDCode = idCode;
+        this.SSN = ssn;
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.title = title;
+        this.suspendedCount = suspendedCount;
+
+        decideMax(title);
+        books = new ArrayList<>();
+
+        long millis = System.currentTimeMillis();
+        Date currentDate = new Date(millis);
+
+    }
+
     User(int idCode, int ssn, String firstname, String lastname, int title, int suspendedCount, int strikes, Date suspensionDate, boolean suspended) {
         this.IDCode = idCode;
         this.SSN = ssn;
@@ -58,6 +74,10 @@ public class User {
         long millis = System.currentTimeMillis();
         Date currentDate = new Date(millis);
 
+    }
+
+    public void setStrikes(int strikes) {
+        this.strikes = strikes;
     }
 
     public int getIDCode() {
