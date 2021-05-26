@@ -131,6 +131,45 @@ public class MemberManagerTest {
         MemberManager cut = new MemberManager(testUser, mockMemberStore);
 
     }
+    @Test
+    public void addUserTest(){
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        cut.addUser(4,"Musti", "Musti",4);
+        assertEquals(1,memberStoreStub.userList.size());
+    }
+
+    @Test
+    public void searchMemeberTest(){
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        User user5 = new User(5,500,"Musti", "Svensson",5);
+        memberStoreStub.userList.add(user5);
+        assertEquals(user5, cut.searchMember(5));
+    }
+
+    @Test
+    public void addStrikeTest(){
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        cut.addStrike();
+        assertEquals(1, testUser.strikes);
+    }
+    @Test
+    public void checkkSsnTestTrue(){
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        assertTrue(cut.checkSsn(testUser.SSN));
+    }
+
+    @Test
+    public void checkkSsnTestFalse(){
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        memberStoreStub.moveToBannedMember(testUser);
+        assertFalse(cut.checkSsn(testUser.SSN));
+    }
+
 
 
 
@@ -148,6 +187,10 @@ public class MemberManagerTest {
         memberStoreStub.userList.add(new User(7823, 1324534, "Tobias", "Wendel", 4));
         memberStoreStub.userList.add(new User(1111, 134534, "Tobias", "Wendel", 5));
     }
+
+
+
+
 
 
 
