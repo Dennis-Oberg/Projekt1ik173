@@ -2,9 +2,11 @@ package com.company;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 public class MemberManagerTest {
@@ -27,6 +29,33 @@ public class MemberManagerTest {
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
 
         assertFalse(cut.checkActiveSuspension(testUser));
+    }
+    @Test
+    public void test_checkActiveSuspension_shouldBeBanned() throws ParseException {
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+        testUser.suspended = true;
+
+        String inputString = "2021-05-30";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        testUser.suspensionDate = formatter.parse(inputString);
+
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+
+        boolean test =cut.checkActiveSuspension(testUser);
+
+        assertFalse(test);
+    }
+    @Test
+    public void test_checkActiveSuspension_shouldNotBeBanned() throws ParseException {
+        MemberStoreStub memberStoreStub = new MemberStoreStub();
+
+        String inputString = "2021-04-30";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        testUser.suspensionDate = formatter.parse(inputString);
+
+        MemberManager cut = new MemberManager(testUser, memberStoreStub);
+
+        assertTrue(cut.checkActiveSuspension(testUser));
     }
 
     @Test
@@ -94,6 +123,13 @@ public class MemberManagerTest {
         cut.removeMember(user2, new BookStoreStub());
 
         assertEquals(2,memberStoreStub.userList.size());
+    }
+
+    @Test
+    public void mock_checkActiveSuspensionTrue(){
+        MemberStore mockMemberStore = mock(MemberStore.class);
+        MemberManager cut = new MemberManager(testUser, mockMemberStore);
+
     }
 
 
