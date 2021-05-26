@@ -40,31 +40,29 @@ public class BookManager {
             throw new NoSuchElementException("Max antal böcker lånade");
     }
 
-    public Book returnBook(long isbn) throws NullPointerException  {
+    public Book returnBook(long isbn) throws NullPointerException {
         Book tempBook = bStore.getBookByIsbn(isbn);
         Book[] booklist = bStore.getBookByMember(user.getIDCode());
 
-        if (tempBook == null)
-        {
+        if (tempBook == null) {
             throw new NullPointerException("Fanns ingen bok med valt ISBN");
-        }
-        else {
-            for (Book b: booklist) {
-                if (b.getIsbn() == isbn){
+        } else {
+            for (Book b : booklist) {
+                if (b.getIsbn() == isbn) {
                     b.setBorrowedBy(user.getIDCode());
                     bStore.returnBook(b);
                     System.out.println(b.getTitle() + " har lämnats tillbaka");
                     return b;
                 }
-             }
+            }
             throw new NullPointerException("Du har inte lånat denna boken");
         }
     }
 
     public boolean overDueLoan(long isbn) {
         Book[] booklist = bStore.getBookByMember(user.getIDCode());
-        for (Book b: booklist) {
-            if (b.getIsbn() == isbn){
+        for (Book b : booklist) {
+            if (b.getIsbn() == isbn) {
                 long millis = System.currentTimeMillis();
                 Date date = new Date(millis);
                 return date.after(b.getReturnDate());
@@ -73,13 +71,8 @@ public class BookManager {
         return false;
     }
 
-    public boolean addBook(long isbn, String title, String author, int copies)
-    {
-        if (bStore.insertBook(isbn,title,author,copies))
-        {
-            return true;
-        }
-        return false;
+    public boolean addBook(long isbn, String title, String author, int copies) {
+        return bStore.insertBook(isbn, title, author, copies);
     }
 
     public boolean checkAvailable(Book book) {

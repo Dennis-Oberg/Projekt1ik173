@@ -6,10 +6,10 @@ import java.util.Calendar;
 
 public class BookStoreStub extends BookStore {
 
-    ArrayList<Book> bookList = null;
+    ArrayList<Book> bookList;
     Borrowedby borrowedby;
 
-    public BookStoreStub()  {
+    public BookStoreStub() {
         this.bookList = new ArrayList<>();
     }
 
@@ -17,22 +17,22 @@ public class BookStoreStub extends BookStore {
         this.bookList.add(bk);
     }
 
-    public Book getBookByIsbn(int isbn)   {
+    public Book getBookByIsbn(int isbn) {
         Book book = null;
 
-        for (Book b: bookList){
-            if (b.getIsbn() == isbn){
+        for (Book b : bookList) {
+            if (b.getIsbn() == isbn) {
                 book = b;
             }
         }
         return book;
     }
 
-    public Book[] getBookByMember(int member)  {
+    public Book[] getBookByMember(int member) {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
-        for (Book book: bookList){
-            if (book.getBorrowedBy() == member){
+        for (Book book : bookList) {
+            if (book.getBorrowedBy() == member) {
                 bookArrayList.add(book);
             }
         }
@@ -43,8 +43,8 @@ public class BookStoreStub extends BookStore {
     public Book[] checkAvailability(Long isbn) {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
-        for (Book book: bookList){
-            if (book.getIsbn() == isbn){
+        for (Book book : bookList) {
+            if (book.getIsbn() == isbn) {
                 bookArrayList.add(book);
             }
         }
@@ -58,20 +58,21 @@ public class BookStoreStub extends BookStore {
 
         int copies = book.getCopy();
 
-        if (copies>0) {
+        if (copies > 0) {
             Date today = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(today);
-            cal.add(Calendar.DAY_OF_MONTH,15);
+            cal.add(Calendar.DAY_OF_MONTH, 15);
             Date returnDate = cal.getTime();
 
             book.setBorrowedBy(user.getIDCode());
-            book.setCopy(book.getCopy()-1);
+            book.setCopy(book.getCopy() - 1);
             book.setLoanDate(today);
             book.setReturnDate(returnDate);
 
             borrowedby = new Borrowedby();
             borrowedby.loanList.add(book);
+
 
         }
 
@@ -82,7 +83,7 @@ public class BookStoreStub extends BookStore {
 
             borrowedby.loanList.remove(book);
 
-            book.setCopy(book.getCopy()+1);
+            book.setCopy(book.getCopy() + 1);
             book.setLoanDate(null);
             book.setReturnDate(null);
         }
