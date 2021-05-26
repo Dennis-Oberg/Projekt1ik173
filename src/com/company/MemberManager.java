@@ -20,7 +20,7 @@ public class MemberManager {
     public boolean getMemberStatus(User user) {
         boolean b1 = checkActiveSuspension(user);
         boolean b2 = checkSuspension(user);
-        boolean b3 = checkBan(user);
+        boolean b3 = checkBan(user, new BookStore());
         return b1 && b2 && b3;
     }
 
@@ -49,16 +49,14 @@ public class MemberManager {
         return true;
     }
 
-    public boolean checkBan(User user) {
+    public boolean checkBan(User user, BookStore bookStore) {
 
-        BookStore bStore = new BookStore();
 
         if (user.getSuspendedCount() == 3) {
 
-
-            for (Book b: bStore.getBookByMember(user.getIDCode())
+            for (Book b: bookStore.getBookByMember(user.getIDCode())
             ) {
-                bStore.returnBook(b, user);
+                bookStore.returnBook(b, user);
 
             }
 
@@ -69,9 +67,8 @@ public class MemberManager {
         return true;
     }
 
-    public void removeMember(User user) {
+    public void removeMember(User user, BookStore bookStore) {
         //Måste kolla om man har böcker lånade innan man kan ta bort. Om inte blir det fel i databas
-        BookStore bookStore = new BookStore();
         bookManager = new BookManager(user, bookStore);
         int numberOfBooks = bookManager.numberOfBorrowedBooks();
 

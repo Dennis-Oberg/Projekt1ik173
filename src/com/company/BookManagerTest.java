@@ -53,7 +53,7 @@ class BookManagerTest {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.DAY_OF_MONTH,15);
+        cal.add(Calendar.DAY_OF_MONTH,16);
         Date overDueDate = cal.getTime();
 
 
@@ -144,26 +144,5 @@ class BookManagerTest {
 
         assertFalse(bookManager.memberLendStatus());
 
-
-
     }
-    @Test
-    public void test_AddBook_ANAL(){
-        BookStoreStub bookStoreStub = new BookStoreStub();
-        User user = new User(123, 19991122, "Gustaf", "Thim", 3, 0, 0, null, false);
-        BookManager bookManager = new BookManager(user, bookStoreStub);
-
-        Book harry = new Book(1234, "Harry Potter", 2, "JK rowling");
-        Book öl = new Book(1234, "Harry Potter", 2, "JK rowling");
-        Book starköl = new Book(1234, "Harry Potter", 2, "JK rowling");
-
-        bookManager.bStore.bookList.add(harry);
-        bookManager.bStore.bookList.add(öl);
-        bookManager.bStore.bookList.add(starköl);
-        bookManager.addBook(1234, "Harry Potter", "JK rowling",3 );
-
-        assertEquals(3, bookManager.bStore.bookList.size());
-
-    }
-
 }

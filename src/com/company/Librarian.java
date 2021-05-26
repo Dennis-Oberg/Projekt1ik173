@@ -151,7 +151,7 @@ public class Librarian extends User {
         System.out.print("Ange id: ");
         int id = input.nextInt();
         user = mManager.searchMember(id);
-        mManager.removeMember(user);
+        mManager.removeMember(user, new BookStore());
         bManager.setMember(user);
     }
 

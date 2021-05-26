@@ -107,7 +107,7 @@ public class Member extends User {
         if (scan.next().equalsIgnoreCase("y")) {
             MemberStore memberStore = new MemberStore();
             MemberManager mManager = new MemberManager(user, memberStore);
-            mManager.removeMember(user);
+            mManager.removeMember(user, new BookStore());
             //scan.close();
         } else{
             memberMenu();

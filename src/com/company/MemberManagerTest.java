@@ -47,27 +47,30 @@ public class MemberManagerTest {
     public void test_checkBanSuspend(){
         MemberStoreStub memberStoreStub = new MemberStoreStub();
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        BookStoreStub bookStoreStub = new BookStoreStub();
 
-        assertTrue(cut.checkBan(testUser));
+        assertTrue(cut.checkBan(testUser, bookStoreStub));
 
     }
-
-
+    
     @Test
     public void test_checkBanSuspendCountTwo(){ //ska inte bli bannad med suspendCount = 2
         MemberStoreStub memberStoreStub = new MemberStoreStub();
         testUser.suspendedCount = 2;
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        BookStoreStub bookStoreStub = new BookStoreStub();
 
-        assertTrue(cut.checkBan(testUser));
+        assertTrue(cut.checkBan(testUser, bookStoreStub));
     }
+
     @Test
     public void test_checkBanSuspendCountThree(){ //Ska bli bannand med suspendCount = 3
         MemberStoreStub memberStoreStub = new MemberStoreStub();
         testUser.suspendedCount = 3;
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
+        BookStoreStub bookStoreStub = new BookStoreStub();
 
-        assertFalse(cut.checkBan(testUser));
+        assertFalse(cut.checkBan(testUser, bookStoreStub));
     }
 
     @Test
