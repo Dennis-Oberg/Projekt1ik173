@@ -1,5 +1,8 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 
 import java.time.LocalDate;
@@ -7,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BookStore {
+    private static final Logger logger = LogManager.getLogger(BookStore.class.getName());
+
     ArrayList<Book> bookList = null;
 
     Connection conn;
@@ -80,8 +85,7 @@ public class BookStore {
         return tempList.toArray(books);
     }
 
-    public Book[] checkAvailability(Long isbn)
-    {
+    public Book[] checkAvailability(Long isbn) {
         CheckConnection();
         ArrayList<Book> tempList = new ArrayList<>();
 
@@ -120,8 +124,9 @@ public class BookStore {
                 copies = resultSet.getInt(1);
             }
 
-            if (copies>0) {
+            if (copies > 0) {
                 try {
+
                     long millis = System.currentTimeMillis();
                     Date today = new Date(millis);
                 PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
@@ -137,11 +142,11 @@ public class BookStore {
                 System.out.println("kopior kvar: " + "" + (copies-1));
                 }
                 catch (SQLException e) {
+
                     System.out.println(e.getErrorCode());
                     System.out.println("Lyckades inte");
                 }
-            }
-            else {
+            } else {
                 System.out.println("Det finns inga kopior kvar");
             }
 
@@ -165,15 +170,13 @@ public class BookStore {
                 preparedStatement.executeUpdate();
                 newPreparedStatement.executeUpdate();
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             System.out.println("Lyckades inte");
         }
     }
 
-    public boolean insertBook(long isbn, String title,String author,int copies)
-    {
+    public boolean insertBook(long isbn, String title, String author, int copies) {
         CheckConnection();
 
         boolean inserted;

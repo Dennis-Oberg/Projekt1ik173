@@ -1,10 +1,16 @@
 package com.company;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
 public class BookManager {
+
+    private static final Logger logger = LogManager.getLogger(BookManager.class.getName());
+
 
     BookStore bStore;
     Book[] books;
@@ -34,29 +40,28 @@ public class BookManager {
             throw new NoSuchElementException("Max antal böcker lånade");
     }
 
-    public Book returnBook(long isbn) throws NullPointerException  {
+    public Book returnBook(long isbn) throws NullPointerException {
         Book tempBook = bStore.getBookByIsbn(isbn);
         Book[] booklist = bStore.getBookByMember(user.getIDCode());
 
-        if (tempBook == null)
-        {
+        if (tempBook == null) {
             throw new NullPointerException("Fanns ingen bok med valt ISBN");
-        }
-        else {
-            for (Book b: booklist) {
-                if (b.getIsbn() == isbn){
+        } else {
+            for (Book b : booklist) {
+                if (b.getIsbn() == isbn) {
                     b.setBorrowedBy(user.getIDCode());
                     bStore.returnBook(b, user);
                     System.out.println(b.getTitle() + " har lämnats tillbaka");
                     return b;
                 }
-             }
+            }
             throw new NullPointerException("Du har inte lånat denna boken");
         }
     }
 
     public boolean overDueLoan(long isbn, Date date) {
         Book[] booklist = bStore.getBookByMember(user.getIDCode());
+
         for (Book b: booklist) {
             if (b.getIsbn() == isbn){
                 if (date.after(b.getReturnDate())) {
@@ -70,19 +75,19 @@ public class BookManager {
         return false;
     }
 
-    public boolean addBook(long isbn, String title, String author, int copies)
-    {
-        if (bStore.insertBook(isbn,title,author,copies))
-        {
-            return true;
-        }
-        return false;
+    public boolean addBook(long isbn, String title, String author, int copies) {
+        return bStore.insertBook(isbn, title, author, copies);
     }
 
     public boolean checkAvailable(Book book) {
-        Book[] bookList = bStore.checkAvailability(book.getIsbn());
+        //Book[] bookList = bStore.checkAvailability(book.getIsbn());
 
-        return bookList.length < book.getCopy();
+        if (book.getCopy() == 0) {
+            return false;
+        }
+
+        else
+        return book.getCopy() > 0;
     }
 
     public Book getBook(long isbn) {

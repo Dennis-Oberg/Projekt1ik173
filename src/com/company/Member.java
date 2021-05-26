@@ -19,9 +19,10 @@ public class Member extends User {
         mStore = new MemberStore();
         mManager = new MemberManager(user, mStore);
         bManager = new BookManager(user, bookStore);
-        checkStatus(user, mManager);
-        logger.info(user.firstName + " Logged in, Suspended: "+ suspended);
-        memberMenu();
+        if(checkStatus(user, mManager)){logger.info(user.firstName + " Logged in, Suspended: "+ suspended);
+            memberMenu();}
+        else System.out.println("Du är bannad");
+
     }
 
     public boolean checkStatus(User user, MemberManager mManager){
@@ -107,14 +108,12 @@ public class Member extends User {
             MemberStore memberStore = new MemberStore();
             MemberManager mManager = new MemberManager(user, memberStore);
             mManager.removeMember(user);
-            logger.info("konto " + user.firstName + " " + user.lastName + " borttaget");
             //scan.close();
         } else{
             memberMenu();
             //       memberOption(memberMenu());
             scan.close();
         }
-
     }
 
     public void viewLoans() {
