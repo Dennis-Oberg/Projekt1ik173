@@ -54,9 +54,6 @@ public class User {
         decideMax(title);
         books = new ArrayList<>();
 
-       long millis = System.currentTimeMillis();
-       Date currentDate = new Date(millis);
-
     }
     User(int idCode, int ssn, String firstname, String lastname, int title) {
         this.IDCode = idCode;

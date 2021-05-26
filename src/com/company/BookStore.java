@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,7 +110,7 @@ public class BookStore {
         return tempList.toArray(books);
     }
 
-    public void loanBook(Book book) {
+    public void loanBook(Book book, User user) {
         CheckConnection();
         int copies = 0;
 
@@ -125,20 +126,23 @@ public class BookStore {
 
             if (copies > 0) {
                 try {
-                    PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
-                    preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
-                    long millis = System.currentTimeMillis();
-                    Date date = new Date(millis);
-                    preparedStatement.setLong(1, book.getIsbn());
-                    preparedStatement.setInt(2, book.getBorrowedBy());
-                    preparedStatement.setDate(3, date);
-                    newPreparedStatement.setLong(1, book.getIsbn());
 
-                    preparedStatement.executeUpdate();
-                    newPreparedStatement.executeUpdate();
-                    System.out.println("Du har nu lånat " + book.getTitle());
-                    System.out.println("kopior kvar: " + "" + (copies - 1));
-                } catch (SQLException e) {
+                    long millis = System.currentTimeMillis();
+                    Date today = new Date(millis);
+                PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
+                preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
+                preparedStatement.setLong(1, book.getIsbn());
+                preparedStatement.setInt(2, user.getIDCode());
+                preparedStatement.setDate(3, today);
+                newPreparedStatement.setLong(1, book.getIsbn());
+
+                preparedStatement.executeUpdate();
+                newPreparedStatement.executeUpdate();
+                System.out.println("Du har nu lånat " + book.getTitle());
+                System.out.println("kopior kvar: " + "" + (copies-1));
+                }
+                catch (SQLException e) {
+
                     System.out.println(e.getErrorCode());
                     System.out.println("Lyckades inte");
                 }
@@ -152,7 +156,7 @@ public class BookStore {
         }
     }
 
-    public void returnBook(Book book) {
+    public void returnBook(Book book, User user) {
         CheckConnection();
         try {
             if (checkAvailability(book.getIsbn()).length > 0) {
@@ -160,7 +164,7 @@ public class BookStore {
                 preparedStatement = conn.prepareStatement("DELETE FROM borrowedby WHERE isbn = ? AND borrowedBy.borrowedBy = ?");
 
                 preparedStatement.setLong(1, book.getIsbn());
-                preparedStatement.setInt(2, book.getBorrowedBy());
+                preparedStatement.setInt(2, user.getIDCode());
                 newPreparedStatement.setLong(1, book.getIsbn());
 
                 preparedStatement.executeUpdate();
