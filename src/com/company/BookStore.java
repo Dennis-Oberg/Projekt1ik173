@@ -1,7 +1,7 @@
 package com.company;
 
 import java.sql.*;
-import java.util.Date;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,7 +106,7 @@ public class BookStore {
         return tempList.toArray(books);
     }
 
-    public void loanBook(Book book, User user, Date today) {
+    public void loanBook(Book book, User user) {
         CheckConnection();
         int copies = 0;
 
@@ -122,11 +122,13 @@ public class BookStore {
 
             if (copies>0) {
                 try {
+                    long millis = System.currentTimeMillis();
+                    Date today = new Date(millis);
                 PreparedStatement newPreparedStatement = conn.prepareStatement("UPDATE book SET copies = copies-1 WHERE isbn=?");
                 preparedStatement = conn.prepareStatement("INSERT INTO borrowedby (isbn, borrowedBy, date, returndate) VALUES (?, ?, ?, DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY))");
                 preparedStatement.setLong(1, book.getIsbn());
                 preparedStatement.setInt(2, user.getIDCode());
-                preparedStatement.setDate(3, (java.sql.Date) today);
+                preparedStatement.setDate(3, today);
                 newPreparedStatement.setLong(1, book.getIsbn());
 
                 preparedStatement.executeUpdate();

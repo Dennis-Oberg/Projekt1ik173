@@ -27,8 +27,7 @@ public class BookManager {
                 throw new NullPointerException("Inga lediga böcker att låna ut");
             } else {
                 tempBook.setBorrowedBy(user.getIDCode());
-                Date today = new Date();
-                bStore.loanBook(tempBook, user, today);
+                bStore.loanBook(tempBook, user);
             }
             return tempBook;
         } else
