@@ -15,8 +15,25 @@ public class BookStoreStub extends BookStore {
     }
 
     public boolean insertBook(long isbn, String title, String author, int copies) {
-        Book book = new Book(isbn, title, copies, author);
-        this.bookList.add(book);
+
+        Boolean isAlreadyAdded = false;
+
+        for (Book b: this.bookList
+        ) {
+            if (isbn == b.getIsbn()) {
+             isAlreadyAdded = true;
+
+            }
+        }
+
+        if (!(isAlreadyAdded)) {
+            Book book = new Book(isbn, title, copies, author);
+            this.bookList.add(book);
+        }
+        else {
+            throw new IllegalArgumentException("Error, du kan inte lägga in en bok med samma ISBN");
+        }
+
         return true;
     }
 
@@ -61,8 +78,7 @@ public class BookStoreStub extends BookStore {
 
         int copies = book.getCopy();
 
-
-        if (copies > 0) {
+        if (copies > 0 && book.getBorrowedBy() != user.getIDCode()) {
 
             for (Book b : bookList
             ) {
