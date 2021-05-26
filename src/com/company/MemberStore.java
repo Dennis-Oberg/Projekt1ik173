@@ -7,18 +7,25 @@ import java.util.UUID;
 public class MemberStore implements IMemberStore {
 
     User currentUser;
-    Connection conn = SQLConnection.DbConnector();
+    Connection conn;
     PreparedStatement preparedStatement;
     Statement statement;
     ResultSet resultSet;
 
+    public void CheckConnection() {
+        conn = SQLConnection.DbConnector();
+        if (conn == null) {
+            System.out.println("Connection failed\n");
+        } else {
+            //System.out.println("Connection successful\n");
+        }
+    }
+
     public MemberStore() {
-
-
     }
 
     public Boolean login(int loginId) {
-        conn = SQLConnection.DbConnector();
+        CheckConnection();
 
         String query = "Select * from member where idCode = ?";
         try {
@@ -49,6 +56,7 @@ public class MemberStore implements IMemberStore {
 
 
     public User getMemberById(int id) {
+        CheckConnection();
         String query = "Select * from member where idCode = ?";
         try {
             preparedStatement = conn.prepareStatement(query);
@@ -76,6 +84,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public void creatNewMember(int ssn, String fName, String lName, int title) {
+        CheckConnection();
         //String query = "INSTER INTO member VALUES (?, ? ,? ,? ,? ,?)";
         try {
             ArrayList<Integer> tempArr = new ArrayList<>();
@@ -110,6 +119,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public void removeMember(User user) {
+        CheckConnection();
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("DELETE FROM member WHERE idCode = ?");
@@ -124,6 +134,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public void moveToBannedMember(User user) {
+        CheckConnection();
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("INSERT INTO bannedmember VALUES (?)");
@@ -138,6 +149,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public void addSuspension(User user) {
+        CheckConnection();
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("UPDATE member SET strikes=0, suspensions = suspensions+1, suspended=true, suspensiondate = DATE_ADD(CURRENT_DATE, INTERVAL 15 DAY) WHERE idCode = ?");
@@ -152,6 +164,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public void removeSuspension(User user) {
+        CheckConnection();
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("UPDATE member SET suspended=false, suspensiondate=null, strikes=0 WHERE idCode = ?");
@@ -167,6 +180,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public void addStrike(User user) {
+        CheckConnection();
         try {
             conn = SQLConnection.DbConnector();
             preparedStatement = conn.prepareStatement("UPDATE member SET strikes = strikes+1 WHERE idCode = ?");
@@ -181,6 +195,7 @@ public class MemberStore implements IMemberStore {
     }
 
     public Integer[] checkSsn(int ssn) {
+        CheckConnection();
         String query = "Select * from bannedmember where socialsecuritynumber = ?";
 
         ArrayList<Integer> tempList = new ArrayList<>();
