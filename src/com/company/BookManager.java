@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-public class BookManager implements IBookManager {
+public class BookManager {
 
     BookStore bStore;
     Book[] books;

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class BookStore implements IBookStore {
+public class BookStore {
     ArrayList<Book> bookList = null;
 
     Connection conn;
