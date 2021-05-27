@@ -161,7 +161,7 @@ public class MemberManagerTest {
 
         when(mockManager.numberOfBorrowedBooks()).thenReturn(1);
         when(mockManager.getMemberLoans()).thenReturn(new  Book[] {
-                new Book(123,"1231")
+                new Book(123,"Greta Gris")
         });
 
         memberStoreStub.userList.add(user1);
