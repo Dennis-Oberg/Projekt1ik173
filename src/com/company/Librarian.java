@@ -151,8 +151,11 @@ public class Librarian extends User {
         System.out.print("Ange id: ");
         int id = input.nextInt();
         user = mManager.searchMember(id);
-        mManager.removeMember(user, new BookStore());
-        bManager.setMember(user);
+        if (user.getIDCode() == id){
+            mManager.removeMember(user, new BookStore());
+            bManager.setMember(user);
+        }
+        else System.out.println("Medlem finns inte");
     }
 
     void addBook()
