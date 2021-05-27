@@ -149,7 +149,7 @@ public class MemberManagerTest {
 
     }
     @Test
-    public void test_removeMemberWithBorrowedBooks() {
+    public void test_removeMemberWithBorrowedBooks_usingMock() {
         MemberStoreStub memberStoreStub = new MemberStoreStub();
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
         BookManager mockManager = mock(BookManager.class);
@@ -219,6 +219,28 @@ public class MemberManagerTest {
         MemberManager cut = new MemberManager(testUser, memberStoreStub);
         memberStoreStub.moveToBannedMember(testUser);
         assertFalse(cut.checkSsn(testUser.SSN));
+    }
+
+    @Test
+    public void mock_checkSsnNotBannedMember(){
+        MemberStore mockMemberStore = mock(MemberStore.class);
+        MemberManager cut = new MemberManager(testUser, mockMemberStore);
+
+        when(mockMemberStore.checkSsn(testUser.getSSN())).thenReturn(new Integer[]{
+                4432,123,4324,2342});
+
+        assertTrue(cut.checkSsn(testUser.getSSN()));
+    }
+
+    @Test
+    public void mock_checkSsnBannedMember(){
+        MemberStore mockMemberStore = mock(MemberStore.class);
+        MemberManager cut = new MemberManager(testUser, mockMemberStore);
+
+        when(mockMemberStore.checkSsn(testUser.getSSN())).thenReturn(new Integer[]{
+                4432,123,4324,2342,20211224});
+
+        assertFalse(cut.checkSsn(testUser.getSSN()));
     }
 
 
